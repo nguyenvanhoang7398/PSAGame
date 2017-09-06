@@ -1,3 +1,9 @@
+/**
+ * TODO: remove crane size
+ *	  check whether crane can move there or not (input: field, next crane position, output: possible or not)
+ *
+ *	  										
+ */
 import java.util.*;
 
 class DockCrane {
@@ -10,12 +16,11 @@ class DockCrane {
 
 	// default string
 	private static final String INFORM_POSITION = "Crane is currently at";
-	private static final String INFORM_SIZE = "with size";
 	private static final String INFORM_ISHOLDING_TRUE = "is holding an item";
 	private static final String INFORM_ISHOLDING_FALSE = "is not holding any item";
 
 	// attributes
-	private int _posX, _posY, _size; // vertical position, horizonal position and size of the crane, assume it's a square
+	private int _posX, _posY; // vertical position, horizonal position and size of the crane, assume it's a square
 	private boolean _isHolding;
 
 	/** 
@@ -23,7 +28,7 @@ class DockCrane {
 	 * @param NONE
 	 */
 	DockCrane() {
-		this(INIT_POSY, INIT_POSX, INIT_SIZE);
+		this(INIT_POSY, INIT_POSX);
 	}
 
 	/** 
@@ -31,12 +36,10 @@ class DockCrane {
 	 * @param 
 	 * posY: initialize integer for posY
 	 * posX: initialize integer for posX
-	 * posY: initialize integer for size
 	 */
-	DockCrane(int posY, int posX, int size) {
+	DockCrane(int posY, int posX) {
 		_posY = posY;
 		_posX = posX;
-		_size = size;
 		_isHolding = false;
 	}
 
@@ -65,15 +68,6 @@ class DockCrane {
 	 */
 	public int[] getPos() {
 		return new int[] {_posY, _posX};
-	}
-
-	/** 
-	 * get size of the crane
-	 * @param NONE
-	 * @return integer representing the size of the crane
-	 */
-	public int getSize() {
-		return _size;
 	}
 
 	/** 
@@ -117,16 +111,6 @@ class DockCrane {
 	}
 
 	/** 
-	 * set size of the crane
-	 * @param 
-	 * posX: integer representing the newsize of the crane
-	 * @return NONE
-	 */
-	public void setSize(int size) {
-		_size = size;
-	}
-
-	/** 
 	 * set if the crane is holding
 	 * @param 
 	 * posX: boolean updating if the crane is holding
@@ -153,8 +137,7 @@ class DockCrane {
 	 */
 	public String toString() {
 		String isHoldingString = _isHolding ? INFORM_ISHOLDING_TRUE : INFORM_ISHOLDING_FALSE;
-		return INFORM_POSITION + " " + _posY + ", " + _posX + " " + INFORM_SIZE + " " 
-		+ _size + ", " + isHoldingString;
+		return INFORM_POSITION + " " + _posY + ", " + _posX + " and " + isHoldingString;
 	}
 } 
 
@@ -164,13 +147,10 @@ public class DockCraneDemo {
 		System.out.println("Initial position: " + myDockCrane.getPos()[0] + " " + myDockCrane.getPos()[1]); // this should print 0 0
 		System.out.println("Initial y: " + myDockCrane.getY()); // this should print 0
 		System.out.println("Initial x: " + myDockCrane.getX()); // this should print 0
-		System.out.println("Initial size: " + myDockCrane.getSize()); //  this should print 1
 		myDockCrane.setPos(new int[] {2, 5});
-		myDockCrane.setSize(4);
 		System.out.println("Current position: " + myDockCrane.getPos()[0] + " " + myDockCrane.getPos()[1]); // this should print 2 5
 		System.out.println("Current y: " + myDockCrane.getY()); // this should print 2
 		System.out.println("Current x: " + myDockCrane.getX()); // this should print 5
-		System.out.println("Current size: " + myDockCrane.getSize()); //  this should print 4
-		System.out.println(myDockCrane); // this should print "Crane is currently at 2, 5 with size 4 is not holding any item"
+		System.out.println(myDockCrane); // this should print "Crane is currently at 2, 5 and is not holding any item"
 	}
 }
