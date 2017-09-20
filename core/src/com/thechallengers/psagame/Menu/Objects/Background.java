@@ -33,14 +33,6 @@ public class Background extends Actor {
     public void act(float delta) {
         super.act(delta);
 
-
-        System.out.printf("offset x = %d offset y = %d\n", offset_x, offset_y);
-        System.out.printf("starting x = %d starting y = %d\n", starting_x, starting_y);
-        System.out.printf("width = %d end height = %d\n", end_x - starting_x, end_y - starting_y);
-        System.out.println();
-
-
-
         if (isMovingToGameScreen) {
             offset_x = Math.round(delta / 2.5f * 1080 / 2);
             offset_y = Math.round(delta / 2.5f * 1920 / 2);

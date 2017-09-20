@@ -13,4 +13,20 @@ public class DummyGameWorld implements ScreenWorld {
     public void update(float delta) {
 
     }
+
+    public void swipeUp() {
+        System.out.println("Swiped Up");
+    }
+
+    public void swipeDown() {
+        System.out.println("Swiped Down");
+    }
+
+    public void swipeLeft() {
+        System.out.println("Swiped Left");
+    }
+
+    public void swipeRight() {
+        System.out.println("Swiped Right");
+    }
 }
