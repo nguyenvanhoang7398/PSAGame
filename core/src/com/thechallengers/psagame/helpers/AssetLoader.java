@@ -16,6 +16,7 @@ public class AssetLoader {
     public static Texture setting_button_texture;
     public static Texture menu_crane_texture;
     public static TextureRegion game_background;
+    public static Texture game_crane;
 
     //texture region
     public static TextureRegion button_up, button_down;
@@ -24,6 +25,7 @@ public class AssetLoader {
     //font
     public static BitmapFont arial;
 
+    //position for game background (zoomed in from menu)
     public static int starting_x, starting_y, end_x, end_y;
 
     public static void loadMenuTexture() {
@@ -48,6 +50,7 @@ public class AssetLoader {
     }
 
     public static void loadGameTexture() {
+        game_crane = new Texture(Gdx.files.internal("textures/gamecrane.png"));
         game_background = new TextureRegion(new Texture(Gdx.files.internal("textures/menubackground.png")), starting_x, starting_y, end_x - starting_x, end_y - starting_y);
     }
 

@@ -1,9 +1,10 @@
 package com.thechallengers.psagame.Dummy.Objects;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.thechallengers.psagame.helpers.AssetLoader;
 
 /**
  * Created by Phung Tuan Hoang on 9/18/2017.
@@ -16,10 +17,9 @@ public class Crane extends Actor {
     public enum DIRECTION {UP, DOWN, LEFT, RIGHT};
     private int[][] matrix;
 
-    public Crane(int[][] matrix) {
-        matrix_position = new Vector2(4, 0);
+    public Crane() {
+        position = new Vector2(1080-100, 1500);
         isCarrying = false;
-        this.matrix = matrix;
     }
 
     @Override
@@ -30,20 +30,26 @@ public class Crane extends Actor {
     public void move(DIRECTION direction) {
         switch (direction) {
             case LEFT: {
-                matrix_position.x--;
-                if (matrix_position.x < 0) matrix_position.x = 0;
+                position.x -= 50;
                 break;
             }
 
             case RIGHT: {
-                matrix_position.x++;
-                if (matrix_position.x < 0) matrix_position.x = 0;
+                position.x += 50;
                 break;
             }
-
             case DOWN: {
-
+                position.y -= 50;
+                break;
+            }
+            case UP: {
+                position.y += 50;
             }
         }
+    }
+
+    @Override
+    public void draw(Batch batch, float alpha) {
+        batch.draw(AssetLoader.game_crane, position.x, position.y);
     }
 }
