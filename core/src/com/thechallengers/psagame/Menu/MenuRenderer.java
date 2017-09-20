@@ -26,15 +26,6 @@ public class MenuRenderer extends ScreenRenderer {
     }
 
     public void render(float runTime) {
-        /*
-        if (world.isFadingOut()) {
-            stage.getRoot().getColor().a = 1;
-            SequenceAction sequenceAction = new SequenceAction();
-            sequenceAction.addAction(fadeOut(3f));
-            sequenceAction.addAction(run(world.getNext_activity()));
-            stage.getRoot().addAction(sequenceAction);
-        }
-        */
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }

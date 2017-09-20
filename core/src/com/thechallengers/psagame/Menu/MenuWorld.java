@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.Menu;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -79,11 +80,16 @@ public class MenuWorld implements ScreenWorld {
                 isInTransition = true;
                 menu_crane.setLowering();
 
-                for (int i = 1; i < stage.getActors().size; i++) {
-                    stage.getActors().get(i).addAction(fadeOut(2f));
+                /*
+                for (int i = 0; i < stage.getActors().size; i++) {
+                    if (stage.getActors().get(i) instanceof Background) {System.out.println("AAAAAAAAAAA");}
+                    else stage.getActors().get(i).addAction(fadeOut(2f));
                 }
+                */
 
-                stage.addAction(sequence(delay(2f),run(new Runnable() {
+                background.moveToGameScreen();
+
+                stage.addAction(sequence(delay(2.5f),run(new Runnable() {
                     @Override
                     public void run() {
                         CURRENT_SCREEN = PSAGame.Screen.DummyGameScreen;
@@ -193,7 +199,6 @@ public class MenuWorld implements ScreenWorld {
 
     @Override
     public void update(float delta) {
-
         stage.act(delta);
 
         if (isInTransition) {

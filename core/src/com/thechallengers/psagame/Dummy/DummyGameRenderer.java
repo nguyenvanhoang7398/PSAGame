@@ -18,7 +18,7 @@ public class DummyGameRenderer extends ScreenRenderer {
     public void render(float runTime) {
         batcher.begin();
 
-        batcher.draw(AssetLoader.game_background, 0, 0);
+        batcher.draw(AssetLoader.game_background, 0, 0, 1080, 1920);
 
         batcher.end();
     }

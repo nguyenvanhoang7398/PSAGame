@@ -3,6 +3,7 @@ package com.thechallengers.psagame.Dummy;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.thechallengers.psagame.game.PSAGame;
+import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.inputhandlers.MenuInputHandler;
 
 /**
@@ -20,6 +21,7 @@ public class DummyGameScreen implements Screen {
         world = new DummyGameWorld();
         renderer = new DummyGameRenderer(world);
         Gdx.input.setInputProcessor(new MenuInputHandler(world));
+        AssetLoader.loadGameTexture();
     }
 
     @Override
