@@ -1,5 +1,6 @@
 package com.thechallengers.psagame.Menu.Objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,18 +16,37 @@ import java.util.Random;
 
 public class Background extends Actor {
     private boolean isMovingToGameScreen = false;
-    private TextureRegion background;
+    private Texture background;
+    private TextureRegion upper_bar, lower_bar;
     private int starting_x, starting_y, end_x, end_y, offset_x, offset_y;
+    private int top_bottom_compensate;
 
     public Background() {
         super();
+
+        background = new Texture(Gdx.files.internal("textures/menubackground.png"));
+
+        //top_bottom_compensate = (Gdx.graphics.getHeight() - 1440) / 2;
+        //upper_bar = new TextureRegion(new Texture(Gdx.files.internal("textures/upper_bar.png")), 0, 0, 1080, top_bottom_compensate);
+        //lower_bar = new TextureRegion(new Texture(Gdx.files.internal("textures/lower_bar.png")), 0, 0, 1080, top_bottom_compensate);
+
         starting_x = 0; starting_y = 0; end_x = 2160; end_y = 3840;
         offset_x = 0; offset_y = 0;
+
+
     }
 
     @Override
-    public void draw(Batch batch, float alpha) {
-        batch.draw(background, 0, 0, 1080, 1920);
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(this.getColor());
+        // always make sure to only multiply by the parent alpha
+        batch.getColor().a *= parentAlpha;
+
+        // do your drawing
+        batch.draw(background, 0, top_bottom_compensate, 1080, 1920);
+
+        batch.setColor(Color.WHITE); // reset the color
+//
     }
 
     @Override
@@ -42,7 +62,7 @@ public class Background extends Actor {
             end_y -= offset_y;
         }
 
-        background = new TextureRegion(AssetLoader.background_texture, starting_x, starting_y, end_x - starting_x, end_y - starting_y);
+
        AssetLoader.updateGameBackGroundDetails(starting_x, starting_y, end_x, end_y);
     }
 

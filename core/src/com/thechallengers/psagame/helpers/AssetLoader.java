@@ -17,6 +17,8 @@ public class AssetLoader {
     public static Texture menu_crane_texture;
     public static TextureRegion game_background;
     public static Texture game_crane;
+    public static Texture cloud_1, cloud_2;
+    public static Texture containers;
 
     //texture region
     public static TextureRegion button_up, button_down;
@@ -34,6 +36,9 @@ public class AssetLoader {
         button_texture = new Texture(Gdx.files.internal("textures/button.png"));
         menu_crane_texture = new Texture(Gdx.files.internal("textures/menucrane.png"));
         setting_button_texture = new Texture(Gdx.files.internal("textures/setting_button.png"));
+        cloud_1 = new Texture(Gdx.files.internal("textures/cloud_1.png"));
+        cloud_2 = new Texture(Gdx.files.internal("textures/cloud_2.png"));
+        containers = new Texture(Gdx.files.internal("textures/containers.png"));
 
         background = new TextureRegion(background_texture, 0, 0, 1080, 1920);
         button_up = new TextureRegion(button_texture, 0, 0, 200, 100);
