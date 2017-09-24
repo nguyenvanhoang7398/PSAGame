@@ -1,5 +1,6 @@
 package com.thechallengers.psagame.Menu;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.thechallengers.psagame.Menu.Objects.Background;
 import com.thechallengers.psagame.Menu.Objects.Cloud;
@@ -33,28 +35,28 @@ import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
  */
 
 public class MenuWorld implements ScreenWorld {
-    private TextButton exit_button, sp_button, mp_button, setting_button, tutorial_button, shopp_button, leaderboard_button;
-    private TextButton.TextButtonStyle menu_button_style, setting_button_style;
+    private TextButton exit_button, sp_button, mp_button, setting_button, tutorial_button, shopp_button, leaderboard_button, play_button;
+    private TextButton.TextButtonStyle play_button_style, tutorial_button_style;
     private MenuCrane menu_crane;
     private Background background;
     private Stage stage;
+    private int zoomTime = 0;
 
     private boolean isInTransition = false;
     private Runnable next_activity = null;
 
     //constructor
     public MenuWorld() {
-        //style for menu button
-        menu_button_style = new TextButton.TextButtonStyle();
-        menu_button_style.up = new TextureRegionDrawable(AssetLoader.button_up);
-        menu_button_style.down = new TextureRegionDrawable(AssetLoader.button_down);
-        menu_button_style.font = AssetLoader.arial;
+        stage = new Stage();
 
-        //style for setting button
-        setting_button_style = new TextButton.TextButtonStyle();
-        setting_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.setting_button_texture, 0, 0, 240, 240));
-        setting_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.setting_button_texture, 240, 0, 240, 240));
-        setting_button_style.font = AssetLoader.arial;
+        //play button
+        createPlayButtonStyle();
+        createPlayButton();
+        addListenerToPlayButton();
+
+        //tutorial button
+        createTutorialButtonStyle();
+        createTutorialButton();
 
         //Menu Crane
         menu_crane = new MenuCrane(440, LONG_EDGE, 200, 920, exit_button, sp_button, mp_button, leaderboard_button, tutorial_button, shopp_button);
@@ -62,11 +64,17 @@ public class MenuWorld implements ScreenWorld {
         //Background
         background = new Background();
         //add all actors to stage
-        stage = new Stage();
+
         stage.addActor(background);
         stage.addActor(menu_crane);
+        stage.addActor(play_button);
+        stage.addActor(tutorial_button);
+
+        //clouds and containers
         createClouds();
         createContainers();
+        //lookAt();
+
     }
 
     @Override
@@ -85,6 +93,16 @@ public class MenuWorld implements ScreenWorld {
         if (menu_crane.getY() > LONG_EDGE * 2 - 400) {
             menu_crane.stop();
         }
+
+        /*
+        if (zoomTime < 57) {
+            translate();
+            zoomIn();
+            zoomTime ++;
+            System.out.println(zoomTime);
+        }
+        */
+
     }
 
     public Stage getStage() {
@@ -104,5 +122,51 @@ public class MenuWorld implements ScreenWorld {
 
     public void createContainers() {
         stage.addActor(new Containers());
+    }
+
+    public void createPlayButtonStyle() {
+        play_button_style = new TextButton.TextButtonStyle();
+        play_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.play_button));
+        play_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.play_button_pressed));
+        play_button_style.font = AssetLoader.arial;
+        //play_button.setPosition();
+    }
+
+    public void createPlayButton() {
+        play_button = new TextButton("", play_button_style);
+        play_button.setPosition(180, 1920 - 1726);
+    }
+
+    public void createTutorialButtonStyle() {
+        tutorial_button_style = new TextButton.TextButtonStyle();
+        tutorial_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.tutorial_button));
+        tutorial_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.tutorial_button_pressed));
+        tutorial_button_style.font = AssetLoader.arial;
+    }
+
+    public void createTutorialButton() {
+        tutorial_button = new TextButton("", tutorial_button_style);
+        tutorial_button.setPosition(670, 1920 - 1726);
+    }
+
+    public void addListenerToPlayButton() {
+        play_button.addListener(new ClickListener() {
+           @Override
+            public void clicked(InputEvent event, float x, float y) {
+               System.out.println("A");
+           }
+        });
+    }
+
+    public void zoomIn() {
+        ((OrthographicCamera) stage.getCamera()).zoom -= 0.01f;
+    }
+
+    public void translate() {
+        stage.getCamera().translate(-2.75f, 1.5f, 0);
+    }
+
+    public void lookAt() {
+        stage.getCamera().lookAt(540, 960, 0);
     }
 }

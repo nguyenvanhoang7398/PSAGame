@@ -69,7 +69,6 @@ public class Cloud extends Actor {
         super.act(delta);
 
         this.setPosition(this.getX() + speed * delta, this.getY());
-        System.out.println(this.getY());
 
         if (this.getX() > 1080 || this.getX() < 0) reset();
     }
