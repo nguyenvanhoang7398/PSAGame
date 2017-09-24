@@ -35,12 +35,13 @@ import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
  */
 
 public class MenuWorld implements ScreenWorld {
-    private TextButton exit_button, sp_button, mp_button, setting_button, tutorial_button, shopp_button, leaderboard_button, play_button;
-    private TextButton.TextButtonStyle play_button_style, tutorial_button_style;
+    private TextButton tutorial_button, play_button, single_player_button, multi_player_button, overlay_button;
+    private TextButton.TextButtonStyle play_button_style, tutorial_button_style, single_player_button_style, multi_player_button_style, overlay_button_style;
     private MenuCrane menu_crane;
     private Background background;
     private Stage stage;
     private int zoomTime = 0;
+    private boolean isZooming = false;
 
     private boolean isInTransition = false;
     private Runnable next_activity = null;
@@ -52,21 +53,32 @@ public class MenuWorld implements ScreenWorld {
         //play button
         createPlayButtonStyle();
         createPlayButton();
-        addListenerToPlayButton();
 
         //tutorial button
         createTutorialButtonStyle();
         createTutorialButton();
 
+        //single player button
+        createSinglePlayerButtonStyle();
+        createSinglePlayerButton();
+
+        //multi player button
+        createMultiPlayerButtonStyle();
+        createMultiPlayerButton();
+
+        //overlay button
+        createOverlayButtonStyle();
+        createOverlayButton();
+
         //Menu Crane
-        menu_crane = new MenuCrane(440, LONG_EDGE, 200, 920, exit_button, sp_button, mp_button, leaderboard_button, tutorial_button, shopp_button);
+       // menu_crane = new MenuCrane(440, LONG_EDGE, 200, 920, exit_button, sp_button, mp_button, leaderboard_button, tutorial_button, shopp_button);
 
         //Background
         background = new Background();
         //add all actors to stage
 
         stage.addActor(background);
-        stage.addActor(menu_crane);
+        //stage.addActor(menu_crane);
         stage.addActor(play_button);
         stage.addActor(tutorial_button);
 
@@ -81,27 +93,18 @@ public class MenuWorld implements ScreenWorld {
     public void update(float delta) {
         stage.act(delta);
 
-        if (isInTransition) {
-            exit_button.clearListeners();
-            sp_button.clearListeners();
-            mp_button.clearListeners();
-            leaderboard_button.clearListeners();
-            tutorial_button.clearListeners();
-            shopp_button.clearListeners();
-        }
 
-        if (menu_crane.getY() > LONG_EDGE * 2 - 400) {
-            menu_crane.stop();
-        }
+//        if (menu_crane.getY() > LONG_EDGE * 2 - 400) {
+  //          menu_crane.stop();
+    //    }
 
-        /*
-        if (zoomTime < 57) {
+
+        if (isZooming && zoomTime < 57) {
             translate();
             zoomIn();
             zoomTime ++;
             System.out.println(zoomTime);
         }
-        */
 
     }
 
@@ -135,6 +138,7 @@ public class MenuWorld implements ScreenWorld {
     public void createPlayButton() {
         play_button = new TextButton("", play_button_style);
         play_button.setPosition(180, 1920 - 1726);
+        addListenerToPlayButton();
     }
 
     public void createTutorialButtonStyle() {
@@ -153,9 +157,49 @@ public class MenuWorld implements ScreenWorld {
         play_button.addListener(new ClickListener() {
            @Override
             public void clicked(InputEvent event, float x, float y) {
-               System.out.println("A");
+               stage.addActor(overlay_button);
+               stage.addActor(single_player_button);
+               stage.addActor(multi_player_button);
            }
         });
+    }
+
+    public void addListenerToSinglePlayerButton() {
+        single_player_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                removePlayOptions();
+
+                //move to single player code here
+                isZooming = true;
+            }
+        });
+    }
+
+    public void addListenerToMultiPlayerButton() {
+        multi_player_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                removePlayOptions();
+
+                //move to multi player code here
+            }
+        });
+    }
+
+    public void addListenerToOverlayButton() {
+        overlay_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                removePlayOptions();
+            }
+        });
+    }
+
+    public void removePlayOptions() {
+        single_player_button.remove();
+        multi_player_button.remove();
+        overlay_button.remove();
     }
 
     public void zoomIn() {
@@ -164,6 +208,49 @@ public class MenuWorld implements ScreenWorld {
 
     public void translate() {
         stage.getCamera().translate(-2.75f, 1.5f, 0);
+    }
+
+    public void addSingleAndMultiButtons() {
+
+    }
+
+    public void createSinglePlayerButtonStyle() {
+        single_player_button_style = new TextButton.TextButtonStyle();
+        single_player_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.single_player_button));
+        single_player_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.single_player_button_pressed));
+        single_player_button_style.font = AssetLoader.arial;
+    }
+
+    public void createSinglePlayerButton() {
+        single_player_button = new TextButton("", single_player_button_style);
+        single_player_button.setPosition(180, 1920 - 1326);
+        addListenerToSinglePlayerButton();
+    }
+
+    public void createMultiPlayerButtonStyle() {
+        multi_player_button_style = new TextButton.TextButtonStyle();
+        multi_player_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.multi_player_button));
+        multi_player_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.multi_player_button_pressed));
+        multi_player_button_style.font = AssetLoader.arial;
+    }
+
+    public void createMultiPlayerButton() {
+        multi_player_button = new TextButton("", multi_player_button_style);
+        multi_player_button.setPosition(670, 1920 - 1326);
+        addListenerToMultiPlayerButton();
+    }
+
+    public void createOverlayButtonStyle() {
+        overlay_button_style = new TextButton.TextButtonStyle();
+        overlay_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.overlay_button));
+        overlay_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.overlay_button_pressed));
+        overlay_button_style.font = AssetLoader.arial;
+    }
+
+    public void createOverlayButton() {
+        overlay_button = new TextButton("", overlay_button_style);
+        overlay_button.setPosition(0, 0);
+        addListenerToOverlayButton();
     }
 
     public void lookAt() {
