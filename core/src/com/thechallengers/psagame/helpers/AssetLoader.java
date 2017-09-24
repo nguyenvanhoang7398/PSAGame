@@ -13,7 +13,6 @@ public class AssetLoader {
     //textures - to be disposed after texture region is created
     public static Texture background_texture;
     public static Texture button_texture;
-    public static Texture setting_button_texture;
     public static Texture menu_crane_texture;
     public static TextureRegion game_background;
     public static Texture game_crane;
@@ -24,6 +23,9 @@ public class AssetLoader {
     public static Texture single_player_button, single_player_button_pressed;
     public static Texture multi_player_button, multi_player_button_pressed;
     public static Texture overlay_button, overlay_button_pressed;
+    public static Texture setting_button, setting_button_pressed;
+    public static Texture setting_overlay;
+    public static Texture setting_box;
 
     //texture region
     public static TextureRegion button_up, button_down;
@@ -40,7 +42,6 @@ public class AssetLoader {
         background_texture = new Texture(Gdx.files.internal("textures/menubackground.png"));
         button_texture = new Texture(Gdx.files.internal("textures/button.png"));
         menu_crane_texture = new Texture(Gdx.files.internal("textures/menucrane.png"));
-        setting_button_texture = new Texture(Gdx.files.internal("textures/setting_button.png"));
         cloud_1 = new Texture(Gdx.files.internal("textures/cloud_1.png"));
         cloud_2 = new Texture(Gdx.files.internal("textures/cloud_2.png"));
         containers = new Texture(Gdx.files.internal("textures/containers.png"));
@@ -54,6 +55,10 @@ public class AssetLoader {
         multi_player_button_pressed = new Texture(Gdx.files.internal("textures/multi_player_button_pressed.png"));
         overlay_button = new Texture(Gdx.files.internal("textures/overlay_button.png"));
         overlay_button_pressed = new Texture(Gdx.files.internal("textures/overlay_button_pressed.png"));
+        setting_button = new Texture(Gdx.files.internal("textures/setting_button.png"));
+        setting_button_pressed = new Texture(Gdx.files.internal("textures/setting_button_pressed.png"));
+        setting_overlay = new Texture(Gdx.files.internal("textures/setting_overlay.png"));
+        setting_box = new Texture(Gdx.files.internal("textures/setting_box.png"));
 
         background = new TextureRegion(background_texture, 0, 0, 1080, 1920);
         button_up = new TextureRegion(button_texture, 0, 0, 200, 100);
@@ -66,7 +71,6 @@ public class AssetLoader {
         background_texture.dispose();
         button_texture.dispose();
         arial.dispose();
-        setting_button_texture.dispose();
     }
 
     public static void loadGameTexture() {
