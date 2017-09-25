@@ -5,23 +5,22 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.input.GestureDetector;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
-import com.thechallengers.psagame.inputhandlers.MenuInputHandler;
 
 /**
  * Created by Phung Tuan Hoang on 9/9/2017.
  */
 
-public class DummyGameScreen implements Screen {
+public class SinglePlayerGameScreen implements Screen {
     private PSAGame game;
-    private DummyGameWorld world;
-    private DummyGameRenderer renderer;
+    private SinglePlayerGameWorld world;
+    private SinglePlayerGameRenderer renderer;
     private float runTime = 0;
 
-    public DummyGameScreen(PSAGame game) {
+    public SinglePlayerGameScreen(PSAGame game) {
         this.game = game;
-        world = new DummyGameWorld();
-        renderer = new DummyGameRenderer(world);
-        Gdx.input.setInputProcessor(new GestureDetector(new DummyGameInputHandlers(world)));
+        world = new SinglePlayerGameWorld();
+        renderer = new SinglePlayerGameRenderer(world);
+        Gdx.input.setInputProcessor(new GestureDetector(new SinglePlayerGameInputHandler(world)));
         AssetLoader.loadGameTexture();
     }
 

@@ -9,10 +9,10 @@ import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
  * Created by Phung Tuan Hoang on 9/11/2017.
  */
 
-public class DummyGameRenderer extends ScreenRenderer {
-    private DummyGameWorld world;
+public class SinglePlayerGameRenderer extends ScreenRenderer {
+    private SinglePlayerGameWorld world;
 
-    public DummyGameRenderer(DummyGameWorld world) {
+    public SinglePlayerGameRenderer(SinglePlayerGameWorld world) {
         super();
         this.world = world;
     }
@@ -23,7 +23,6 @@ public class DummyGameRenderer extends ScreenRenderer {
         batcher.begin();
 
         batcher.draw(AssetLoader.game_background, 0, 0, 1080, 1920);
-        world.getStage().draw();
 
         batcher.end();
     }

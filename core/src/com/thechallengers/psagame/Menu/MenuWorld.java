@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.Menu.Objects.Background;
 import com.thechallengers.psagame.Menu.Objects.Cloud;
 import com.thechallengers.psagame.Menu.Objects.Containers;
@@ -44,9 +45,9 @@ public class MenuWorld implements ScreenWorld {
     private Stage stage;
     private int zoomTime = 0;
     private boolean isZooming = false;
+    private Array<Cloud> cloudArray;
 
     private boolean isInTransition = false;
-    private Runnable next_activity = null;
 
     //constructor
     public MenuWorld() {
@@ -76,6 +77,7 @@ public class MenuWorld implements ScreenWorld {
         stage.addActor(setting_button);
 
         //clouds and containers
+        cloudArray = new Array<Cloud>();
         createClouds();
         createContainers();
         //lookAt();
@@ -87,16 +89,12 @@ public class MenuWorld implements ScreenWorld {
         stage.act(delta);
             System.out.println(stage.getActors().size);
 
-//        if (menu_crane.getY() > LONG_EDGE * 2 - 400) {
-  //          menu_crane.stop();
-    //    }
-
+        if (zoomTime == 57) CURRENT_SCREEN = PSAGame.Screen.SinglePlayer;
 
         if (isZooming && zoomTime < 57) {
             translate();
             zoomIn();
             zoomTime ++;
-            System.out.println(zoomTime);
         }
 
     }
@@ -105,14 +103,11 @@ public class MenuWorld implements ScreenWorld {
         return stage;
     }
 
-    public void setNext_activity(Runnable next_activity) {
-        this.next_activity = next_activity;
-    }
-
     public void createClouds() {
         for (int i = 0; i < 5; i++) {
             Cloud cloud = new Cloud();
             stage.addActor(cloud);
+            cloudArray.add(cloud);
         }
     }
 
@@ -191,7 +186,13 @@ public class MenuWorld implements ScreenWorld {
                 removePlayOptions();
 
                 //move to single player code here
-                containers.addAction(fadeOut(1f));
+                containers.addAction(fadeOut(0.6f));
+
+                for (int i = 0; i < cloudArray.size; i++) {
+                    cloudArray.get(i).clearActions();
+                    cloudArray.get(i).addAction(fadeOut(0.6f));
+                }
+
                 isZooming = true;
             }
         });
@@ -333,6 +334,6 @@ public class MenuWorld implements ScreenWorld {
     }
 
     public void translate() {
-        stage.getCamera().translate(-2.75f, 1.5f, 0);
+        stage.getCamera().translate(-2.75f, -0.5f, 0);
     }
 }

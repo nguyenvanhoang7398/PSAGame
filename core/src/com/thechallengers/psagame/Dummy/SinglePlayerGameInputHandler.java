@@ -7,10 +7,10 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Phung Tuan Hoang on 9/20/2017.
  */
 
-public class DummyGameInputHandlers implements GestureDetector.GestureListener {
-    private DummyGameWorld world;
+public class SinglePlayerGameInputHandler implements GestureDetector.GestureListener {
+    private SinglePlayerGameWorld world;
 
-    public DummyGameInputHandlers(DummyGameWorld world){
+    public SinglePlayerGameInputHandler(SinglePlayerGameWorld world){
         this.world = world;
     }
 

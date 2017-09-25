@@ -1,17 +1,16 @@
 package com.thechallengers.psagame.inputhandlers;
 
 import com.badlogic.gdx.InputProcessor;
-import com.thechallengers.psagame.game.PSAGame;
-import com.thechallengers.psagame.Dummy.DummyGameWorld;
+import com.thechallengers.psagame.Dummy.SinglePlayerGameWorld;
 
 /**
  * Created by Phung Tuan Hoang on 9/6/2017.
  */
 
 public class MenuInputHandler implements InputProcessor{
-    private DummyGameWorld menu_world;
+    private SinglePlayerGameWorld menu_world;
 
-    public MenuInputHandler(DummyGameWorld world) {
+    public MenuInputHandler(SinglePlayerGameWorld world) {
         menu_world = world;
     }
     @Override
