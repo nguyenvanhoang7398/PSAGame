@@ -87,7 +87,6 @@ public class MenuWorld implements ScreenWorld {
     @Override
     public void update(float delta) {
         stage.act(delta);
-            System.out.println(stage.getActors().size);
 
         if (zoomTime == 57) CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
 
@@ -96,7 +95,6 @@ public class MenuWorld implements ScreenWorld {
             zoomIn();
             zoomTime ++;
         }
-
     }
 
     public Stage getStage() {

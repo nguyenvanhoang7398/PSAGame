@@ -3,6 +3,7 @@ package com.thechallengers.psagame.Dummy.Objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
@@ -11,45 +12,20 @@ import com.thechallengers.psagame.helpers.AssetLoader;
  */
 
 public class Crane extends Actor {
-    private Vector2 position, matrix_position;
-    private boolean isCarrying;
-    private Texture crane_texture;
-    public enum DIRECTION {UP, DOWN, LEFT, RIGHT};
-    private int[][] matrix;
+    private Vector2 velocity;
+    private Vector2 acceleration;
+    private Body crane_body;
 
     public Crane() {
-        position = new Vector2(1080-100, 1500);
-        isCarrying = false;
+
     }
 
     @Override
     public void act(float delta) {
+        velocity.x += acceleration.x * delta;
+        velocity.y += acceleration.y * delta;
 
-    }
-
-    public void move(DIRECTION direction) {
-        switch (direction) {
-            case LEFT: {
-                position.x -= 50;
-                break;
-            }
-
-            case RIGHT: {
-                position.x += 50;
-                break;
-            }
-            case DOWN: {
-                position.y -= 50;
-                break;
-            }
-            case UP: {
-                position.y += 50;
-            }
-        }
-    }
-
-    @Override
-    public void draw(Batch batch, float alpha) {
-        batch.draw(AssetLoader.game_crane, position.x, position.y);
+        this.setX(this.getX() + velocity.x * delta);
+        this.setY(this.getY() + velocity.y * delta);
     }
 }

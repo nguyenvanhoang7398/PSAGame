@@ -31,16 +31,7 @@ public class SinglePlayerGameInputHandler implements GestureDetector.GestureList
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        if (Math.abs(velocityX) > Math.abs(velocityY)) {
-            if (velocityX > 0) world.swipeRight();
-            else world.swipeLeft();
-            return true;
-        }
-        else {
-            if (velocityY > 0) world.swipeDown();
-            else world.swipeUp();
-            return true;
-        }
+        return false;
     }
 
     @Override
