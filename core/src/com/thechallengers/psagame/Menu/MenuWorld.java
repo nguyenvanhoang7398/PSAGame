@@ -136,7 +136,7 @@ public class MenuWorld implements ScreenWorld {
         play_button.setPosition(180, 1920 - 1726);
         addListenerToPlayButton();
 
-        addListenerToPlayButton();
+        //addListenerToPlayButton();
     }
 
     public void addListenerToPlayButton() {
