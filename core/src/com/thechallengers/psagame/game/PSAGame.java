@@ -8,7 +8,7 @@ public class PSAGame extends Game {
 	public static final float LONG_EDGE = 1920;
 	public static final float SHORT_EDGE = 1080;
 	public static enum Screen {
-		MenuScreen, SP_GAME, MP_GAME, SHOP, SETTING, TUTORIAL, SinglePlayer
+		MenuScreen, SP_GAME, MP_GAME, SHOP, SETTING, TUTORIAL, SinglePlayerGameScreen
 	}
 	public static Screen CURRENT_SCREEN;
 
@@ -36,7 +36,7 @@ public class PSAGame extends Game {
 				case MenuScreen: {
 					setScreen(new MenuScreen(this));
 				}
-				case SinglePlayer: {
+				case SinglePlayerGameScreen: {
 					setScreen(new SinglePlayerGameScreen(this));
 				}
 				default:
