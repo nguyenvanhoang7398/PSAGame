@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.Dummy.Objects.Crane;
+import com.thechallengers.psagame.Dummy.Physics.Physics2;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 
 /**
@@ -23,24 +24,20 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     private Stage stage;
     private World world;
     public Array<Body> bodyArray = new Array<Body>();
+    Physics2 physics_engine;
 
     public SinglePlayerGameWorld() {
         stage = new Stage();
 
-        world = new World(new Vector2(0, -.98f), true);
+        physics_engine = new Physics2();
+        world = physics_engine.getWorld();
 
-        createThreeDummyBlocks();
-        createFloor();
-
-        createCrane();
-
-        world.getBodies(bodyArray);
     }
 
     @Override
     public void update(float delta) {
         stage.act(delta);
-        world.step(delta, 6, 2);
+        physics_engine.render();
         world.getBodies(bodyArray);
     }
 

@@ -20,7 +20,7 @@ public class SinglePlayerGameScreen implements Screen {
         this.game = game;
         world = new SinglePlayerGameWorld();
         renderer = new SinglePlayerGameRenderer(world);
-        Gdx.input.setInputProcessor(new GestureDetector(new SinglePlayerGameInputHandler(world)));
+        Gdx.input.setInputProcessor(new SinglePlayerGameInputHandler(world.physics_engine.getPhysicsInputHandler()));
         AssetLoader.loadGameTexture();
     }
 

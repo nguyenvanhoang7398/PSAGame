@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.Dummy.Objects.Dummy;
+import com.thechallengers.psagame.Dummy.Physics.Block;
 import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 
@@ -36,19 +37,18 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-
-
         //debugRenderer.render(world.getWorld(), cam.combined);
         batcher.begin();
+
 
         batcher.draw(AssetLoader.game_background, 0, 0);
 
         for (int i = 0; i < world.bodyArray.size; i++) {
             if (world.bodyArray.get(i).getType() == BodyDef.BodyType.DynamicBody) {
                 Body body = world.bodyArray.get(i);
+                System.out.printf("\t\t\t\t%d %f\n", ((Block)body.getUserData()).type_int, ((Block)body.getUserData()).weight);
 
-                switch ((int) body.getFixtureList().get(0).getDensity()) {
+                switch ((int) ((Block) body.getUserData()).density) {
                     case 1: {
                         drawOneKG(body);
                         break;
@@ -74,14 +74,13 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
             }
         }
 
-
         batcher.end();
     }
 
     public void drawOneKG(Body body) {
-        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Dummy) body.getUserData()).getSize());
+        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
 
-        switch (((Dummy) body.getUserData()).getSize()) {
+        switch (((Block) body.getUserData()).type_int) {
             case 11: {
                 AssetLoader.block_sprite_1_11.setPosition(translated_position.x, translated_position.y);
                 AssetLoader.block_sprite_1_11.setRotation((float) Math.toDegrees(body.getAngle()));
@@ -123,9 +122,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     }
 
     public void drawTwoKG(Body body) {
-        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Dummy) body.getUserData()).getSize());
+        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
 
-        switch (((Dummy) body.getUserData()).getSize()) {
+        switch (((Block) body.getUserData()).type_int) {
             case 11: {
                 AssetLoader.block_sprite_2_11.setPosition(translated_position.x, translated_position.y);
                 AssetLoader.block_sprite_2_11.setRotation((float) Math.toDegrees(body.getAngle()));
@@ -167,9 +166,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     }
 
     public void drawThreeKG(Body body) {
-        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Dummy) body.getUserData()).getSize());
+        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
 
-        switch (((Dummy) body.getUserData()).getSize()) {
+        switch (((Block) body.getUserData()).type_int) {
             case 11: {
                 AssetLoader.block_sprite_3_11.setPosition(translated_position.x, translated_position.y);
                 AssetLoader.block_sprite_3_11.setRotation((float) Math.toDegrees(body.getAngle()));
@@ -211,9 +210,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     }
 
     public void drawFourKG(Body body) {
-        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Dummy) body.getUserData()).getSize());
+        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
 
-        switch (((Dummy) body.getUserData()).getSize()) {
+        switch (((Block) body.getUserData()).type_int) {
             case 11: {
                 AssetLoader.block_sprite_4_11.setPosition(translated_position.x, translated_position.y);
                 AssetLoader.block_sprite_4_11.setRotation((float) Math.toDegrees(body.getAngle()));
@@ -255,9 +254,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     }
 
     public void drawFiveKG(Body body) {
-        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Dummy) body.getUserData()).getSize());
+        Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
 
-        switch (((Dummy) body.getUserData()).getSize()) {
+        switch (((Block) body.getUserData()).type_int) {
             case 11: {
                 AssetLoader.block_sprite_5_11.setPosition(translated_position.x, translated_position.y);
                 AssetLoader.block_sprite_5_11.setRotation((float) Math.toDegrees(body.getAngle()));

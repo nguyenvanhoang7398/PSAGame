@@ -1,61 +1,59 @@
 package com.thechallengers.psagame.Dummy;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.thechallengers.psagame.Dummy.Physics.PhysicsInputHandler;
 
 /**
  * Created by Phung Tuan Hoang on 9/20/2017.
  */
 
-public class SinglePlayerGameInputHandler implements GestureDetector.GestureListener {
-    private SinglePlayerGameWorld world;
+public class SinglePlayerGameInputHandler implements InputProcessor {
+    PhysicsInputHandler physicsInputHandler;
 
-    public SinglePlayerGameInputHandler(SinglePlayerGameWorld world){
-        this.world = world;
+    public SinglePlayerGameInputHandler(PhysicsInputHandler physicsInputHandler) {
+        this.physicsInputHandler = physicsInputHandler;
     }
 
     @Override
-    public boolean touchDown(float x, float y, int pointer, int button) {
+    public boolean keyDown(int keycode) {
         return false;
     }
 
     @Override
-    public boolean tap(float x, float y, int count, int button) {
+    public boolean keyUp(int keycode) {
         return false;
     }
 
     @Override
-    public boolean longPress(float x, float y) {
+    public boolean keyTyped(char character) {
         return false;
     }
 
     @Override
-    public boolean fling(float velocityX, float velocityY, int button) {
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        physicsInputHandler.touchDown(screenX, screenY, pointer, button);
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return false;
     }
 
     @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY) {
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
         return false;
     }
 
     @Override
-    public boolean panStop(float x, float y, int pointer, int button) {
+    public boolean mouseMoved(int screenX, int screenY) {
         return false;
     }
 
     @Override
-    public boolean zoom(float initialDistance, float distance) {
+    public boolean scrolled(int amount) {
         return false;
-    }
-
-    @Override
-    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-        return false;
-    }
-
-    @Override
-    public void pinchStop() {
-
     }
 }
