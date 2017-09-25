@@ -40,6 +40,7 @@ public class MenuWorld implements ScreenWorld {
     private TextButton.TextButtonStyle play_button_style, tutorial_button_style, single_player_button_style, multi_player_button_style, overlay_button_style, setting_button_style, setting_overlay_style, setting_box_style;
     private MenuCrane menu_crane;
     private Background background;
+    private Containers containers;
     private Stage stage;
     private int zoomTime = 0;
     private boolean isZooming = false;
@@ -116,7 +117,8 @@ public class MenuWorld implements ScreenWorld {
     }
 
     public void createContainers() {
-        stage.addActor(new Containers());
+        containers = new Containers();
+        stage.addActor(containers);
     }
 
     //PLAY BUTTON
@@ -189,6 +191,7 @@ public class MenuWorld implements ScreenWorld {
                 removePlayOptions();
 
                 //move to single player code here
+                containers.addAction(fadeOut(1f));
                 isZooming = true;
             }
         });
