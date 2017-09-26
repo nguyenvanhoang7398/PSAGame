@@ -45,7 +45,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
 
         batcher.draw(AssetLoader.game_background, 0, 0);
-        batcher.draw(debug_bg, 0, 0);
+        //batcher.draw(debug_bg, 0, 0);
 
         Body crane = null, holding_box = null, next_box = null;
 

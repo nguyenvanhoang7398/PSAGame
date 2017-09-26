@@ -33,7 +33,7 @@ public class Physics2 extends ApplicationAdapter {
     Texture img, ground;
     World world;
     Body body, ground_body;
-    Array<Body> bodyArray;
+    public Array<Body> bodyArray;
     Box2DDebugRenderer debug_renderer;
     OrthographicCamera cam;
     World fail_safe_world;
