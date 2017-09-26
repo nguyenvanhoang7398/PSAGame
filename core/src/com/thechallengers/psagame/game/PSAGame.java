@@ -21,7 +21,6 @@ public class PSAGame extends Game {
 	@Override
 	public void render () {
 		super.render();
-		System.out.println(this.getScreen());
 		updateScreen();
 	}
 	

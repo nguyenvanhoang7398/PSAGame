@@ -50,13 +50,15 @@ public class Physics2 extends ApplicationAdapter {
     public final String GROUND_BLOCK_TYPE = "GROUND";
     public WeightLogicGraph gameGraph = new WeightLogicGraph();
     private PhysicsInputHandler physicsInputHandler;
+    public Body crane;
 
     private final int nextBlockXCord = 2;
     private final int nextBlockYCord = 18;
     private final int cranedBlockXCord = 9;
     private final int cranedBlockYCord = 18;
 
-    public Physics2() {
+    public Physics2(PhysicsInputHandler physicsInputHandler) {
+        this.physicsInputHandler = physicsInputHandler;
         create();
     }
 
@@ -164,7 +166,6 @@ public class Physics2 extends ApplicationAdapter {
         });
         bodyArray = new Array<Body>();
 
-        physicsInputHandler = new PhysicsInputHandler(this);
         Gdx.input.setInputProcessor(physicsInputHandler);
 
         BodyDef bodyDef2 = new BodyDef();
@@ -180,6 +181,7 @@ public class Physics2 extends ApplicationAdapter {
         fixtureDef1.friction = 1f;
         ground_body.createFixture(fixtureDef1);
 
+        createCrane();
         createNextBlock();
         createNextBodyImage();
     }
@@ -255,6 +257,7 @@ public class Physics2 extends ApplicationAdapter {
 
     public void destroyInvalidBlocks() {
         for(int i = 0; i < bodyArray.size; i++) {
+            if (bodyArray.get(i).getType() == BodyDef.BodyType.KinematicBody) continue;
             float rotation = bodyArray.get(i).getAngle();
             Block currentBlock = (Block)bodyArray.get(i).getUserData();
             if (Math.abs(rotation) > 0.3 || currentBlock.remainingTime <= 0) {
@@ -269,6 +272,7 @@ public class Physics2 extends ApplicationAdapter {
     public void updateBlockStates() {
         for(int i = 0; i < bodyArray.size; i++) {
             Body currentBody = bodyArray.get(i);
+            if (currentBody.getType() == BodyDef.BodyType.KinematicBody) continue;
             Block currentBlock = (Block)currentBody.getUserData();
             currentBlock.updateRemainingCapacity();
             currentBlock.updateRemainingTime();
@@ -332,6 +336,25 @@ public class Physics2 extends ApplicationAdapter {
 
     public World getWorld() {
         return world;
+    }
+
+    public void createCrane() {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(5.4f, 19f);
+        crane = world.createBody(bodyDef);
+
+        PolygonShape craneShape = new PolygonShape();
+        craneShape.setAsBox(0.05f/2, 0.05f/2);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = craneShape;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 1f;
+        fixtureDef.isSensor = true;
+
+        crane.createFixture(fixtureDef);
+        craneShape.dispose();
     }
 
     public PhysicsInputHandler getPhysicsInputHandler() {

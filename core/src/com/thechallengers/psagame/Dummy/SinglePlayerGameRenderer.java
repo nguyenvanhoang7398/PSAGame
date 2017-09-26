@@ -26,22 +26,25 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     private SinglePlayerGameWorld world;
     Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     OrthographicCamera cam = new OrthographicCamera();
+    private Texture debug_bg;
 
     public SinglePlayerGameRenderer(SinglePlayerGameWorld world) {
         super();
         this.world = world;
 
         cam.setToOrtho(false, 10.80f, 19.20f);
+
+        debug_bg = new Texture(Gdx.files.internal("textures/debug_background.png"));
     }
 
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //debugRenderer.render(world.getWorld(), cam.combined);
+        debugRenderer.render(world.getWorld(), cam.combined);
         batcher.begin();
 
-
-        batcher.draw(AssetLoader.game_background, 0, 0);
+        batcher.draw(debug_bg, 0, 0);
+        //batcher.draw(AssetLoader.game_background, 0, 0);
 
         for (int i = 0; i < world.bodyArray.size; i++) {
             if (world.bodyArray.get(i).getType() == BodyDef.BodyType.DynamicBody) {

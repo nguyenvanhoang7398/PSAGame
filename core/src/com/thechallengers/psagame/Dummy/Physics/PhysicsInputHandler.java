@@ -22,6 +22,10 @@ public class PhysicsInputHandler implements InputProcessor {
         this.physics = physics;
     }
 
+    public void setPhysics(Physics2 physics) {
+        this.physics = physics;
+    }
+
     @Override
     public boolean keyDown(int keycode) {
         return false;
@@ -39,26 +43,29 @@ public class PhysicsInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-//        switch (counter) {
-//            case 0:{
-//                physics.createBlock(screenX/100f, (Gdx.graphics.getHeight() - screenY) /100f);
-//                counter++;
-//                break;
-//            }
-//            case 1: {
-//                physics.createBlock(screenX/100f, (Gdx.graphics.getHeight() - screenY) /100f);
-//                counter++;
-//                break;
-//            }
-//            case 2: {
-//                physics.createBlock(screenX/100f, (Gdx.graphics.getHeight() - screenY) /100f);
-//                counter++;
-//                break;
-//            }
-//            case 3: {
-//                physics.bodyArray.get(2).setAwake(true);
-//            }
-//        }
+
+        if (screenX > 748 && screenX < 820 && screenY > 150 && screenY < 150 + 75) {
+            physics.crane.setLinearVelocity(-2f, 0);
+            return true;
+        }
+
+        if (screenX > 872 && screenX < 872 + 75 && screenY > 150 && screenY < 150 + 75) {
+            if (((Block)physics.crane.getUserData()) == null) physics.crane.setLinearVelocity(0f, -2f);
+            return false;
+        }
+
+        if (screenX > 991 && screenX < 991 + 75 && screenY > 150 && screenY < 150 + 75) {
+            physics.crane.setLinearVelocity(2f, 0);
+            return true;
+        }
+
+        if (screenX > 872 && screenX < 872 + 75 && screenY > 40 && screenY < 40 + 75) {
+            physics.crane.setLinearVelocity(0f, 2f);
+            return true;
+        }
+
+        screenY += 319;
+
         Array<Body> bodyArray = physics.bodyArray;
         Body selectedBody = null;
 
@@ -85,6 +92,8 @@ public class PhysicsInputHandler implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (screenX > 872 && screenX < 872 + 75 && screenY > 150 && screenY < 150 + 75) return false;
+        physics.crane.setLinearVelocity(0 ,0);
         return false;
     }
 

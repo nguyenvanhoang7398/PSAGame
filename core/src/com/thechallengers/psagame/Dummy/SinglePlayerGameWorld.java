@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.Dummy.Objects.Crane;
 import com.thechallengers.psagame.Dummy.Physics.Physics2;
+import com.thechallengers.psagame.Dummy.Physics.PhysicsInputHandler;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 
 /**
@@ -26,10 +27,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public Array<Body> bodyArray = new Array<Body>();
     Physics2 physics_engine;
 
-    public SinglePlayerGameWorld() {
+    public SinglePlayerGameWorld(Physics2 physics_engine) {
         stage = new Stage();
 
-        physics_engine = new Physics2();
+        this.physics_engine = physics_engine;
         world = physics_engine.getWorld();
 
     }
