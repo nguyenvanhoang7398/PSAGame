@@ -163,6 +163,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         AssetLoader.game_crane.draw(batcher);
 
         batcher.end();
+        world.getStage().draw();
     }
 
     public void drawOneKG(Body body) {
