@@ -52,6 +52,9 @@ public class Physics2 extends ApplicationAdapter {
     private PhysicsInputHandler physicsInputHandler;
     public Body crane;
     public boolean isHoldingNext = true;
+    public boolean justDestroy = false;
+    public int justDestroyTime = 0;
+
 
     private final int nextBlockXCord = 2;
     private final int nextBlockYCord = 18;
@@ -193,6 +196,11 @@ public class Physics2 extends ApplicationAdapter {
 
     @Override
     public void render() {
+        if (justDestroy && justDestroyTime <50) {
+            justDestroyTime ++;
+        }
+        if (justDestroyTime == 50) justDestroy = false;
+
         world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
         Gdx.gl.glClearColor(0,0,0,0);
@@ -270,6 +278,7 @@ public class Physics2 extends ApplicationAdapter {
                 world.destroyBody(bodyArray.get(i));
                 bodyArray.removeIndex(i);
                 i--;
+                justDestroy = true;
             }
         }
     }

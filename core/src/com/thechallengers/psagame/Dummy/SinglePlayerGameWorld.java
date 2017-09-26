@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.Dummy.Objects.Crane;
+import com.thechallengers.psagame.Dummy.Objects.Worker;
 import com.thechallengers.psagame.Dummy.Physics.Block;
 import com.thechallengers.psagame.Dummy.Physics.Physics2;
 import com.thechallengers.psagame.Dummy.Physics.PhysicsInputHandler;
@@ -39,6 +41,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     private World world;
     public Array<Body> bodyArray = new Array<Body>();
     Physics2 physics_engine;
+    private Worker worker;
 
     //touchpad-related variables
     private Touchpad touchpad;
@@ -51,11 +54,16 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     private TextButton.TextButtonStyle releaseStyle;
     private Drawable releaseBG;
 
+    //worker-related variables
+
+
     public SinglePlayerGameWorld(Physics2 physics_engine) {
         createUI();
+        worker = new Worker();
         stage = new Stage();
         stage.addActor(touchpad);
         stage.addActor(releaseButton);
+        stage.addActor(worker);
 
         this.physics_engine = physics_engine;
         crane = physics_engine.crane;
@@ -143,6 +151,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         stage.act(delta);
         physics_engine.render();
         world.getBodies(bodyArray);
+        if (physics_engine.justDestroy) worker.toSad();
     }
 
     public Stage getStage() {
@@ -152,4 +161,6 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public World getWorld() {
         return world;
     }
+
+    public Worker getWorker() { return worker;}
 }
