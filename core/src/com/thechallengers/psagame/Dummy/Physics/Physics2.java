@@ -43,14 +43,15 @@ public class Physics2 extends ApplicationAdapter {
     private boolean handlingContact = true;
     private RandomController randomController;
     private final Physics2 self = this;
-    private Body nextBody = null;
-    private Block nextBlock = null;
+    public Body nextBody = null;
+    public Block nextBlock = null;
     public Body cranedBody = null;
     public final String BOX_BLOCK_TYPE = "BOX";
     public final String GROUND_BLOCK_TYPE = "GROUND";
     public WeightLogicGraph gameGraph = new WeightLogicGraph();
     private PhysicsInputHandler physicsInputHandler;
     public Body crane;
+    public boolean isHoldingNext = true;
 
     private final int nextBlockXCord = 2;
     private final int nextBlockYCord = 18;
@@ -134,6 +135,10 @@ public class Physics2 extends ApplicationAdapter {
                 System.out.println("Begin contact"); // Signal begin contact
                 Body bodyA = contact.getFixtureA().getBody(); // Get contacting bodies
                 Body bodyB = contact.getFixtureB().getBody();
+                if (bodyA.getType() == BodyDef.BodyType.KinematicBody || bodyB.getType() == BodyDef.BodyType.KinematicBody) {
+                    self.handlingContact = false;
+                    return;
+                }
                 Body contactBody, contactedBody;
                 contactBody = bodyA.getPosition().y > bodyB.getPosition().y ? bodyA : bodyB; // Check y coord for contacting and contacted bodies
                 contactedBody = bodyB.getPosition().y < bodyA.getPosition().y ? bodyB : bodyA;
@@ -341,7 +346,7 @@ public class Physics2 extends ApplicationAdapter {
     public void createCrane() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
-        bodyDef.position.set(5.4f, 19f);
+        bodyDef.position.set(5.4f, 6f);
         crane = world.createBody(bodyDef);
 
         PolygonShape craneShape = new PolygonShape();
@@ -355,6 +360,14 @@ public class Physics2 extends ApplicationAdapter {
 
         crane.createFixture(fixtureDef);
         craneShape.dispose();
+    }
+
+    public void pullUpCrane() {
+        crane.setLinearVelocity(0, 2f);
+        if (crane.getPosition().y >= 19f) {
+            isHoldingNext = true;
+            crane.setLinearVelocity(0, 0);
+        }
     }
 
     public PhysicsInputHandler getPhysicsInputHandler() {

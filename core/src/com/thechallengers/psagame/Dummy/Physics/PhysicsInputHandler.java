@@ -44,13 +44,50 @@ public class PhysicsInputHandler implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
+        screenY += 319;
+
+        Array<Body> bodyArray = physics.bodyArray;
+        Body selectedBody = null;
+
+        for (Body body: bodyArray) {
+            Fixture fixture = body.getFixtureList().get(0);
+            if (!(body.getUserData() instanceof Block)) {
+                continue;
+            }
+            if (fixture.testPoint(physics.crane.getPosition().x, physics.crane.getPosition().y)) {
+                selectedBody = body;
+                break;
+            }
+        }
+
+        screenY -= 319;
         if (screenX > 748 && screenX < 820 && screenY > 150 && screenY < 150 + 75) {
             physics.crane.setLinearVelocity(-2f, 0);
             return true;
         }
 
         if (screenX > 872 && screenX < 872 + 75 && screenY > 150 && screenY < 150 + 75) {
-            if (((Block)physics.crane.getUserData()) == null) physics.crane.setLinearVelocity(0f, -2f);
+            {
+                if (selectedBody == null && physics.cranedBody == null && physics.isHoldingNext) {
+                    physics.createBlock(physics.crane.getPosition().x, physics.crane.getPosition().y);
+                    physics.isHoldingNext = false;
+                }
+                else if (selectedBody != null && physics.cranedBody == null && !physics.isHoldingNext) {
+                    if (((Block) selectedBody.getUserData()).isCranable()) physics.craneBody(selectedBody);
+                }
+                else if (physics.cranedBody != null && !physics.isHoldingNext) {
+                    physics.releaseCranedBody(physics.crane.getPosition().x, physics.crane.getPosition().y);
+                }
+                else if (selectedBody == null && physics.cranedBody == null && !physics.isHoldingNext) {
+                    physics.isHoldingNext = true;
+                }
+
+            }
+            return true;
+        }
+
+        if (screenX > 872 && screenX < 872 + 75 && screenY > 263 && screenY < 263 + 75) {
+            physics.crane.setLinearVelocity(0, -2f);
             return false;
         }
 
@@ -65,28 +102,15 @@ public class PhysicsInputHandler implements InputProcessor {
         }
 
         screenY += 319;
-
-        Array<Body> bodyArray = physics.bodyArray;
-        Body selectedBody = null;
-
-        for (Body body: bodyArray) {
-            Fixture fixture = body.getFixtureList().get(0);
-            if (!(body.getUserData() instanceof Block)) {
-                continue;
-            }
-            if (fixture.testPoint(screenX/100f, (Gdx.graphics.getHeight() - screenY)/100f)) {
-                selectedBody = body;
-                break;
-            }
-        }
-
-        if (selectedBody == null && physics.cranedBody == null) {
+        /*
+        if (selectedBody == null && physics.cranedBody == null && physics.isHoldingNext) {
             physics.createBlock(screenX/100f, (Gdx.graphics.getHeight() - screenY) /100f);
-        } else if (physics.cranedBody == null){
-            physics.craneBody(selectedBody);
+        } else if (selectedBody == null && physics.cranedBody == null && !physics.isHoldingNext){
+            if (((Block) selectedBody.getUserData()).isCranable()) physics.craneBody(selectedBody);
         } else if (selectedBody == null){
             physics.releaseCranedBody(screenX/100f, (Gdx.graphics.getHeight() - screenY)/100f);
         }
+        */
         return true;
     }
 

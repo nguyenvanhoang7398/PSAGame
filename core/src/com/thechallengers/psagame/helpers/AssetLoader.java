@@ -16,7 +16,7 @@ public class AssetLoader {
     public static Texture button_texture;
     public static Texture menu_crane_texture;
     public static TextureRegion game_background;
-    public static Texture game_crane;
+    public static Sprite game_crane;
     public static Texture cloud_1, cloud_2;
     public static Texture containers;
     public static Texture play_button, play_button_pressed;
@@ -119,7 +119,7 @@ public class AssetLoader {
     }
 
     public static void loadGameTexture() {
-        game_crane = new Texture(Gdx.files.internal("textures/gamecrane.png"));
+        game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         game_background = new TextureRegion(new Texture(Gdx.files.internal("textures/game_background.png")), 0, 0, 1080, 1920);
     }
 
