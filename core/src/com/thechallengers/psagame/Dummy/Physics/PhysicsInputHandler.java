@@ -4,6 +4,7 @@ package com.thechallengers.psagame.Dummy.Physics;
  * Created by Phung Tuan Hoang on 9/25/2017.
  */
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -102,3 +103,4 @@ public class PhysicsInputHandler implements InputProcessor {
         return false;
     }
 }
+

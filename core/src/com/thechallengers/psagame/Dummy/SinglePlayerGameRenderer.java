@@ -48,6 +48,8 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
                 Body body = world.bodyArray.get(i);
                 System.out.printf("\t\t\t\t%d %f\n", ((Block)body.getUserData()).type_int, ((Block)body.getUserData()).weight);
 
+                Vector2 translatedPosition = translatePosition(body.getPosition().x, body.getPosition().y, ((Block)body.getUserData()).type_int);
+
                 switch ((int) ((Block) body.getUserData()).density) {
                     case 1: {
                         drawOneKG(body);
@@ -71,7 +73,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
                     }
                     default:
                 }
+                AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int)((Block) body.getUserData()).weight,((Block)body.getUserData()).remainingCapacity, ((Block)body.getUserData()).remainingTime),body.getPosition().x * 100f - 35, body.getPosition().y * 100f + 319);
             }
+
         }
 
         batcher.end();

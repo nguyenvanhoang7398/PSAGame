@@ -16,13 +16,29 @@ public class WeightLogicGraph {
     }
 
     public void addBlock(Block newBlock, ArrayList< MyPair<Integer, Float> > contactBlocks) {
-        System.out.println("Block " + newBlock.sequenceNumber + " added");
+        System.out.println("Block " + newBlock.sequenceNumber + " added with weight " + newBlock.weight + " potential " + newBlock.potential
+                +" decrease " + newBlock.decreaseTimeRate);
         int addedBlockNumber = newBlock.sequenceNumber;
-        blockList.add(newBlock);
-        adjList.add(new ArrayList< MyPair<Integer, Float> >());
+        if(addedBlockNumber >= blockList.size()) {
+            blockList.add(newBlock);
+            adjList.add(new ArrayList<MyPair<Integer, Float>>());
+        }
+
+        int childBlockNumber; Block childBlock;
+
+        for(MyPair<Integer, Float> pair: contactBlocks) {
+            childBlockNumber = pair.getFirst();
+            childBlock = blockList.get(childBlockNumber);
+            childBlock.upperCount++;
+        }
+
         if(!contactBlocks.isEmpty()) {
             adjList.set(addedBlockNumber, contactBlocks);
             updateGraph(addedBlockNumber);
+        }
+        for(Block a: blockList) {
+            System.out.println("Block " + a.sequenceNumber + " potential " + a.potential + " previous potential " +
+                    a.previousPotential + " decrease " + a.decreaseTimeRate);
         }
     }
 
@@ -42,6 +58,7 @@ public class WeightLogicGraph {
     }
 
     public void deleteNode(int deletedBlockNumber) {
+        System.out.println("Block " + deletedBlockNumber + " is deleted");
         Block deletedBlock = blockList.get(deletedBlockNumber);
         Block childBlock;
         float edgeWeight;
@@ -50,9 +67,14 @@ public class WeightLogicGraph {
             childBlockNumber = pair.getFirst();
             edgeWeight = pair.getSecond();
             childBlock = blockList.get(childBlockNumber);
+            childBlock.upperCount--;
             childBlock.previousPotential = childBlock.potential;
             childBlock.potential -= (edgeWeight * deletedBlock.potential);
             updateGraph(childBlockNumber);
+        }
+        for(Block a: blockList) {
+            System.out.println("Block " + a.sequenceNumber + " potential " + a.potential + " previous potential " +
+                    a.previousPotential + " decrease " + a.decreaseTimeRate);
         }
     }
 

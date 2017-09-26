@@ -33,7 +33,7 @@ public class SinglePlayerGameInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        physicsInputHandler.touchDown(screenX, screenY, pointer, button);
+        physicsInputHandler.touchDown(screenX, screenY + 319, pointer, button);
         return true;
     }
 

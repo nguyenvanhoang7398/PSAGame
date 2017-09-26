@@ -26,7 +26,7 @@ public class RandomController {
         return new MyPair<Float, Float>(width[widthIndex], height[heightIndex]);
     }
 
-    public int getWeight() {
+    public int getDensity() {
         return 1 + rn.nextInt(upper_bound);
     }
 }

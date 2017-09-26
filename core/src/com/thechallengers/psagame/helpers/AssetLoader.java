@@ -41,6 +41,7 @@ public class AssetLoader {
 
     //font
     public static BitmapFont arial;
+    public static BitmapFont consolas_15;
 
     //position for game background (zoomed in from menu)
     public static int starting_x, starting_y, end_x, end_y;
@@ -108,6 +109,7 @@ public class AssetLoader {
         button_down = new TextureRegion(button_texture, 200, 0, 200, 100);
 
         arial = new BitmapFont(Gdx.files.internal("font/arial.fnt"));
+        consolas_15 = new BitmapFont(Gdx.files.internal("font/consolas_15.fnt"));
     }
 
     public static void disposeMenuTexture() {

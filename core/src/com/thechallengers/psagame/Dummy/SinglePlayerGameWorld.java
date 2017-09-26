@@ -41,64 +41,6 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         world.getBodies(bodyArray);
     }
 
-    public void createThreeDummyBlocks() {
-        BodyDef bodyDef;
-        Body body;
-        float horizontal_pos = 0, vertical_pos = 0;
-
-        for (int i = 0; i < 3; i++) {
-            //insert hori and verti pos here
-            if (i == 0) {
-                horizontal_pos = 1; vertical_pos = 2;
-            }
-            else if (i == 1) {
-                horizontal_pos = 2; vertical_pos = 5;
-            }
-            else {
-                horizontal_pos = 7; vertical_pos = 9f;
-            }
-
-            bodyDef = new BodyDef();
-            bodyDef.type = BodyDef.BodyType.DynamicBody;
-
-            bodyDef.position.set(horizontal_pos, vertical_pos);
-
-            body = world.createBody(bodyDef);
-
-            PolygonShape shape = new PolygonShape();
-            shape.setAsBox(2f / 2, 2f / 2);
-
-            FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.shape = shape;
-            fixtureDef.density = 1f;
-            fixtureDef.friction = 1f;
-
-            body.createFixture(fixtureDef);
-            shape.dispose();
-        }
-    }
-
-    public void createFloor() {
-        BodyDef bodyDef2 = new BodyDef();
-        bodyDef2.type = BodyDef.BodyType.StaticBody;
-        Body ground_body = world.createBody(bodyDef2);
-
-        PolygonShape ground_shape = new PolygonShape();
-        float[] vertices = {0, 0, 0, 0.50f, 10.80f, 0.50f, 10.80f, 0};
-        ground_shape.set(vertices);
-
-        FixtureDef fixtureDef1 = new FixtureDef();
-        fixtureDef1.shape = ground_shape;
-        fixtureDef1.density = 1f;
-        fixtureDef1.friction = 1f;
-
-        ground_body.createFixture(fixtureDef1);
-    }
-
-    public void createCrane() {
-
-    }
-
     public Stage getStage() {
         return stage;
     }

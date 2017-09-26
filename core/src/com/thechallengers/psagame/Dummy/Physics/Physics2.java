@@ -23,6 +23,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.thechallengers.psagame.helpers.AssetLoader;
 
 import java.util.ArrayList;
 
@@ -117,6 +118,7 @@ public class Physics2 extends ApplicationAdapter {
 
     @Override
     public void create() {
+        AssetLoader.loadMenuTexture();
         batch = new SpriteBatch();
         randomController = new RandomController(this);
         world = new World(new Vector2(0, -.98f), true);
@@ -191,7 +193,18 @@ public class Physics2 extends ApplicationAdapter {
         updateBlockStates();
         destroyInvalidBlocks();
         world.getBodies(bodyArray);
-        //debug_renderer.render(world, cam.combined);
+        debug_renderer.render(world, cam.combined);
+
+        batch.begin();
+
+        for (int i = 0; i < bodyArray.size; i++) {
+            if (bodyArray.get(i).getType() != BodyDef.BodyType.DynamicBody) continue;
+            Body body = bodyArray.get(i);
+            AssetLoader.consolas_15.draw(batch, String.format("%d %.1f %.1f", (int)((Block) body.getUserData()).weight,((Block)body.getUserData()).remainingCapacity, ((Block)body.getUserData()).remainingTime),body.getPosition().x * 100f, body.getPosition().y * 100f);
+
+        }
+
+        batch.end();
         /*
         batch.begin();
 
@@ -247,9 +260,7 @@ public class Physics2 extends ApplicationAdapter {
             if (Math.abs(rotation) > 0.3 || currentBlock.remainingTime <= 0) {
                 gameGraph.deleteNode(currentBlock.sequenceNumber);
                 world.destroyBody(bodyArray.get(i));
-                System.out.println("----->" + bodyArray.size);
                 bodyArray.removeIndex(i);
-                System.out.println("----->" + bodyArray.size);
                 i--;
             }
         }
@@ -296,9 +307,9 @@ public class Physics2 extends ApplicationAdapter {
             }
         }
         MyPair<Float, Float> generatedSize = randomController.getSize();
-        int generatedWeight = randomController.getWeight();
+        int generatedDensity = randomController.getDensity();
         nextBlock = new Block(generatedSize.getFirst(), generatedSize.getSecond(),
-                BOX_BLOCK_TYPE, boxIdx, generatedWeight);
+                BOX_BLOCK_TYPE, boxIdx, generatedDensity);
     }
 
     public void craneBody(Body body) {
@@ -306,6 +317,8 @@ public class Physics2 extends ApplicationAdapter {
         if ((body.getUserData() instanceof Block)) {
             Block block = (Block) body.getUserData();
             gameGraph.deleteNode(block.sequenceNumber);
+            block.potential = block.weight;
+            block.previousPotential = 0;
             body.setType(BodyDef.BodyType.StaticBody);
             cranedBody = body;
         }
