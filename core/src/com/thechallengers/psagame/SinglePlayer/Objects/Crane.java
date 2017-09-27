@@ -1,4 +1,4 @@
-package com.thechallengers.psagame.Dummy.Objects;
+package com.thechallengers.psagame.SinglePlayer.Objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;

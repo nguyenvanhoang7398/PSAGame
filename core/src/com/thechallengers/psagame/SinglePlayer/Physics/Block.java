@@ -1,4 +1,4 @@
-package com.thechallengers.psagame.Dummy.Physics;
+package com.thechallengers.psagame.SinglePlayer.Physics;
 
 /**
  * Created by Phung Tuan Hoang on 9/25/2017.

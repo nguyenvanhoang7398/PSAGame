@@ -1,4 +1,4 @@
-package com.thechallengers.psagame.Dummy.Physics;
+package com.thechallengers.psagame.SinglePlayer.Physics;
 
 /**
  * Created by Phung Tuan Hoang on 9/25/2017.
@@ -44,7 +44,7 @@ public class Physics2 extends ApplicationAdapter {
     private RandomController randomController;
     private final Physics2 self = this;
     public Body nextBody = null;
-    public Block nextBlock = null;
+    public com.thechallengers.psagame.SinglePlayer.Physics.Block nextBlock = null;
     public Body cranedBody = null;
     public final String BOX_BLOCK_TYPE = "BOX";
     public final String GROUND_BLOCK_TYPE = "GROUND";
@@ -69,20 +69,20 @@ public class Physics2 extends ApplicationAdapter {
     private void handleContact() {
         System.out.println("Handled contact called"); // Signal handling contact
         System.out.println("Current contact body " + currentContactBody.getUserData());
-        if (! (currentContactBody.getUserData() instanceof Block)) {
+        if (! (currentContactBody.getUserData() instanceof com.thechallengers.psagame.SinglePlayer.Physics.Block)) {
             return;
         }
 
-        Block newBlock = (Block) currentContactBody.getUserData(); // incoming block
-        ArrayList< MyPair<Integer, Float> > contactedBlocks = new ArrayList< MyPair<Integer, Float> >();
+        com.thechallengers.psagame.SinglePlayer.Physics.Block newBlock = (com.thechallengers.psagame.SinglePlayer.Physics.Block) currentContactBody.getUserData(); // incoming block
+        ArrayList<com.thechallengers.psagame.SinglePlayer.Physics.MyPair<Integer, Float>> contactedBlocks = new ArrayList<com.thechallengers.psagame.SinglePlayer.Physics.MyPair<Integer, Float>>();
         ArrayList<Float> contactedLengths = new ArrayList<Float>();
         float sumContactedLength = 0;
 
         for (Body contactedBody: contactedBodyArr) {
             System.out.println(contactedBody.getUserData());
-            if (contactedBody.getUserData() instanceof Block) {
-                Block contactedBlock = (Block) contactedBody.getUserData();
-                if (!((Block) contactedBody.getUserData()).type.equals(BOX_BLOCK_TYPE)) {
+            if (contactedBody.getUserData() instanceof com.thechallengers.psagame.SinglePlayer.Physics.Block) {
+                com.thechallengers.psagame.SinglePlayer.Physics.Block contactedBlock = (com.thechallengers.psagame.SinglePlayer.Physics.Block) contactedBody.getUserData();
+                if (!((com.thechallengers.psagame.SinglePlayer.Physics.Block) contactedBody.getUserData()).type.equals(BOX_BLOCK_TYPE)) {
                     gameGraph.addBlock(newBlock, contactedBlocks); // add block for contacting with ground
                     return;
                 }
@@ -91,13 +91,13 @@ public class Physics2 extends ApplicationAdapter {
                 Body bodyRight = currentContactBody.getPosition().x > contactedBody.getPosition().x ?
                         currentContactBody : contactedBody;
                 System.out.println("Left " + bodyLeft.getUserData());
-                System.out.println("Left width " + ((Block) bodyLeft.getUserData()).width);
+                System.out.println("Left width " + ((com.thechallengers.psagame.SinglePlayer.Physics.Block) bodyLeft.getUserData()).width);
                 System.out.println("Left x " + bodyLeft.getPosition().x);
                 System.out.println("Right " + bodyRight.getUserData());
-                System.out.println("Right width " + ((Block) bodyRight.getUserData()).width);
+                System.out.println("Right width " + ((com.thechallengers.psagame.SinglePlayer.Physics.Block) bodyRight.getUserData()).width);
                 System.out.println("Right x " + bodyRight.getPosition().x);
-                float halfWidthLeft = ((Block) bodyLeft.getUserData()).width / 2;
-                float halfWidthRight = ((Block) bodyRight.getUserData()).width / 2;
+                float halfWidthLeft = ((com.thechallengers.psagame.SinglePlayer.Physics.Block) bodyLeft.getUserData()).width / 2;
+                float halfWidthRight = ((com.thechallengers.psagame.SinglePlayer.Physics.Block) bodyRight.getUserData()).width / 2;
                 float contactedLength = (halfWidthLeft * 2 + halfWidthRight * 2) - ((bodyRight.getPosition().x
                         + halfWidthRight) - (bodyLeft.getPosition().x - halfWidthLeft));
                 // contactedBlocks.add(new MyPair(contactedBlock.sequenceNumber, contactedLength / newBlock.width));
@@ -108,12 +108,12 @@ public class Physics2 extends ApplicationAdapter {
 
         int i = 0;
         for (Body contactedBody: contactedBodyArr) {
-            Block contactedBlock = (Block) contactedBody.getUserData();
-            contactedBlocks.add(new MyPair<Integer, Float>(contactedBlock.sequenceNumber, contactedLengths.get(i) / sumContactedLength));
+            com.thechallengers.psagame.SinglePlayer.Physics.Block contactedBlock = (com.thechallengers.psagame.SinglePlayer.Physics.Block) contactedBody.getUserData();
+            contactedBlocks.add(new com.thechallengers.psagame.SinglePlayer.Physics.MyPair<Integer, Float>(contactedBlock.sequenceNumber, contactedLengths.get(i) / sumContactedLength));
             i++;
         }
 
-        for (MyPair<Integer, Float> pair: contactedBlocks) {
+        for (com.thechallengers.psagame.SinglePlayer.Physics.MyPair<Integer, Float> pair: contactedBlocks) {
             System.out.println("Contacts of " + newBlock + " " + pair);
         }
 
@@ -179,7 +179,7 @@ public class Physics2 extends ApplicationAdapter {
         BodyDef bodyDef2 = new BodyDef();
         bodyDef2.type = BodyDef.BodyType.StaticBody;
         ground_body = world.createBody(bodyDef2);
-        ground_body.setUserData(new Block(GROUND_BLOCK_TYPE));
+        ground_body.setUserData(new com.thechallengers.psagame.SinglePlayer.Physics.Block(GROUND_BLOCK_TYPE));
         PolygonShape ground_shape = new PolygonShape();
         float[] vertices = {0, 0, 0, 0.50f, 10.80f, 0.50f, 10.80f, 0};
         ground_shape.set(vertices);
@@ -215,7 +215,7 @@ public class Physics2 extends ApplicationAdapter {
         for (int i = 0; i < bodyArray.size; i++) {
             if (bodyArray.get(i).getType() != BodyDef.BodyType.DynamicBody) continue;
             Body body = bodyArray.get(i);
-            AssetLoader.consolas_15.draw(batch, String.format("%d %.1f %.1f", (int)((Block) body.getUserData()).weight,((Block)body.getUserData()).remainingCapacity, ((Block)body.getUserData()).remainingTime),body.getPosition().x * 100f, body.getPosition().y * 100f);
+            AssetLoader.consolas_15.draw(batch, String.format("%d %.1f %.1f", (int)((com.thechallengers.psagame.SinglePlayer.Physics.Block) body.getUserData()).weight,((com.thechallengers.psagame.SinglePlayer.Physics.Block)body.getUserData()).remainingCapacity, ((com.thechallengers.psagame.SinglePlayer.Physics.Block)body.getUserData()).remainingTime),body.getPosition().x * 100f, body.getPosition().y * 100f);
 
         }
 
@@ -272,7 +272,7 @@ public class Physics2 extends ApplicationAdapter {
         for(int i = 0; i < bodyArray.size; i++) {
             if (bodyArray.get(i).getType() == BodyDef.BodyType.KinematicBody) continue;
             float rotation = bodyArray.get(i).getAngle();
-            Block currentBlock = (Block)bodyArray.get(i).getUserData();
+            com.thechallengers.psagame.SinglePlayer.Physics.Block currentBlock = (com.thechallengers.psagame.SinglePlayer.Physics.Block)bodyArray.get(i).getUserData();
             if (Math.abs(rotation) > 0.3 || currentBlock.remainingTime <= 0) {
                 gameGraph.deleteNode(currentBlock.sequenceNumber);
                 world.destroyBody(bodyArray.get(i));
@@ -287,7 +287,7 @@ public class Physics2 extends ApplicationAdapter {
         for(int i = 0; i < bodyArray.size; i++) {
             Body currentBody = bodyArray.get(i);
             if (currentBody.getType() == BodyDef.BodyType.KinematicBody) continue;
-            Block currentBlock = (Block)currentBody.getUserData();
+            com.thechallengers.psagame.SinglePlayer.Physics.Block currentBlock = (com.thechallengers.psagame.SinglePlayer.Physics.Block)currentBody.getUserData();
             currentBlock.updateRemainingCapacity();
             currentBlock.updateRemainingTime();
         }
@@ -324,16 +324,16 @@ public class Physics2 extends ApplicationAdapter {
                 }
             }
         }
-        MyPair<Float, Float> generatedSize = randomController.getSize();
+        com.thechallengers.psagame.SinglePlayer.Physics.MyPair<Float, Float> generatedSize = randomController.getSize();
         int generatedDensity = randomController.getDensity();
-        nextBlock = new Block(generatedSize.getFirst(), generatedSize.getSecond(),
+        nextBlock = new com.thechallengers.psagame.SinglePlayer.Physics.Block(generatedSize.getFirst(), generatedSize.getSecond(),
                 BOX_BLOCK_TYPE, boxIdx, generatedDensity);
     }
 
     public void craneBody(Body body) {
         body.setTransform(new Vector2(cranedBlockXCord, cranedBlockYCord), 0);
-        if ((body.getUserData() instanceof Block)) {
-            Block block = (Block) body.getUserData();
+        if ((body.getUserData() instanceof com.thechallengers.psagame.SinglePlayer.Physics.Block)) {
+            com.thechallengers.psagame.SinglePlayer.Physics.Block block = (com.thechallengers.psagame.SinglePlayer.Physics.Block) body.getUserData();
             gameGraph.deleteNode(block.sequenceNumber);
             block.potential = block.weight;
             block.previousPotential = 0;

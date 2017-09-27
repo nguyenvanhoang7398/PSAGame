@@ -1,17 +1,10 @@
-package com.thechallengers.psagame.Dummy;
+package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -20,11 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
-import com.thechallengers.psagame.Dummy.Objects.Crane;
-import com.thechallengers.psagame.Dummy.Objects.Worker;
-import com.thechallengers.psagame.Dummy.Physics.Block;
-import com.thechallengers.psagame.Dummy.Physics.Physics2;
-import com.thechallengers.psagame.Dummy.Physics.PhysicsInputHandler;
+import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
+import com.thechallengers.psagame.SinglePlayer.Physics.Block;
+import com.thechallengers.psagame.SinglePlayer.Physics.Physics2;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
@@ -59,7 +50,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     public SinglePlayerGameWorld(Physics2 physics_engine) {
         createUI();
-        worker = new Worker();
+        worker = new com.thechallengers.psagame.SinglePlayer.Objects.Worker();
         stage = new Stage();
         stage.addActor(touchpad);
         stage.addActor(releaseButton);

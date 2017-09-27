@@ -1,4 +1,4 @@
-package com.thechallengers.psagame.Dummy.Physics;
+package com.thechallengers.psagame.SinglePlayer.Physics;
 
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package com.thechallengers.psagame.Dummy.Physics;
+package com.thechallengers.psagame.SinglePlayer.Physics;
 
 /**
  * Created by Phung Tuan Hoang on 9/25/2017.
@@ -20,10 +20,10 @@ public class RandomController {
         this.physics = physics;
     }
 
-    public MyPair<Float, Float> getSize() {
+    public com.thechallengers.psagame.SinglePlayer.Physics.MyPair<Float, Float> getSize() {
         int widthIndex = rn.nextInt(width.length);
         int heightIndex = rn.nextInt(height.length);
-        return new MyPair<Float, Float>(width[widthIndex], height[heightIndex]);
+        return new com.thechallengers.psagame.SinglePlayer.Physics.MyPair<Float, Float>(width[widthIndex], height[heightIndex]);
     }
 
     public int getDensity() {

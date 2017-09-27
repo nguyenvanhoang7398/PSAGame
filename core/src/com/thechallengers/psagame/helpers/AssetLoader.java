@@ -27,6 +27,7 @@ public class AssetLoader {
     public static Texture setting_button, setting_button_pressed;
     public static Texture setting_overlay;
     public static Texture setting_box;
+    public static Texture slider_bg, slider_knob;
 
     //box sprites
     public static Sprite block_sprite_1_11, block_sprite_1_12, block_sprite_1_21, block_sprite_1_22, block_sprite_1_32, block_sprite_1_31;
@@ -68,6 +69,8 @@ public class AssetLoader {
         setting_button_pressed = new Texture(Gdx.files.internal("textures/setting_button_pressed.png"));
         setting_overlay = new Texture(Gdx.files.internal("textures/setting_overlay.png"));
         setting_box = new Texture(Gdx.files.internal("textures/setting_box.png"));
+        slider_bg = new Texture(Gdx.files.internal("textures/slider_bg.png"));
+        slider_knob = new Texture(Gdx.files.internal("textures/slider_knob.png"));
 
         block_sprite_1_11 = new Sprite(new Texture(Gdx.files.internal("textures/block/1_11.png")));
         block_sprite_1_12 = new Sprite(new Texture(Gdx.files.internal("textures/block/1_12.png")));

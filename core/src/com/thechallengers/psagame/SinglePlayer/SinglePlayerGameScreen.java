@@ -1,10 +1,9 @@
-package com.thechallengers.psagame.Dummy;
+package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.input.GestureDetector;
-import com.thechallengers.psagame.Dummy.Physics.Physics2;
-import com.thechallengers.psagame.Dummy.Physics.PhysicsInputHandler;
+import com.thechallengers.psagame.SinglePlayer.Physics.Physics2;
+import com.thechallengers.psagame.SinglePlayer.Physics.PhysicsInputHandler;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
 

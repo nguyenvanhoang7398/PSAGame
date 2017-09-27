@@ -1,17 +1,14 @@
-package com.thechallengers.psagame.Dummy;
+package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.utils.Array;
-import com.thechallengers.psagame.Dummy.Objects.Dummy;
-import com.thechallengers.psagame.Dummy.Physics.Block;
+import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 
@@ -50,45 +47,17 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         Body crane = null, holding_box = null, next_box = null;
 
         for (int i = 0; i < world.bodyArray.size; i++) {
+            Body body = world.bodyArray.get(i);
+
             if (world.bodyArray.get(i).getType() == BodyDef.BodyType.DynamicBody) {
-                Body body = world.bodyArray.get(i);
-                System.out.printf("\t\t\t\t%d %f\n", ((Block)body.getUserData()).type_int, ((Block)body.getUserData()).weight);
-
-                Vector2 translatedPosition = translatePosition(body.getPosition().x, body.getPosition().y, ((Block)body.getUserData()).type_int);
-
-                switch ((int) ((Block) body.getUserData()).density) {
-                    case 1: {
-                        drawOneKG(body);
-                        break;
-                    }
-                    case 2: {
-                        drawTwoKG(body);
-                        break;
-                    }
-                    case 3: {
-                        drawThreeKG(body);
-                        break;
-                    }
-                    case 4: {
-                        drawFourKG(body);
-                        break;
-                    }
-                    case 5: {
-                        drawFiveKG(body);
-                        break;
-                    }
-                    default:
-                }
-                AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int)((Block) body.getUserData()).weight,((Block)body.getUserData()).remainingCapacity, ((Block)body.getUserData()).remainingTime),body.getPosition().x * 100f - 35, body.getPosition().y * 100f + 319);
+                drawBlock(body);
             }
 
             else if (world.bodyArray.get(i).getType() == BodyDef.BodyType.KinematicBody) {
-                crane = world.bodyArray.get(i);
-                AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y + 319);
-                AssetLoader.game_crane.draw(batcher);
+                drawCrane(body);
             }
+
             else {
-                Body body = world.bodyArray.get(i);
                 if (body == world.physics_engine.cranedBody) {
 
                     holding_box = body;
@@ -103,33 +72,32 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         if (world.physics_engine.cranedBody != null) {
             switch ((int) ((Block) world.physics_engine.cranedBody.getUserData()).density) {
                 case 1: {
-                    System.out.println("AAAAAAAAAAAAAAA");
                     drawOneKG(world.physics_engine.cranedBody);
                     break;
                 }
                 case 2: {
                     drawTwoKG(world.physics_engine.cranedBody);
-                    System.out.println("AAAAAAAAAAAAAAA");
                     break;
                 }
                 case 3: {
                     drawThreeKG(world.physics_engine.cranedBody);
-                    System.out.println("AAAAAAAAAAAAAAA");
                     break;
                 }
                 case 4: {
                     drawFourKG(world.physics_engine.cranedBody);
-                    System.out.println("AAAAAAAAAAAAAAA");
                     break;
                 }
                 case 5: {
                     drawFiveKG(world.physics_engine.cranedBody);
-                    System.out.println("AAAAAAAAAAAAAAA");
                     break;
                 }
                 default:
             }
-            AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int) ((Block) world.physics_engine.cranedBody.getUserData()).weight, ((Block) world.physics_engine.cranedBody.getUserData()).remainingCapacity, ((Block) world.physics_engine.cranedBody.getUserData()).remainingTime), world.physics_engine.cranedBody.getPosition().x * 100f - 35, world.physics_engine.cranedBody.getPosition().y * 100f);
+            AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int) ((Block) world.physics_engine.cranedBody.getUserData()).weight,
+                    ((Block) world.physics_engine.cranedBody.getUserData()).remainingCapacity,
+                    ((Block) world.physics_engine.cranedBody.getUserData()).remainingTime),
+                    world.physics_engine.cranedBody.getPosition().x * 100f - 35,
+                    world.physics_engine.cranedBody.getPosition().y * 100f);
         }
 
         if (world.physics_engine.isHoldingNext) {
@@ -156,14 +124,49 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
                 }
                 default:
             }
-            AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int) ((Block) next_box.getUserData()).weight, ((Block) next_box.getUserData()).remainingCapacity, ((Block) next_box.getUserData()).remainingTime), next_box.getPosition().x * 100f - 35, next_box.getPosition().y * 100f);
+            AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int) ((Block) next_box.getUserData()).weight,
+                    ((Block) next_box.getUserData()).remainingCapacity, ((Block) next_box.getUserData()).remainingTime),
+                    next_box.getPosition().x * 100f - 35, next_box.getPosition().y * 100f);
         }
 
-        AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y + 319);
-        AssetLoader.game_crane.draw(batcher);
-
+        drawCrane(world.physics_engine.crane);
         batcher.end();
         world.getStage().draw();
+    }
+
+    //CRANE
+    public void drawCrane(Body crane) {
+        AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y + 319);
+        AssetLoader.game_crane.draw(batcher);
+    }
+
+    //METHODS FOR DRAWING BLOCKS
+    //NOT FOR NEXT BODIES / CRANED BODIES / ANYTHING ELSE
+    public void drawBlock(Body body) {
+        switch ((int) ((Block) body.getUserData()).density) {
+            case 1: {
+                drawOneKG(body);
+                break;
+            }
+            case 2: {
+                drawTwoKG(body);
+                break;
+            }
+            case 3: {
+                drawThreeKG(body);
+                break;
+            }
+            case 4: {
+                drawFourKG(body);
+                break;
+            }
+            case 5: {
+                drawFiveKG(body);
+                break;
+            }
+            default:
+        }
+        AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int)((Block) body.getUserData()).weight,((Block)body.getUserData()).remainingCapacity, ((Block)body.getUserData()).remainingTime),body.getPosition().x * 100f - 35, body.getPosition().y * 100f + 319);
     }
 
     public void drawOneKG(Body body) {
@@ -391,7 +394,8 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         }
     }
 
-    //FOR TRANSLATING WORLD POSITION TO SCREEN POSITION
+    //FOR TRANSLATING WORLD POSITION TO SCREEN POSITION - only for blocks
+    //CRANED BODIES AND NEXT BODIES DONT APPLY
     public Vector2 translatePosition(float world_x, float world_y, int block_dimension) {
         Vector2 return_vector = new Vector2();
 

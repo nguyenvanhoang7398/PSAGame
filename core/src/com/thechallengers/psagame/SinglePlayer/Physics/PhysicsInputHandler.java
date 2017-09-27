@@ -1,11 +1,10 @@
-package com.thechallengers.psagame.Dummy.Physics;
+package com.thechallengers.psagame.SinglePlayer.Physics;
 
 /**
  * Created by Phung Tuan Hoang on 9/25/2017.
  */
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -51,7 +50,7 @@ public class PhysicsInputHandler implements InputProcessor {
 
         for (Body body: bodyArray) {
             Fixture fixture = body.getFixtureList().get(0);
-            if (!(body.getUserData() instanceof Block)) {
+            if (!(body.getUserData() instanceof com.thechallengers.psagame.SinglePlayer.Physics.Block)) {
                 continue;
             }
             if (fixture.testPoint(physics.crane.getPosition().x, physics.crane.getPosition().y)) {
@@ -73,7 +72,7 @@ public class PhysicsInputHandler implements InputProcessor {
                     physics.isHoldingNext = false;
                 }
                 else if (selectedBody != null && physics.cranedBody == null && !physics.isHoldingNext) {
-                    if (((Block) selectedBody.getUserData()).isCranable()) physics.craneBody(selectedBody);
+                    if (((com.thechallengers.psagame.SinglePlayer.Physics.Block) selectedBody.getUserData()).isCranable()) physics.craneBody(selectedBody);
                 }
                 else if (physics.cranedBody != null && !physics.isHoldingNext) {
                     physics.releaseCranedBody(physics.crane.getPosition().x, physics.crane.getPosition().y);

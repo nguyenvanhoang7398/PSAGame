@@ -1,7 +1,9 @@
 package com.thechallengers.psagame.game;
 
 import com.badlogic.gdx.Game;
-import com.thechallengers.psagame.Dummy.SinglePlayerGameScreen;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.Menu.MenuScreen;
 
 public class PSAGame extends Game {
@@ -14,6 +16,14 @@ public class PSAGame extends Game {
 
 	@Override
 	public void create () {
+		//Load game preferences
+
+		Preferences prefs = Gdx.app.getPreferences("prefs");
+		if (!prefs.contains("music volume")) prefs.putFloat("music volume", 1);
+		if (!prefs.contains("sfx volume")) prefs.putFloat("sfx volume", 0.5f);
+		prefs.flush();
+
+		//Open menu
 		CURRENT_SCREEN = Screen.MenuScreen;
 		setScreen(new MenuScreen(this));
 	}
@@ -43,5 +53,4 @@ public class PSAGame extends Game {
 			}
 		}
 	}
-
 }

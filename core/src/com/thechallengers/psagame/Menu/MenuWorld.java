@@ -1,5 +1,6 @@
 package com.thechallengers.psagame.Menu;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -10,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -38,7 +41,10 @@ import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
 
 public class MenuWorld implements ScreenWorld {
     private TextButton tutorial_button, play_button, single_player_button, multi_player_button, overlay_button, setting_button, setting_overlay, setting_box;
-    private TextButton.TextButtonStyle play_button_style, tutorial_button_style, single_player_button_style, multi_player_button_style, overlay_button_style, setting_button_style, setting_overlay_style, setting_box_style;
+    private TextButton.TextButtonStyle play_button_style, tutorial_button_style, single_player_button_style, multi_player_button_style,
+            overlay_button_style, setting_button_style, setting_overlay_style, setting_box_style;
+    private Slider.SliderStyle music_slider_style, sfx_slider_style;
+    private Slider music_slider, sfx_slider;
     private MenuCrane menu_crane;
     private Background background;
     private Containers containers;
@@ -95,6 +101,8 @@ public class MenuWorld implements ScreenWorld {
             zoomIn();
             zoomTime ++;
         }
+
+        System.out.println(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
     }
 
     public Stage getStage() {
@@ -277,9 +285,13 @@ public class MenuWorld implements ScreenWorld {
             public void clicked(InputEvent event, float x, float y) {
                 createSettingOverlay();
                 createSettingBox();
+                createSFXSlider();
+                createMusicSlider();
 
                 stage.addActor(setting_overlay);
                 stage.addActor(setting_box);
+                stage.addActor(music_slider);
+                stage.addActor(sfx_slider);
             }
         });
     }
@@ -314,10 +326,52 @@ public class MenuWorld implements ScreenWorld {
         setting_box.getColor().a = 0;
         setting_box.addAction(fadeIn(0.1f));
     }
+
+    //MUSIC SLIDER
+    public void createMusicSlider() {
+        music_slider_style = new Slider.SliderStyle(new TextureRegionDrawable(new TextureRegion(AssetLoader.slider_bg)),
+                                                    new TextureRegionDrawable(new TextureRegion(AssetLoader.slider_knob)));
+        music_slider = new Slider(0f, 1f, 0.01f, false, music_slider_style);
+        music_slider.setHeight(88);
+        music_slider.setWidth(588);
+        music_slider.setPosition(165 + 78, 1177);
+        music_slider.setValue(Gdx.app.getPreferences("prefs").getFloat("music volume"));
+        music_slider.getColor().a = 0;
+        music_slider.addAction(fadeIn(0.1f));
+
+        music_slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.getPreferences("prefs").putFloat("music volume", music_slider.getValue()).flush();
+            }
+        });
+    }
+
+    public void createSFXSlider() {
+        sfx_slider_style = new Slider.SliderStyle(new TextureRegionDrawable(new TextureRegion(AssetLoader.slider_bg)),
+                           new TextureRegionDrawable(new TextureRegion(AssetLoader.slider_knob)));
+        sfx_slider = new Slider(0f, 1f, 0.01f, false, sfx_slider_style);
+        sfx_slider.setHeight(88);
+        sfx_slider.setWidth(588);
+        sfx_slider.setPosition(165 + 78, 983);
+        sfx_slider.setValue(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
+        sfx_slider.getColor().a = 0;
+        sfx_slider.addAction(fadeIn(0.1f));
+
+        sfx_slider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.getPreferences("prefs").putFloat("sfx volume", sfx_slider.getValue()).flush();
+            }
+        });
+    }
+
     //
     public void removeSettingOptions() {
-        setting_box.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));;
-        setting_overlay.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));;
+        setting_box.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
+        setting_overlay.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
+        music_slider.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
+        sfx_slider.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
     }
 
     //

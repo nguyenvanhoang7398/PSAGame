@@ -1,7 +1,7 @@
 package com.thechallengers.psagame.inputhandlers;
 
 import com.badlogic.gdx.InputProcessor;
-import com.thechallengers.psagame.Dummy.SinglePlayerGameWorld;
+import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameWorld;
 
 /**
  * Created by Phung Tuan Hoang on 9/6/2017.

@@ -1,5 +1,6 @@
-package com.thechallengers.psagame.Dummy.Objects;
+package com.thechallengers.psagame.SinglePlayer.Objects;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,7 +28,12 @@ public class Worker extends Actor {
         setBounds(actorX, actorY, textureNormal.getWidth(), textureNormal.getHeight());
     }
 
-    public void draw(Batch batch, float alpha) {
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(this.getColor());
+        // always make sure to only multiply by the parent alpha
+        batch.getColor().a *= parentAlpha;
+
+        // do your drawing
         if (sadTime == 80) {
             sad = false;
             sadTime = 0;
@@ -41,6 +47,7 @@ public class Worker extends Actor {
             batch.draw(instruction, bubbleX, bubbleY);
         }
 
+        batch.setColor(Color.WHITE); // reset the color
     }
 
     public void toSad() {
