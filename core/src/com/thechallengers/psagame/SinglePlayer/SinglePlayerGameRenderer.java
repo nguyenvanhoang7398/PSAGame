@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 
@@ -31,105 +30,20 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         cam.setToOrtho(false, 10.80f, 19.20f);
 
-        debug_bg = new Texture(Gdx.files.internal("textures/debug_background.png"));
+        //debug_bg = new Texture(Gdx.files.internal("textures/debug_background.png"));
     }
 
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        debugRenderer.render(world.getWorld(), cam.combined);
+
         batcher.begin();
 
-
-        batcher.draw(AssetLoader.game_background, 0, 0);
+        world.physics.debugRender();
+        //batcher.draw(AssetLoader.game_background, 0, 0);
         //batcher.draw(debug_bg, 0, 0);
 
-        Body crane = null, holding_box = null, next_box = null;
 
-        for (int i = 0; i < world.bodyArray.size; i++) {
-            Body body = world.bodyArray.get(i);
-
-            if (world.bodyArray.get(i).getType() == BodyDef.BodyType.DynamicBody) {
-                drawBlock(body);
-            }
-
-            else if (world.bodyArray.get(i).getType() == BodyDef.BodyType.KinematicBody) {
-                drawCrane(body);
-            }
-
-            else {
-                if (body == world.physics_engine.cranedBody) {
-
-                    holding_box = body;
-                }
-                else if (body == world.physics_engine.nextBody) {
-
-                    next_box = body;
-                }
-            }
-        }
-
-        if (world.physics_engine.cranedBody != null) {
-            switch ((int) ((Block) world.physics_engine.cranedBody.getUserData()).density) {
-                case 1: {
-                    drawOneKG(world.physics_engine.cranedBody);
-                    break;
-                }
-                case 2: {
-                    drawTwoKG(world.physics_engine.cranedBody);
-                    break;
-                }
-                case 3: {
-                    drawThreeKG(world.physics_engine.cranedBody);
-                    break;
-                }
-                case 4: {
-                    drawFourKG(world.physics_engine.cranedBody);
-                    break;
-                }
-                case 5: {
-                    drawFiveKG(world.physics_engine.cranedBody);
-                    break;
-                }
-                default:
-            }
-            AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int) ((Block) world.physics_engine.cranedBody.getUserData()).weight,
-                    ((Block) world.physics_engine.cranedBody.getUserData()).remainingCapacity,
-                    ((Block) world.physics_engine.cranedBody.getUserData()).remainingTime),
-                    world.physics_engine.cranedBody.getPosition().x * 100f - 35,
-                    world.physics_engine.cranedBody.getPosition().y * 100f);
-        }
-
-        if (world.physics_engine.isHoldingNext) {
-            switch ((int) world.physics_engine.nextBlock.density) {
-                case 1: {
-                    drawOneKG(next_box);
-                    break;
-                }
-                case 2: {
-                    drawTwoKG(next_box);
-                    break;
-                }
-                case 3: {
-                    drawThreeKG(next_box);
-                    break;
-                }
-                case 4: {
-                    drawFourKG(next_box);
-                    break;
-                }
-                case 5: {
-                    drawFiveKG(next_box);
-                    break;
-                }
-                default:
-            }
-            AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int) ((Block) next_box.getUserData()).weight,
-                    ((Block) next_box.getUserData()).remainingCapacity, ((Block) next_box.getUserData()).remainingTime),
-                    next_box.getPosition().x * 100f - 35, next_box.getPosition().y * 100f);
-        }
-
-        drawCrane(world.physics_engine.crane);
         batcher.end();
         world.getStage().draw();
     }
@@ -142,6 +56,8 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
     //METHODS FOR DRAWING BLOCKS
     //NOT FOR NEXT BODIES / CRANED BODIES / ANYTHING ELSE
+
+    /*
     public void drawBlock(Body body) {
         switch ((int) ((Block) body.getUserData()).density) {
             case 1: {
@@ -168,7 +84,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         }
         AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int)((Block) body.getUserData()).weight,((Block)body.getUserData()).remainingCapacity, ((Block)body.getUserData()).remainingTime),body.getPosition().x * 100f - 35, body.getPosition().y * 100f + 319);
     }
+    */
 
+    /*
     public void drawOneKG(Body body) {
         Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
         if (body == world.physics_engine.nextBody || body == world.physics_engine.cranedBody) translated_position.y -= 323;
@@ -213,7 +131,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
             default:
         }
     }
+    */
 
+    /*
     public void drawTwoKG(Body body) {
         Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
         if (body == world.physics_engine.nextBody || body == world.physics_engine.cranedBody) translated_position.y -= 323;
@@ -258,7 +178,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
             default:
         }
     }
+    */
 
+    /*
     public void drawThreeKG(Body body) {
         Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
         if (body == world.physics_engine.nextBody || body == world.physics_engine.cranedBody) translated_position.y -= 323;
@@ -303,7 +225,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
             default:
         }
     }
+    */
 
+    /*
     public void drawFourKG(Body body) {
         Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
         if (body == world.physics_engine.nextBody || body == world.physics_engine.cranedBody) translated_position.y -= 323;
@@ -348,7 +272,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
             default:
         }
     }
+    */
 
+    /*
     public void drawFiveKG(Body body) {
         Vector2 translated_position = translatePosition(body.getPosition().x, body.getPosition().y, ((Block) body.getUserData()).type_int);
         if (body == world.physics_engine.nextBody || body == world.physics_engine.cranedBody) translated_position.y -= 323;
@@ -393,6 +319,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
             default:
         }
     }
+    */
 
     //FOR TRANSLATING WORLD POSITION TO SCREEN POSITION - only for blocks
     //CRANED BODIES AND NEXT BODIES DONT APPLY

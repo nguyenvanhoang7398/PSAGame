@@ -14,8 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
-import com.thechallengers.psagame.SinglePlayer.Physics.Block;
-import com.thechallengers.psagame.SinglePlayer.Physics.Physics2;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
@@ -31,7 +29,6 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     private Stage stage;
     private World world;
     public Array<Body> bodyArray = new Array<Body>();
-    Physics2 physics_engine;
     private Worker worker;
 
     //touchpad-related variables
@@ -47,23 +44,24 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     //worker-related variables
 
+    public Physics physics;
 
-    public SinglePlayerGameWorld(Physics2 physics_engine) {
+
+    public SinglePlayerGameWorld() {
         createUI();
         worker = new com.thechallengers.psagame.SinglePlayer.Objects.Worker();
         stage = new Stage();
-        stage.addActor(touchpad);
-        stage.addActor(releaseButton);
-        stage.addActor(worker);
+        //stage.addActor(touchpad);
+        //stage.addActor(releaseButton);
+        //stage.addActor(worker);
 
-        this.physics_engine = physics_engine;
-        crane = physics_engine.crane;
-        world = physics_engine.getWorld();
+        //Gdx.input.setInputProcessor(stage);
 
-        Gdx.input.setInputProcessor(stage);
-
+        physics = new Physics();
+        this.world = physics.getWorld();
     }
 
+    /*
     public void updateCraneAction() {
 
         //control crane with touchpad
@@ -71,6 +69,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         //release/grab containers
 
     }
+    */
 
     //create everthing considering user interface
     public void createUI() {
@@ -105,32 +104,6 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         releaseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Array<Body> bodyArray = physics_engine.bodyArray;
-                Body selectedBody = null;
-                for (Body body: bodyArray) {
-                    Fixture fixture = body.getFixtureList().get(0);
-                    if (!(body.getUserData() instanceof Block)) {
-                        continue;
-                    }
-                    if (fixture.testPoint(crane.getPosition().x, crane.getPosition().y)) {
-                        selectedBody = body;
-                        break;
-                    }
-                }
-                if (selectedBody == null && physics_engine.cranedBody == null && physics_engine.isHoldingNext) {
-                    physics_engine.createBlock(crane.getPosition().x, crane.getPosition().y);
-                    physics_engine.isHoldingNext = false;
-                }
-                else if (selectedBody != null && physics_engine.cranedBody == null && !physics_engine.isHoldingNext) {
-                    if (((Block) selectedBody.getUserData()).isCranable()) physics_engine.craneBody(selectedBody);
-                }
-                else if (physics_engine.cranedBody != null && !physics_engine.isHoldingNext) {
-                    physics_engine.releaseCranedBody(crane.getPosition().x, crane.getPosition().y);
-                }
-                else if (selectedBody == null && physics_engine.cranedBody == null && !physics_engine.isHoldingNext) {
-                    physics_engine.isHoldingNext = true;
-                }
-
 
             }
         });
@@ -138,11 +111,11 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     @Override
     public void update(float delta) {
-        updateCraneAction();
+        //updateCraneAction();
         stage.act(delta);
-        physics_engine.render();
+        physics.update(delta);
         world.getBodies(bodyArray);
-        if (physics_engine.justDestroy) worker.toSad();
+        //worker.toSad();
     }
 
     public Stage getStage() {
