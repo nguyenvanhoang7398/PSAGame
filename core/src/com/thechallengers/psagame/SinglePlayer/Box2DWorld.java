@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.thechallengers.psagame.SinglePlayer.Objects.Crane;
 import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
@@ -35,7 +36,7 @@ public class Box2DWorld {
     private Block nextBlock;
 
     public Box2DWorld() {
-        world = new World(new Vector2(0, -.98f), true);
+        world = new World(new Vector2(0, -9.8f), true);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, 10.80f, 19.20f);
         debugRenderer = new Box2DDebugRenderer();
@@ -53,7 +54,29 @@ public class Box2DWorld {
 
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {
+                Body bodyA = contact.getFixtureA().getBody();
+                Body bodyB = contact.getFixtureB().getBody();
 
+                if (bodyA.getType() == BodyDef.BodyType.DynamicBody && bodyB.getType() == BodyDef.BodyType.DynamicBody) return;
+
+                if (bodyB.getUserData() instanceof Block && bodyA.getUserData() == "ground") {
+                    bodyB.setType(BodyDef.BodyType.DynamicBody);
+                    bodyB.getFixtureList().get(0).setSensor(false);
+                    ((CraneData) crane.getUserData()).cranedBody = null;
+                    return;
+                }
+                if (bodyA.getUserData() instanceof Block && bodyB.getUserData() == "ground") {
+                    bodyA.setType(BodyDef.BodyType.DynamicBody);
+                    bodyA.getFixtureList().get(0).setSensor(false);
+                    ((CraneData) crane.getUserData()).cranedBody = null;
+                    return;
+                }
+                if (bodyA.getUserData() instanceof Block && bodyB.getUserData() instanceof Block) {
+                    ((CraneData) crane.getUserData()).cranedBody.getFixtureList().get(0).setSensor(false);
+                    ((CraneData) crane.getUserData()).cranedBody.setType(BodyDef.BodyType.DynamicBody);
+                    ((CraneData) crane.getUserData()).cranedBody = null;
+                    return;
+                }
             }
 
             @Override
@@ -111,6 +134,7 @@ public class Box2DWorld {
         fixtureDef.shape = crane_shape;
         fixtureDef.density = 1f;
         fixtureDef.friction = 1f;
+        fixtureDef.isSensor = true;
         crane.createFixture(fixtureDef);
         crane.setTransform(5.4f, 17.5f - 0.1f, 0);
         crane.setUserData(new CraneData());
@@ -199,6 +223,8 @@ public class Box2DWorld {
                     craneData.isMoving = false;
                     crane.setLinearVelocity(0, 0);
                     craneData.cranedBody.setTransform(craneData.destination.x, craneData.destination.y - 0.1f - ((Block) craneData.cranedBody.getUserData()).height / 2f, 0);
+                    craneData.cranedBody.setType(BodyDef.BodyType.DynamicBody);
+                    craneData.cranedBody.getFixtureList().get(0).setSensor(false);
                     craneData.cranedBody = null;
                 }
             }
@@ -224,6 +250,7 @@ public class Box2DWorld {
         fixtureDef.shape = shape;
         fixtureDef.density = 1f;
         fixtureDef.friction = 1f;
+        fixtureDef.isSensor = true;
         body.createFixture(fixtureDef);
         body.setUserData(block);
         return body;
