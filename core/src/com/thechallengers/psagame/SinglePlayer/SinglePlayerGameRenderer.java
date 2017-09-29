@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.thechallengers.psagame.helpers.AssetLoader;
+import com.thechallengers.psagame.SinglePlayer.Physics.Frame;
+import com.thechallengers.psagame.SinglePlayer.Physics.Pattern;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
+import com.thechallengers.psagame.helpers.AssetLoader;
 
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
@@ -22,6 +24,8 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     OrthographicCamera cam = new OrthographicCamera();
     private Texture debug_bg;
+    public static float GROUND_HEIGHT = 375f;
+    public static int size = 100;
 
     public SinglePlayerGameRenderer(SinglePlayerGameWorld world) {
         super();
@@ -43,6 +47,107 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         //batcher.draw(debug_bg, 0, 0);
         drawCrane(world.box2DWorld.getCrane());
 
+        float pattern_start_x = Gdx.graphics.getWidth()/2 - size/2 * AssetLoader.unitBlockTexture.getWidth();
+        float pattern_start_y = GROUND_HEIGHT;
+        Frame myFrame = new Frame(size);
+        myFrame.setPattern(new Pattern(size));
+        boolean[][] frame = myFrame.frame;
+
+        for (int i=0; i<size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (frame[i][j]) {
+                    batcher.draw(AssetLoader.unitBlockTexture, pattern_start_x + i * AssetLoader.unitBlockTexture.getWidth(),
+                            pattern_start_y + j * AssetLoader.unitBlockTexture.getHeight());
+                }
+            }
+        }
+
+        /*
+        Body crane = null, holding_box = null, next_box = null;
+
+        for (int i = 0; i < world.bodyArray.size; i++) {
+            Body body = world.bodyArray.get(i);
+
+            if (world.bodyArray.get(i).getType() == BodyDef.BodyType.DynamicBody) {
+                drawBlock(body);
+            }
+
+            else if (world.bodyArray.get(i).getType() == BodyDef.BodyType.KinematicBody) {
+                drawCrane(body);
+            }
+
+            else {
+                if (body == world.physics_engine.cranedBody) {
+
+                    holding_box = body;
+                }
+                else if (body == world.physics_engine.nextBody) {
+
+                    next_box = body;
+                }
+            }
+        }
+
+        if (world.physics_engine.cranedBody != null) {
+            switch ((int) ((Block) world.physics_engine.cranedBody.getUserData()).density) {
+                case 1: {
+                    drawOneKG(world.physics_engine.cranedBody);
+                    break;
+                }
+                case 2: {
+                    drawTwoKG(world.physics_engine.cranedBody);
+                    break;
+                }
+                case 3: {
+                    drawThreeKG(world.physics_engine.cranedBody);
+                    break;
+                }
+                case 4: {
+                    drawFourKG(world.physics_engine.cranedBody);
+                    break;
+                }
+                case 5: {
+                    drawFiveKG(world.physics_engine.cranedBody);
+                    break;
+                }
+                default:
+            }
+            AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int) ((Block) world.physics_engine.cranedBody.getUserData()).weight,
+                    ((Block) world.physics_engine.cranedBody.getUserData()).remainingCapacity,
+                    ((Block) world.physics_engine.cranedBody.getUserData()).remainingTime),
+                    world.physics_engine.cranedBody.getPosition().x * 100f - 35,
+                    world.physics_engine.cranedBody.getPosition().y * 100f);
+        }
+
+        if (world.physics_engine.isHoldingNext) {
+            switch ((int) world.physics_engine.nextBlock.density) {
+                case 1: {
+                    drawOneKG(next_box);
+                    break;
+                }
+                case 2: {
+                    drawTwoKG(next_box);
+                    break;
+                }
+                case 3: {
+                    drawThreeKG(next_box);
+                    break;
+                }
+                case 4: {
+                    drawFourKG(next_box);
+                    break;
+                }
+                case 5: {
+                    drawFiveKG(next_box);
+                    break;
+                }
+                default:
+            }
+            AssetLoader.consolas_15.draw(batcher, String.format("%d %.1f %.1f", (int) ((Block) next_box.getUserData()).weight,
+                    ((Block) next_box.getUserData()).remainingCapacity, ((Block) next_box.getUserData()).remainingTime),
+                    next_box.getPosition().x * 100f - 35, next_box.getPosition().y * 100f);
+        }
+        */
         batcher.end();
         world.getStage().draw();
     }

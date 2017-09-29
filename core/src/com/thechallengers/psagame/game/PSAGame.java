@@ -3,8 +3,8 @@ package com.thechallengers.psagame.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.Menu.MenuScreen;
+import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 
 import Shop.ShopScreen;
 

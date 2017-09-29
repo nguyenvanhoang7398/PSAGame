@@ -30,6 +30,7 @@ public class AssetLoader {
     public static Texture setting_overlay;
     public static Texture setting_box;
     public static Texture slider_bg, slider_knob;
+    public static Texture unitBlockTexture;
 
     //box sprites
     public static Sprite block_sprite_1_11, block_sprite_1_12, block_sprite_1_21, block_sprite_1_22, block_sprite_1_32, block_sprite_1_31;
@@ -95,6 +96,7 @@ public class AssetLoader {
     public static void loadGameTexture() {
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         game_background = new TextureRegion(new Texture(Gdx.files.internal("textures/game_background.png")), 0, 0, 1080, 1920);
+        unitBlockTexture = new Texture("textures/unitBlock.png");
 
         loadSpritesAndHashTable();
     }
