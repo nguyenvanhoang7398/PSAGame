@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
-import com.thechallengers.psagame.SinglePlayer.Objects.UnitBlock;
 import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.Physics2;
@@ -34,7 +33,6 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public Array<Body> bodyArray = new Array<Body>();
     Physics2 physics_engine;
     private Worker worker;
-    private UnitBlock unitBlock;
 
     //touchpad-related variables
     private Touchpad touchpad;
@@ -53,12 +51,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public SinglePlayerGameWorld(Physics2 physics_engine) {
         createUI();
         worker = new Worker();
-        unitBlock = new UnitBlock();
         stage = new Stage();
         stage.addActor(touchpad);
         stage.addActor(releaseButton);
         stage.addActor(worker);
-        //stage.addActor(unitBlock);
 
         this.physics_engine = physics_engine;
         crane = physics_engine.crane;

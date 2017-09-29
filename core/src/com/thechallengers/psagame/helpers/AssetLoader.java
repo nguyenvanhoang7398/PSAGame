@@ -125,7 +125,7 @@ public class AssetLoader {
     public static void loadGameTexture() {
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         game_background = new TextureRegion(new Texture(Gdx.files.internal("textures/game_background.png")), 0, 0, 1080, 1920);
-        unitBlockTexture = new Texture("textures/unitBlockSmall.png");
+        unitBlockTexture = new Texture("textures/unitBlock.png");
     }
 
     public static void updateGameBackGroundDetails(int _starting_x, int _starting_y, int _end_x, int _end_y) {

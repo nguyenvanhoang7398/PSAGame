@@ -9,8 +9,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
-import com.thechallengers.psagame.helpers.AssetLoader;
+import com.thechallengers.psagame.SinglePlayer.Physics.Frame;
+import com.thechallengers.psagame.SinglePlayer.Physics.Pattern;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
+import com.thechallengers.psagame.helpers.AssetLoader;
 
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
@@ -24,6 +26,8 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     OrthographicCamera cam = new OrthographicCamera();
     private Texture debug_bg;
+    public static float GROUND_HEIGHT = 375f;
+    public static int size = 100;
 
     public SinglePlayerGameRenderer(SinglePlayerGameWorld world) {
         super();
@@ -44,8 +48,20 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         batcher.draw(AssetLoader.game_background, 0, 0);
         //batcher.draw(debug_bg, 0, 0);
 
-        batcher.draw(AssetLoader.unitBlockTexture, Gdx.graphics.getWidth()/2 - AssetLoader.unitBlockTexture.getWidth()/2,
-                                                    Gdx.graphics.getHeight()/2 - AssetLoader.unitBlockTexture.getHeight()/2);
+        float pattern_start_x = Gdx.graphics.getWidth()/2 - size/2 * AssetLoader.unitBlockTexture.getWidth();
+        float pattern_start_y = GROUND_HEIGHT;
+        Frame myFrame = new Frame(size);
+        myFrame.setPattern(new Pattern(size));
+        boolean[][] frame = myFrame.frame;
+
+        for (int i=0; i<size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (frame[i][j]) {
+                    batcher.draw(AssetLoader.unitBlockTexture, pattern_start_x + i * AssetLoader.unitBlockTexture.getWidth(),
+                            pattern_start_y + j * AssetLoader.unitBlockTexture.getHeight());
+                }
+            }
+        }
 
         Body crane = null, holding_box = null, next_box = null;
 

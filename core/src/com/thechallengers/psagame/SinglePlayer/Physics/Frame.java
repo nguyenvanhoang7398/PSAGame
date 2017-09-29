@@ -8,22 +8,15 @@ public class Frame {
     public boolean[][] frame;
     public int size;
     public Pattern pattern;
-    private Physics2 physics;
 
-    Frame(int size, Physics2 world) {
+    public Frame(int size) {
         this.size = size;
-        this.pattern = new Pattern();
+        this.pattern = new Pattern(size);
         this.frame = new boolean[size][size];
-        this.physics = physics;
     }
 
     public void setPattern(Pattern pattern) {
         this.pattern = pattern;
-        this.frame = pattern.toMatrix(this.size);
+        this.frame = pattern.toMatrix();
     }
-
-
-//    public void readFrame(world) {
-//        world.draw(unitBlock)
-//    }
 }
