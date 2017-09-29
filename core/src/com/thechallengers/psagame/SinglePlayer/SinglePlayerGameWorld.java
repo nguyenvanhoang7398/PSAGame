@@ -1,9 +1,7 @@
 package com.thechallengers.psagame.SinglePlayer;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -44,7 +42,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     //worker-related variables
 
-    public Physics physics;
+    public Box2DWorld box2DWorld;
 
 
     public SinglePlayerGameWorld() {
@@ -57,8 +55,8 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
         //Gdx.input.setInputProcessor(stage);
 
-        physics = new Physics();
-        this.world = physics.getWorld();
+        box2DWorld = new Box2DWorld();
+        this.world = box2DWorld.getWorld();
     }
 
     /*
@@ -113,7 +111,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public void update(float delta) {
         //updateCraneAction();
         stage.act(delta);
-        physics.update(delta);
+        box2DWorld.update(delta);
         world.getBodies(bodyArray);
         //worker.toSad();
     }

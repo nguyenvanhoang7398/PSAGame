@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
@@ -39,10 +38,10 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         batcher.begin();
 
-        world.physics.debugRender();
+        world.box2DWorld.debugRender();
         //batcher.draw(AssetLoader.game_background, 0, 0);
         //batcher.draw(debug_bg, 0, 0);
-
+        drawCrane(world.box2DWorld.getCrane());
 
         batcher.end();
         world.getStage().draw();
@@ -50,9 +49,14 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
     //CRANE
     public void drawCrane(Body crane) {
-        AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y + 319);
+        AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y);
         AssetLoader.game_crane.draw(batcher);
     }
+
+    public void drawBlock(Body body) {
+
+    }
+
 
     //METHODS FOR DRAWING BLOCKS
     //NOT FOR NEXT BODIES / CRANED BODIES / ANYTHING ELSE

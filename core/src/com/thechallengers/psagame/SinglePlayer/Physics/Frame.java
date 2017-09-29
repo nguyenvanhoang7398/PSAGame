@@ -20,7 +20,9 @@ public class Frame {
         this.frame = pattern.toMatrix(this.size);
     }
 
-    public void renderFrame()
+    public void renderFrame() {
+
+    }
 
 //    public void readFrame(world) {
 //        world.draw(unitBlock)

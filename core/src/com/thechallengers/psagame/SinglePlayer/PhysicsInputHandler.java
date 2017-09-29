@@ -1,6 +1,8 @@
 package com.thechallengers.psagame.SinglePlayer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
 
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.
@@ -30,7 +32,15 @@ public class PhysicsInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //neu muon input vao physics dung reference world.physics
+        //neu muon input vao box2DWorld dung reference world.box2DWorld
+        if (!((CraneData) world.box2DWorld.getCrane().getUserData()).isMoving) {
+            float box2DWorld_x = screenX / 100f;
+            float box2DWorld_y = (1920 - screenY * 1920 / Gdx.graphics.getHeight()) / 100f;
+            System.out.printf("%f %f\n", box2DWorld_x, box2DWorld_y);
+
+            world.box2DWorld.moveCrane(box2DWorld_x, box2DWorld_y);
+        }
+
         return false;
     }
 

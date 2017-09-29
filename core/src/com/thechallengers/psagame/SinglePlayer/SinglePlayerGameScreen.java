@@ -1,5 +1,6 @@
 package com.thechallengers.psagame.SinglePlayer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
@@ -21,6 +22,7 @@ public class SinglePlayerGameScreen implements Screen {
         renderer = new SinglePlayerGameRenderer(world);
         physicsInputHandler = new PhysicsInputHandler(world);
         AssetLoader.loadGameTexture();
+        Gdx.input.setInputProcessor(physicsInputHandler);
     }
 
     @Override
