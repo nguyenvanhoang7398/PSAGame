@@ -44,6 +44,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         batcher.draw(AssetLoader.game_background, 0, 0);
         //batcher.draw(debug_bg, 0, 0);
 
+        batcher.draw(AssetLoader.unitBlockTexture, Gdx.graphics.getWidth()/2 - AssetLoader.unitBlockTexture.getWidth()/2,
+                                                    Gdx.graphics.getHeight()/2 - AssetLoader.unitBlockTexture.getHeight()/2);
+
         Body crane = null, holding_box = null, next_box = null;
 
         for (int i = 0; i < world.bodyArray.size; i++) {

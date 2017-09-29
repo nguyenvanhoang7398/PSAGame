@@ -58,7 +58,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         stage.addActor(touchpad);
         stage.addActor(releaseButton);
         stage.addActor(worker);
-        stage.addActor(unitBlock);
+        //stage.addActor(unitBlock);
 
         this.physics_engine = physics_engine;
         crane = physics_engine.crane;
