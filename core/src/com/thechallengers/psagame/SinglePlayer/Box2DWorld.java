@@ -14,6 +14,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
+import com.thechallengers.psagame.SinglePlayer.Physics.Block;
+import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
 
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.DOWN;;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.LEFT;
@@ -30,6 +32,7 @@ public class Box2DWorld {
     private OrthographicCamera cam;
     private Box2DDebugRenderer debugRenderer;
     private Body ground, ceiling, crane;
+    private Block nextBlock;
 
     public Box2DWorld() {
         world = new World(new Vector2(0, -.98f), true);
@@ -61,6 +64,7 @@ public class Box2DWorld {
 
         createGroundAndCeiling();
         createCrane();
+        nextBlock = createNextBlock();
     }
 
     public void update(float delta) {
@@ -166,6 +170,10 @@ public class Box2DWorld {
 
                     craneData.state = DOWN;
                     crane.setLinearVelocity(0, -craneData.velocity);
+                    Body cranedBody = createBody(nextBlock);
+                    cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - nextBlock.height / 2f, 0);
+                    craneData.cranedBody = cranedBody;
+                    nextBlock = createNextBlock();
                 }
                 break;
             }
@@ -175,6 +183,10 @@ public class Box2DWorld {
 
                     craneData.state = DOWN;
                     crane.setLinearVelocity(0, -craneData.velocity);
+                    Body cranedBody = createBody(nextBlock);
+                    cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - nextBlock.height / 2f, 0);
+                    craneData.cranedBody = cranedBody;
+                    nextBlock = createNextBlock();
                 }
                 break;
             }
@@ -186,10 +198,35 @@ public class Box2DWorld {
                     craneData.velocity = 0;
                     craneData.isMoving = false;
                     crane.setLinearVelocity(0, 0);
+                    craneData.cranedBody.setTransform(craneData.destination.x, craneData.destination.y - 0.1f - ((Block) craneData.cranedBody.getUserData()).height / 2f, 0);
+                    craneData.cranedBody = null;
                 }
             }
             default:
         }
+
+        if (craneData.cranedBody != null) {
+            craneData.cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - nextBlock.height / 2f, 0);
+        }
+    }
+
+    public Block createNextBlock() {
+        return RandomController.randomBlock();
+    }
+
+    public Body createBody(Block block) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        Body body = world.createBody(bodyDef);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(block.width / 2f, block.height / 2f);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 1f;
+        body.createFixture(fixtureDef);
+        body.setUserData(block);
+        return body;
     }
 
     public void debugRender() {

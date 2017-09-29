@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.thechallengers.psagame.Menu.Objects.Background;
 import com.thechallengers.psagame.Menu.Objects.Cloud;
 import com.thechallengers.psagame.Menu.Objects.Containers;
@@ -94,7 +95,9 @@ public class MenuWorld implements ScreenWorld {
     public void update(float delta) {
         stage.act(delta);
 
-        if (zoomTime == 57) CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+        if (zoomTime == 57) {
+            CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+        }
 
         if (isZooming && zoomTime < 57) {
             translate();
@@ -386,6 +389,6 @@ public class MenuWorld implements ScreenWorld {
     }
 
     public void translate() {
-        stage.getCamera().translate(-2.75f, -0.5f, 0);
+        stage.getCamera().translate(-2.75f, +2f, 0);
     }
 }

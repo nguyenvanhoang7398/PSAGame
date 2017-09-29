@@ -95,7 +95,6 @@ public class AssetLoader {
 
     public static void loadGameTexture() {
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
-        game_background = new TextureRegion(new Texture(Gdx.files.internal("textures/game_background.png")), 0, 0, 1080, 1920);
         unitBlockTexture = new Texture("textures/unitBlock.png");
 
         loadSpritesAndHashTable();
