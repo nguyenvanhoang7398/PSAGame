@@ -5,7 +5,13 @@ package com.thechallengers.psagame.SinglePlayer.Physics;
  */
 
 public class Pattern {
-    public boolean[][] toMatrix(int size) {
+    public int size;
+
+    public Pattern(int size) {
+        this.size = size;
+    }
+
+    public boolean[][] toMatrix() {
         boolean[][] mat = new boolean[size][size];
         initMat(mat, size);
         renderTriangle(mat, size);

@@ -9,22 +9,14 @@ public class Frame {
     public int size;
     public Pattern pattern;
 
-    Frame(int size) {
+    public Frame(int size) {
         this.size = size;
-        this.pattern = new Pattern();
+        this.pattern = new Pattern(size);
         this.frame = new boolean[size][size];
     }
 
     public void setPattern(Pattern pattern) {
         this.pattern = pattern;
-        this.frame = pattern.toMatrix(this.size);
+        this.frame = pattern.toMatrix();
     }
-
-    public void renderFrame() {
-
-    }
-
-//    public void readFrame(world) {
-//        world.draw(unitBlock)
-//    }
 }

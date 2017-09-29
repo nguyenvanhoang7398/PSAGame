@@ -383,4 +383,8 @@ public class Physics2 extends ApplicationAdapter {
     public PhysicsInputHandler getPhysicsInputHandler() {
         return physicsInputHandler;
     }
+
+    public void renderFrame(Frame frame) {
+
+    }
 }

@@ -50,7 +50,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     public SinglePlayerGameWorld(Physics2 physics_engine) {
         createUI();
-        worker = new com.thechallengers.psagame.SinglePlayer.Objects.Worker();
+        worker = new Worker();
         stage = new Stage();
         stage.addActor(touchpad);
         stage.addActor(releaseButton);
