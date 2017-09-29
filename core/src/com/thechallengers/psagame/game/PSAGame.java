@@ -6,11 +6,13 @@ import com.badlogic.gdx.Preferences;
 import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.Menu.MenuScreen;
 
+import Shop.ShopScreen;
+
 public class PSAGame extends Game {
 	public static final float LONG_EDGE = 1920;
 	public static final float SHORT_EDGE = 1080;
 	public static enum Screen {
-		MenuScreen, SP_GAME, MP_GAME, SHOP, SETTING, TUTORIAL, SinglePlayerGameScreen
+		MenuScreen, SinglePlayerGameScreen, ShopScreen
 	}
 	public static Screen CURRENT_SCREEN;
 
@@ -48,6 +50,9 @@ public class PSAGame extends Game {
 				}
 				case SinglePlayerGameScreen: {
 					setScreen(new SinglePlayerGameScreen(this));
+				}
+				case ShopScreen: {
+					setScreen(new ShopScreen());
 				}
 				default:
 			}
