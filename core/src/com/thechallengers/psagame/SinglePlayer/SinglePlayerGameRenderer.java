@@ -27,7 +27,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
     OrthographicCamera cam = new OrthographicCamera();
     private Texture debug_bg;
-    public static float GROUND_HEIGHT = 375f;
+    public static float GROUND_HEIGHT = 75f;
     public static int size = 100;
 
     public SinglePlayerGameRenderer(SinglePlayerGameWorld world) {
@@ -57,6 +57,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         myFrame.calculatePercentage(world.bodyArray, pattern_start_x, pattern_start_y);
         boolean[][] frame = myFrame.frame;
 
+        System.out.println("AAA");
         for (int i=0; i<size; i++) {
             for (int j = 0; j < size; j++) {
                 if (frame[i][j]) {

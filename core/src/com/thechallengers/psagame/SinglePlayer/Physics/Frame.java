@@ -43,25 +43,24 @@ public class Frame {
                 }
             }
         }
-//        System.out.println("percentage");
-//        System.out.println("Count " + cnt);
-//        System.out.println(sum);
+        System.out.println("percentage");
+        System.out.println("Count " + cnt);
+        System.out.println(sum / cnt    );
     }
 
     public float singleUnitPercent(Array<Body> bodies, float x_coord, float y_coord, float width, float height) {
-        float res = 0;
         for(Body body: bodies) {
             if(body.getUserData() instanceof Block) {
                 float temp = overlapPercent(x_coord, y_coord, body.getPosition().x * 100f, body.getPosition().y * 100f,
                         width, height,
                         ((Block) body.getUserData()).width * 100f,
                         ((Block) body.getUserData()).height * 100f);
-                res = Math.max(res, temp);
+                if (temp > 0) return 1.0f;
             }
         }
 //        System.out.println("res");
 //        System.out.println(res);
-        return res;
+        return 0.0f;
     }
 
     public float overlapPercent(float x_a, float y_a, float x_b, float y_b,
