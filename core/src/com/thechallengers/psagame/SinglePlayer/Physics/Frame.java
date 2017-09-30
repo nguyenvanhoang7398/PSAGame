@@ -51,11 +51,11 @@ public class Frame {
     public float singleUnitPercent(Array<Body> bodies, float x_coord, float y_coord, float width, float height) {
         float res = 0;
         for(Body body: bodies) {
-            if(body.getUserData() != null) {
-                float temp = overlapPercent(x_coord, y_coord, body.getPosition().x, body.getPosition().y,
+            if(body.getUserData() instanceof Block) {
+                float temp = overlapPercent(x_coord, y_coord, body.getPosition().x * 100f, body.getPosition().y * 100f,
                         width, height,
-                        ((Block) body.getUserData()).width,
-                        ((Block) body.getUserData()).height);
+                        ((Block) body.getUserData()).width * 100f,
+                        ((Block) body.getUserData()).height * 100f);
                 res = Math.max(res, temp);
             }
         }
