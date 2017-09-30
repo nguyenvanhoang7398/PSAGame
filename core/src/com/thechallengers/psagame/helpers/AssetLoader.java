@@ -17,7 +17,7 @@ public class AssetLoader {
     public static Texture background_texture;
     public static Texture button_texture;
     public static Texture menu_crane_texture;
-    public static TextureRegion game_background;
+    public static Texture game_background;
     public static Sprite game_crane;
     public static Texture cloud_1, cloud_2;
     public static Texture containers;
@@ -95,6 +95,7 @@ public class AssetLoader {
 
     public static void loadGameTexture() {
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
+        game_background = new Texture(Gdx.files.internal("textures/game_background.png"));
         unitBlockTexture = new Texture("textures/unitBlock.png");
 
         loadSpritesAndHashTable();

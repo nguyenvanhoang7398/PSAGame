@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.thechallengers.psagame.SinglePlayer.Objects.Crane;
+import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
@@ -34,6 +34,7 @@ public class Box2DWorld {
     private Box2DDebugRenderer debugRenderer;
     private Body ground, ceiling, crane;
     private Block nextBlock;
+    public Array<Body> bodyArray;
 
     public Box2DWorld() {
         world = new World(new Vector2(0, -9.8f), true);
@@ -54,33 +55,23 @@ public class Box2DWorld {
 
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {
-                Body bodyA = contact.getFixtureA().getBody();
-                Body bodyB = contact.getFixtureB().getBody();
 
-                if (bodyA.getType() == BodyDef.BodyType.DynamicBody && bodyB.getType() == BodyDef.BodyType.DynamicBody) return;
-
-                if (bodyB.getUserData() instanceof Block && bodyA.getUserData() == "ground") {
-                    bodyB.setType(BodyDef.BodyType.DynamicBody);
-                    bodyB.getFixtureList().get(0).setSensor(false);
-                    ((CraneData) crane.getUserData()).cranedBody = null;
-                    return;
-                }
-                if (bodyA.getUserData() instanceof Block && bodyB.getUserData() == "ground") {
-                    bodyA.setType(BodyDef.BodyType.DynamicBody);
-                    bodyA.getFixtureList().get(0).setSensor(false);
-                    ((CraneData) crane.getUserData()).cranedBody = null;
-                    return;
-                }
-                if (bodyA.getUserData() instanceof Block && bodyB.getUserData() instanceof Block) {
-                    ((CraneData) crane.getUserData()).cranedBody.getFixtureList().get(0).setSensor(false);
-                    ((CraneData) crane.getUserData()).cranedBody.setType(BodyDef.BodyType.DynamicBody);
-                    ((CraneData) crane.getUserData()).cranedBody = null;
-                    return;
-                }
             }
 
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse) {
+                Body bodyA = contact.getFixtureA().getBody();
+                Body bodyB = contact.getFixtureB().getBody();
+
+                CraneData craneData = (CraneData) crane.getUserData();
+
+                if ((craneData.cranedBody == bodyA && bodyB.getType() == BodyDef.BodyType.DynamicBody) ||
+                        (craneData.cranedBody == bodyB && bodyA.getType() == BodyDef.BodyType.DynamicBody) ||
+                        (craneData.cranedBody == bodyA && bodyB.getUserData() == "ground") ||
+                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "groundd")) {
+                    craneData.cranedBody.setTransform(craneData.destination, 0);
+                    craneData.cranedBody = null;
+                }
 
             }
         });
@@ -88,11 +79,13 @@ public class Box2DWorld {
         createGroundAndCeiling();
         createCrane();
         nextBlock = createNextBlock();
+        bodyArray = new Array<Body>();
     }
 
     public void update(float delta) {
         updateCrane();
-        System.out.println(((CraneData) crane.getUserData()).destination.toString());
+        world.getBodies(bodyArray);
+        destroyInvalidBlocks();
         world.step(delta, 6, 2);
     }
 
@@ -105,8 +98,9 @@ public class Box2DWorld {
         ground_shape.set(vertices);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = ground_shape;
-        fixtureDef.density = 1f;
+        fixtureDef.density = 100f;
         fixtureDef.friction = 1f;
+        fixtureDef.restitution = 0f;
         ground.createFixture(fixtureDef);
         ground.setUserData("Ground");
 
@@ -145,7 +139,7 @@ public class Box2DWorld {
         float distance = (17.4f - crane.getPosition().y) + (Math.abs(screenX - crane.getPosition().x))
                             + (17.4f - screenY);
 
-        float velocity = distance / 1f;
+        float velocity = distance / 2f;
 
         CraneData craneData = (CraneData) crane.getUserData();
 
@@ -222,10 +216,12 @@ public class Box2DWorld {
                     craneData.velocity = 0;
                     craneData.isMoving = false;
                     crane.setLinearVelocity(0, 0);
-                    craneData.cranedBody.setTransform(craneData.destination.x, craneData.destination.y - 0.1f - ((Block) craneData.cranedBody.getUserData()).height / 2f, 0);
-                    craneData.cranedBody.setType(BodyDef.BodyType.DynamicBody);
-                    craneData.cranedBody.getFixtureList().get(0).setSensor(false);
-                    craneData.cranedBody = null;
+                    if (craneData.cranedBody != null) {
+                        craneData.cranedBody.setTransform(craneData.destination.x, craneData.destination.y - 0.1f - ((Block) craneData.cranedBody.getUserData()).height / 2f, 0);
+                        craneData.cranedBody.setType(BodyDef.BodyType.DynamicBody);
+                        craneData.cranedBody.getFixtureList().get(0).setSensor(false);
+                        craneData.cranedBody = null;
+                    }
                 }
             }
             default:
@@ -242,7 +238,7 @@ public class Box2DWorld {
 
     public Body createBody(Block block) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         Body body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(block.width / 2f, block.height / 2f);
@@ -250,10 +246,21 @@ public class Box2DWorld {
         fixtureDef.shape = shape;
         fixtureDef.density = 1f;
         fixtureDef.friction = 1f;
-        fixtureDef.isSensor = true;
+        fixtureDef.restitution = 0f;
         body.createFixture(fixtureDef);
         body.setUserData(block);
         return body;
+    }
+
+    public void destroyInvalidBlocks() {
+        for(int i = 0; i < bodyArray.size; i++) {
+            float rotation = bodyArray.get(i).getAngle();
+            if (Math.abs(rotation) > 0.2f) {
+                world.destroyBody(bodyArray.get(i));
+                bodyArray.removeIndex(i);
+                i--;
+            }
+        }
     }
 
     public void debugRender() {

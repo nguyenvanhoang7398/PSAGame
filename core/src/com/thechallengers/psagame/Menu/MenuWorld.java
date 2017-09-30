@@ -104,8 +104,6 @@ public class MenuWorld implements ScreenWorld {
             zoomIn();
             zoomTime ++;
         }
-
-        System.out.println(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
     }
 
     public Stage getStage() {
