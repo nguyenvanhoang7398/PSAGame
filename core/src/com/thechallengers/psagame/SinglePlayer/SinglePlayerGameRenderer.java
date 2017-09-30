@@ -49,11 +49,12 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         batcher.draw(AssetLoader.game_background, 0, 0);
         //batcher.draw(debug_bg, 0, 0);
 
-        /*
+//        /*
         float pattern_start_x = Gdx.graphics.getWidth()/2 - size/2 * AssetLoader.unitBlockTexture.getWidth();
         float pattern_start_y = GROUND_HEIGHT;
         Frame myFrame = new Frame(size);
         myFrame.setPattern(new Pattern(size));
+        myFrame.calculatePercentage(world.bodyArray, pattern_start_x, pattern_start_y);
         boolean[][] frame = myFrame.frame;
 
         for (int i=0; i<size; i++) {
@@ -64,7 +65,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
                 }
             }
         }
-        */
+//        */
 
         //BLOCKS
         for (int i = 0; i < world.box2DWorld.bodyArray.size; i++) {
