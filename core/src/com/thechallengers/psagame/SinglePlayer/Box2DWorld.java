@@ -228,7 +228,7 @@ public class Box2DWorld {
         }
 
         if (craneData.cranedBody != null) {
-            craneData.cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - nextBlock.height / 2f, 0);
+            craneData.cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - ((Block) craneData.cranedBody.getUserData()).height / 2f, 0);
         }
     }
 
