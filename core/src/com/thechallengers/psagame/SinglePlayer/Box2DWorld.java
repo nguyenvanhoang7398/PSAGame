@@ -68,7 +68,7 @@ public class Box2DWorld {
                 if ((craneData.cranedBody == bodyA && bodyB.getType() == BodyDef.BodyType.DynamicBody) ||
                         (craneData.cranedBody == bodyB && bodyA.getType() == BodyDef.BodyType.DynamicBody) ||
                         (craneData.cranedBody == bodyA && bodyB.getUserData() == "ground") ||
-                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "groundd")) {
+                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "ground")) {
                     craneData.cranedBody.setTransform(craneData.destination, 0);
                     craneData.cranedBody = null;
                 }

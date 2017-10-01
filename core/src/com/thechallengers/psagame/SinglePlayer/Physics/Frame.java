@@ -1,6 +1,10 @@
 package com.thechallengers.psagame.SinglePlayer.Physics;
 
         import com.badlogic.gdx.physics.box2d.Body;
+        import com.badlogic.gdx.physics.box2d.BodyDef;
+        import com.badlogic.gdx.physics.box2d.FixtureDef;
+        import com.badlogic.gdx.physics.box2d.PolygonShape;
+        import com.badlogic.gdx.physics.box2d.World;
         import com.badlogic.gdx.utils.Array;
         import com.thechallengers.psagame.helpers.AssetLoader;
 
@@ -78,6 +82,23 @@ public class Frame {
         float overlapArea = x_overlap * y_overlap;
         float unitArea = width_a * height_a;
         return overlapArea / unitArea;
+    }
+
+    public Body createPattern(World world, float[] vertices) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        Body body = world.createBody(bodyDef);
+        PolygonShape shape = new PolygonShape();
+        shape.set(vertices);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 1f;
+        fixtureDef.restitution = 0f;
+        fixtureDef.isSensor = true;
+        body.createFixture(fixtureDef);
+        body.setUserData("Pattern");
+        return body;
     }
 }
 
