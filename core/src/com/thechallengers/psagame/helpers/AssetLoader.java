@@ -52,6 +52,10 @@ public class AssetLoader {
     //position for game background (zoomed in from menu)
     public static int starting_x, starting_y, end_x, end_y;
 
+    //tutorial
+    public static Texture instructor_welcome;
+    public static Texture balloon_welcome;
+
     public static void loadMenuTexture() {
 
         background_texture = new Texture(Gdx.files.internal("textures/menubackground.png"));
@@ -106,6 +110,11 @@ public class AssetLoader {
         starting_y = _starting_y;
         end_x = _end_x;
         end_y = _end_y;
+    }
+
+    public static void loadTutorialTexture() {
+        instructor_welcome = new Texture(Gdx.files.internal("textures/tutorial/instructor_welcome.png"));
+        balloon_welcome = new Texture(Gdx.files.internal("textures/tutorial/balloon_welcome.png"));
     }
 
     public static void loadSpritesAndHashTable() {

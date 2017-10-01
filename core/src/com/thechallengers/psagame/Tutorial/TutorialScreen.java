@@ -1,4 +1,4 @@
-package com.thechallengers.psagame.SinglePlayer;
+package com.thechallengers.psagame.Tutorial;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -6,23 +6,26 @@ import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
 /**
- * Created by Phung Tuan Hoang on 9/9/2017.
+ * Created by Phung Tuan Hoang on 10/1/2017.
  */
 
-public class SinglePlayerGameScreen implements Screen {
+public class TutorialScreen implements Screen{
     private PSAGame game;
-    protected SinglePlayerGameWorld world;
-    protected SinglePlayerGameRenderer renderer;
-    private PhysicsInputHandler physicsInputHandler;
+    private TutorialInputHandler tutorialInputHandler;
+    private TutorialWorld world;
+    private TutorialRenderer renderer;
     private float runTime = 0;
 
-    public SinglePlayerGameScreen(PSAGame game) {
-        this.game = game;
-        world = new SinglePlayerGameWorld();
-        renderer = new SinglePlayerGameRenderer(world);
-        physicsInputHandler = new PhysicsInputHandler(world);
+    public TutorialScreen(PSAGame game) {
         AssetLoader.loadGameTexture();
-        Gdx.input.setInputProcessor(physicsInputHandler);
+        AssetLoader.loadMenuTexture();
+        AssetLoader.loadTutorialTexture();
+        this.game = game;
+        world = new TutorialWorld();
+        renderer = new TutorialRenderer(world);
+        this.tutorialInputHandler = new TutorialInputHandler(world);
+        //NEED ASSETLOADER LOAD
+        Gdx.input.setInputProcessor(tutorialInputHandler);
     }
 
     @Override

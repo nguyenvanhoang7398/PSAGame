@@ -96,7 +96,7 @@ public class MenuWorld implements ScreenWorld {
         stage.act(delta);
 
         if (zoomTime == 57) {
-            CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+            CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
         }
 
         if (isZooming && zoomTime < 57) {
