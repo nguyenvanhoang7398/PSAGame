@@ -31,7 +31,9 @@ public class AssetLoader {
     public static Texture setting_box;
     public static Texture slider_bg, slider_knob;
     public static Texture unitBlockTexture;
-    public static Texture shop_button;
+    public static Texture shop_button, shop_backButton;
+    public static Texture shop_background;
+
 
     //box sprites
     public static Sprite block_sprite_1_11, block_sprite_1_12, block_sprite_1_21, block_sprite_1_22, block_sprite_1_32, block_sprite_1_31;
@@ -94,6 +96,16 @@ public class AssetLoader {
         background_texture.dispose();
         button_texture.dispose();
         arial.dispose();
+    }
+
+    public static void loadShopTexture() {
+        shop_background = new Texture(Gdx.files.internal("textures/gamebackground.png"));
+        shop_backButton = new Texture(Gdx.files.internal("textures/shop_backButton.png"));
+    }
+
+    public static void disposeShopTexture() {
+        shop_background.dispose();
+        shop_backButton.dispose();
     }
 
     public static void loadGameTexture() {

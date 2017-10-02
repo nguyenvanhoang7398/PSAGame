@@ -154,7 +154,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 shop_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
-
+                CURRENT_SCREEN = PSAGame.Screen.ShopScreen;
             }
         });
     }

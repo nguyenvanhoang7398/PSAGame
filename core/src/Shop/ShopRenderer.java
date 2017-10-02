@@ -1,5 +1,7 @@
 package Shop;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 
 /**
@@ -13,9 +15,13 @@ public class ShopRenderer extends ScreenRenderer {
         super();
         this.shopWorld = shopWorld;
         this.stage = shopWorld.getStage();
+        stage.setViewport(viewport);
+        Gdx.input.setInputProcessor(stage);
+
     }
 
-    public void render() {
-
+    public void render(float runTime) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw();
     }
 }

@@ -52,7 +52,7 @@ public class PSAGame extends Game {
 					setScreen(new SinglePlayerGameScreen(this));
 				}
 				case ShopScreen: {
-					//setScreen(new ShopScreen());
+					setScreen(new ShopScreen(this));
 				}
 				default:
 			}
