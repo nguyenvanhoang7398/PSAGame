@@ -31,6 +31,7 @@ public class AssetLoader {
     public static Texture setting_box;
     public static Texture slider_bg, slider_knob;
     public static Texture unitBlockTexture;
+    public static Texture shop_button;
 
     //box sprites
     public static Sprite block_sprite_1_11, block_sprite_1_12, block_sprite_1_21, block_sprite_1_22, block_sprite_1_32, block_sprite_1_31;
@@ -76,6 +77,8 @@ public class AssetLoader {
         setting_box = new Texture(Gdx.files.internal("textures/setting_box.png"));
         slider_bg = new Texture(Gdx.files.internal("textures/slider_bg.png"));
         slider_knob = new Texture(Gdx.files.internal("textures/slider_knob.png"));
+        shop_button = new Texture(Gdx.files.internal("textures/shop_icon.png"));
+
 
 
 

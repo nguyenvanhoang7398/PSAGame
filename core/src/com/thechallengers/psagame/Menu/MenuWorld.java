@@ -26,6 +26,8 @@ import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.Menu.Objects.MenuCrane;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 
+import sun.rmi.runtime.Log;
+
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
@@ -56,6 +58,10 @@ public class MenuWorld implements ScreenWorld {
 
     private boolean isInTransition = false;
 
+    //for shop
+    private TextButton shop_button;
+    private TextButton.TextButtonStyle shop_button_style;
+
     //constructor
     public MenuWorld() {
         stage = new Stage();
@@ -77,11 +83,15 @@ public class MenuWorld implements ScreenWorld {
         background = new Background();
         //add all actors to stage
 
+        //shop button
+        createShopButton();
+
         stage.addActor(background);
         //stage.addActor(menu_crane);
         stage.addActor(play_button);
         stage.addActor(tutorial_button);
         stage.addActor(setting_button);
+        stage.addActor(shop_button);
 
         //clouds and containers
         cloudArray = new Array<Cloud>();
@@ -121,6 +131,32 @@ public class MenuWorld implements ScreenWorld {
     public void createContainers() {
         containers = new Containers();
         stage.addActor(containers);
+    }
+
+    //SHOP BUTTON
+    public void createShopButtonStyle() {
+        shop_button_style = new TextButton.TextButtonStyle();
+        shop_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button));
+        shop_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button));
+        shop_button_style.font = AssetLoader.arial;
+    }
+
+    public void createShopButton() {
+        createShopButtonStyle();
+
+        shop_button = new TextButton("", shop_button_style);
+        shop_button.setPosition(700, 1700);
+        addListenerToShopButton();
+    }
+
+    public void addListenerToShopButton() {
+        shop_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                shop_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
+
+            }
+        });
     }
 
     //PLAY BUTTON
