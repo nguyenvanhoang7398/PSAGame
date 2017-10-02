@@ -29,12 +29,16 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     private Texture debug_bg;
     public static float GROUND_HEIGHT = 75f;
     public static int size = 100;
+    public Frame myFrame;
 
     public SinglePlayerGameRenderer(SinglePlayerGameWorld world) {
         super();
         this.world = world;
 
         cam.setToOrtho(false, 10.80f, 19.20f);
+        myFrame = new Frame(size);
+        float[] pattern_verts = {1f, 1f, 1f, 1.50f, 6f, 5f, 11.80f, 1.50f, 11.80f, 1f};
+        myFrame.renderPattern(pattern_verts, world.getWorld());
 
         //debug_bg = new Texture(Gdx.files.internal("textures/debug_background.png"));
     }
@@ -45,43 +49,48 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         batcher.begin();
 
-        //world.box2DWorld.debugRender();
-        batcher.draw(AssetLoader.game_background, 0, 0);
-        //batcher.draw(debug_bg, 0, 0);
-
-//        /*
-        float pattern_start_x = Gdx.graphics.getWidth()/2 - size/2 * AssetLoader.unitBlockTexture.getWidth();
-        float pattern_start_y = GROUND_HEIGHT;
-        Frame myFrame = new Frame(size);
-        myFrame.setPattern(new Pattern(size));
-        myFrame.calculatePercentage(world.bodyArray, pattern_start_x, pattern_start_y);
-        boolean[][] frame = myFrame.frame;
-
-        System.out.println("AAA");
-        for (int i=0; i<size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (frame[i][j]) {
-                    batcher.draw(AssetLoader.unitBlockTexture, pattern_start_x + i * AssetLoader.unitBlockTexture.getWidth(),
-                            pattern_start_y + j * AssetLoader.unitBlockTexture.getHeight());
-                }
-            }
+//        float pattern_start_x = Gdx.graphics.getWidth()/2 - size/2 * AssetLoader.unitBlockTexture.getWidth();
+//        float pattern_start_y = GROUND_HEIGHT;
+        if(world.bodyArray != null && myFrame != null) {
+            myFrame.calculateOverlap(world.bodyArray);
         }
-//        */
+        world.box2DWorld.debugRender();
+//        batcher.draw(AssetLoader.game_background, 0, 0);
+//        //batcher.draw(debug_bg, 0, 0);
+//
+////        /*
 
-        //BLOCKS
-        for (int i = 0; i < world.box2DWorld.bodyArray.size; i++) {
-            if (world.box2DWorld.bodyArray.get(i).getUserData() instanceof Block) {
-                Body body = world.box2DWorld.bodyArray.get(i);
-                Block block = (Block) world.box2DWorld.bodyArray.get(i).getUserData();
-                Sprite sprite = AssetLoader.spriteHashtable.get(block.blockType);
-                Vector2 translatedPosition = translatePosition(body.getPosition().x, body.getPosition().y, Integer.parseInt(block.blockType));
-                sprite.setPosition(translatedPosition.x, translatedPosition.y);
-                sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
-                sprite.draw(batcher);
-            }
-        }
+//        myFrame.setPattern(new Pattern(size));
+//        myFrame.calculatePercentage(world.bodyArray, pattern_start_x, pattern_start_y);
+//        boolean[][] frame = myFrame.frame;
 
-        drawCrane(world.box2DWorld.getCrane());
+
+//
+//        System.out.println("AAA");
+//        for (int i=0; i<size; i++) {
+//            for (int j = 0; j < size; j++) {
+//                if (frame[i][j]) {
+//                    batcher.draw(AssetLoader.unitBlockTexture, pattern_start_x + i * AssetLoader.unitBlockTexture.getWidth(),
+//                            pattern_start_y + j * AssetLoader.unitBlockTexture.getHeight());
+//                }
+//            }
+//        }
+////        */
+//
+//        //BLOCKS
+//        for (int i = 0; i < world.box2DWorld.bodyArray.size; i++) {
+//            if (world.box2DWorld.bodyArray.get(i).getUserData() instanceof Block) {
+//                Body body = world.box2DWorld.bodyArray.get(i);
+//                Block block = (Block) world.box2DWorld.bodyArray.get(i).getUserData();
+//                Sprite sprite = AssetLoader.spriteHashtable.get(block.blockType);
+//                Vector2 translatedPosition = translatePosition(body.getPosition().x, body.getPosition().y, Integer.parseInt(block.blockType));
+//                sprite.setPosition(translatedPosition.x, translatedPosition.y);
+//                sprite.setRotation(MathUtils.radiansToDegrees * body.getAngle());
+//                sprite.draw(batcher);
+//            }
+//        }
+
+//        drawCrane(world.box2DWorld.getCrane());
 
         batcher.end();
         world.getStage().draw();
