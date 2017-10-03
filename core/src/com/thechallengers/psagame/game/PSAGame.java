@@ -4,20 +4,23 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.thechallengers.psagame.Menu.MenuScreen;
+import com.thechallengers.psagame.Shop.ShopScreen;
 import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 
-import Shop.ShopScreen;
 
 public class PSAGame extends Game {
 	public static final float LONG_EDGE = 1920;
 	public static final float SHORT_EDGE = 1080;
+
 	public static enum Screen {
 		MenuScreen, SinglePlayerGameScreen, ShopScreen
 	}
+
 	public static Screen CURRENT_SCREEN;
 
+
 	@Override
-	public void create () {
+	public void create() {
 		//Load game preferences
 
 		Preferences prefs = Gdx.app.getPreferences("prefs");
@@ -27,17 +30,18 @@ public class PSAGame extends Game {
 
 		//Open menu
 		CURRENT_SCREEN = Screen.MenuScreen;
-		setScreen(new MenuScreen(this));
+		this.setScreen(new MenuScreen(this));
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		super.render();
-		updateScreen();
+		//updateScreen();
+
 	}
-	
+
 	@Override
-	public void dispose () {
+	public void dispose() {
 
 	}
 

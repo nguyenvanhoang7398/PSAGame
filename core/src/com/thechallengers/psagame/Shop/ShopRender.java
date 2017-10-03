@@ -1,27 +1,28 @@
-package Shop;
+package com.thechallengers.psagame.Shop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 
 /**
- * Created by Phung Tuan Hoang on 9/28/2017.
+ * Created by name on 3/10/2017.
  */
 
-public class ShopRenderer extends ScreenRenderer {
-    private ShopWorld shopWorld;
+public class ShopRender extends ScreenRenderer {
+    private ShopWorld world;
 
-    public ShopRenderer(ShopWorld shopWorld) {
+    //constructor
+    public ShopRender(ShopWorld world) {
         super();
-        this.shopWorld = shopWorld;
-        this.stage = shopWorld.getStage();
+        this.world = world;
+        stage = world.getStage();
         stage.setViewport(viewport);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }
+
 }

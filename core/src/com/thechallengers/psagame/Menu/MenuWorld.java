@@ -21,12 +21,13 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.thechallengers.psagame.Menu.Objects.Background;
 import com.thechallengers.psagame.Menu.Objects.Cloud;
 import com.thechallengers.psagame.Menu.Objects.Containers;
+import com.thechallengers.psagame.Shop.ShopScreen;
+import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.Menu.Objects.MenuCrane;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 
-import sun.rmi.runtime.Log;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
@@ -62,8 +63,11 @@ public class MenuWorld implements ScreenWorld {
     private TextButton shop_button;
     private TextButton.TextButtonStyle shop_button_style;
 
+    private PSAGame game;
+
     //constructor
-    public MenuWorld() {
+    public MenuWorld(PSAGame game) {
+        this.game = game;
         stage = new Stage();
 
         //play button
@@ -106,7 +110,7 @@ public class MenuWorld implements ScreenWorld {
         stage.act(delta);
 
         if (zoomTime == 57) {
-            CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+            game.setScreen(new SinglePlayerGameScreen(game));
         }
 
         if (isZooming && zoomTime < 57) {
@@ -154,7 +158,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 shop_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
-                CURRENT_SCREEN = PSAGame.Screen.ShopScreen;
+                game.setScreen(new ShopScreen(game));
             }
         });
     }
@@ -425,4 +429,6 @@ public class MenuWorld implements ScreenWorld {
     public void translate() {
         stage.getCamera().translate(-2.75f, +2f, 0);
     }
+
+
 }

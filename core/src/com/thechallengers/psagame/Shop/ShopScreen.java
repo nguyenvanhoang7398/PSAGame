@@ -1,29 +1,27 @@
-package Shop;
+package com.thechallengers.psagame.Shop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
+
 /**
- * Created by Phung Tuan Hoang on 9/28/2017.
+ * Created by name on 3/10/2017.
  */
 
 public class ShopScreen implements Screen {
     private PSAGame game;
-    private ShopWorld shopWorld;
-    private ShopRenderer shopRenderer;
+    private ShopWorld shop_world;
+    private ShopRender shop_renderer;
     private float runTime = 0;
 
-    //constructor
     public ShopScreen(PSAGame game) {
         AssetLoader.loadShopTexture();
         this.game = game;
-        shopWorld = new ShopWorld();
-        shopRenderer = new ShopRenderer(shopWorld);
-
+        shop_world = new ShopWorld(game);
+        shop_renderer = new ShopRender(shop_world);
     }
-
     @Override
     public void show() {
 
@@ -31,10 +29,10 @@ public class ShopScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.input.setInputProcessor(shopWorld.getStage());
+        Gdx.input.setInputProcessor(shop_world.getStage());
         runTime += delta;
-        shopWorld.update(delta);
-        shopRenderer.render(runTime);
+        shop_world.update(delta);
+        shop_renderer.render(runTime);
     }
 
     @Override
@@ -53,10 +51,12 @@ public class ShopScreen implements Screen {
     }
 
     @Override
-    public void hide() { dispose();}
+    public void hide() { }
 
     @Override
     public void dispose() {
         AssetLoader.disposeShopTexture();
+        shop_world.getStage().dispose();
+
     }
 }

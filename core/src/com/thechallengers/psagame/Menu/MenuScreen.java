@@ -19,7 +19,7 @@ public class MenuScreen implements Screen {
     public MenuScreen(PSAGame game) {
         AssetLoader.loadMenuTexture();
         this.game = game;
-        menu_world = new MenuWorld();
+        menu_world = new MenuWorld(game);
         menu_renderer = new MenuRenderer(menu_world);
     }
 
@@ -29,6 +29,7 @@ public class MenuScreen implements Screen {
         runTime += delta;
         menu_world.update(delta);
         menu_renderer.render(runTime);
+
     }
 
     @Override
@@ -53,11 +54,12 @@ public class MenuScreen implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+
     }
 
     @Override
     public void dispose() {
         AssetLoader.disposeMenuTexture();
+        menu_world.getStage().dispose();
     }
 }
