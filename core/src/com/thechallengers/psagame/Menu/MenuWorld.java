@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.thechallengers.psagame.LevelSelection.LevelSelectionScreen;
 import com.thechallengers.psagame.Menu.Objects.Background;
 import com.thechallengers.psagame.Menu.Objects.Cloud;
 import com.thechallengers.psagame.Menu.Objects.Containers;
@@ -110,7 +111,7 @@ public class MenuWorld implements ScreenWorld {
         stage.act(delta);
 
         if (zoomTime == 57) {
-            game.setScreen(new SinglePlayerGameScreen(game));
+            game.setScreen(new LevelSelectionScreen(game));
         }
 
         if (isZooming && zoomTime < 57) {

@@ -33,6 +33,8 @@ public class AssetLoader {
     public static Texture unitBlockTexture;
     public static Texture shop_button, shop_backButton;
     public static Texture shop_background;
+    public static Texture level_selection_background;
+    public static Texture level_backButton;
 
 
     //box sprites
@@ -96,6 +98,16 @@ public class AssetLoader {
         background_texture.dispose();
         button_texture.dispose();
         arial.dispose();
+    }
+
+    public static void loadLevelSelectionTexture() {
+        level_selection_background = new Texture(Gdx.files.internal("textures/level_selection_background.png"));
+        level_backButton = new Texture(Gdx.files.internal("textures/shop_backButton.png"));
+    }
+
+    public static void disposeLevelSelectionTexture() {
+        level_selection_background.dispose();
+        level_backButton.dispose();
     }
 
     public static void loadShopTexture() {
