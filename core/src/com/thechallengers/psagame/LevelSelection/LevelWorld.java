@@ -1,10 +1,13 @@
 package com.thechallengers.psagame.LevelSelection;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.thechallengers.psagame.Menu.MenuScreen;
 import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
@@ -29,7 +32,8 @@ class LevelWorld implements ScreenWorld {
     private TextButton back_button;
     private TextButton.TextButtonStyle level1_style;
     private TextButton level1_button;
-    private StarLevel level1_star;
+    private ImageButton level1_star;
+    private ImageButton.ImageButtonStyle level1_star_style;
 
     //constructor
     public LevelWorld (PSAGame game) {
@@ -80,11 +84,60 @@ class LevelWorld implements ScreenWorld {
 
         level1_button = new TextButton("", level1_style);
         level1_button.setPosition(100, 1000);
-        level1_star = new StarLevel(100, 1000 - 100, 1);
+        level1_star_style = new ImageButton.ImageButtonStyle();
+        int star_Level = Gdx.app.getPreferences("prefs").getInteger("level1_starLevel");
+        Drawable style;
+        switch(star_Level) {
+            case 0: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star0));
+                break;
+            case 1: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star1));
+                break;
+            case 2: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star2));
+                break;
+            case 3: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star3));
+                break;
+            default: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star0));
+                break;
+        }
+        level1_star_style.imageUp = style;
+        level1_star_style.imageDown = style;
+        level1_star = new ImageButton(level1_star_style);
+        level1_star.setPosition(100, 1000 - 100);
         addListenerToLevel1Button();
+        addListenerToLevel1Star();
+
 
     }
 
+    private void addListenerToLevel1Star() {
+        level1_star.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                int star_Level = Gdx.app.getPreferences("prefs").getInteger("level1_starLevel");
+                star_Level ++;
+                if (star_Level > 3) star_Level = 0;
+                Drawable style;
+                switch(star_Level) {
+                    case 0: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star0));
+                        break;
+                    case 1: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star1));
+                        break;
+                    case 2: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star2));
+                        break;
+                    case 3: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star3));
+                        break;
+                    default: style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star0));
+                        break;
+                }
+                ImageButton.ImageButtonStyle star_style = level1_star.getStyle();
+                star_style.imageUp = style;
+                star_style.imageDown = style;
+                Gdx.app.getPreferences("prefs").putInteger("level1_starLevel", star_Level).flush();
+
+            }
+        });
+    }
+//
     public void addListenerToLevel1Button() {
         level1_button.addListener(new ClickListener() {
             @Override

@@ -26,6 +26,7 @@ public class PSAGame extends Game {
 		Preferences prefs = Gdx.app.getPreferences("prefs");
 		if (!prefs.contains("music volume")) prefs.putFloat("music volume", 1);
 		if (!prefs.contains("sfx volume")) prefs.putFloat("sfx volume", 0.5f);
+		if (!prefs.contains("level1_starLevel")) prefs.putInteger("level1_starLevel", 0);
 		prefs.flush();
 
 		//Open menu
