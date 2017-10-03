@@ -38,6 +38,7 @@ public class AssetLoader {
     public static Texture level1_Button;
     public static Texture level_title;
     public static Texture star0, star1, star2, star3 ;
+    public static Texture shop_title;
 
 
     //box sprites
@@ -128,11 +129,13 @@ public class AssetLoader {
     public static void loadShopTexture() {
         shop_background = new Texture(Gdx.files.internal("textures/gamebackground.png"));
         shop_backButton = new Texture(Gdx.files.internal("textures/shop_backButton.png"));
+        shop_title = new Texture(Gdx.files.internal("textures/shop_title.png"));
     }
 
     public static void disposeShopTexture() {
         shop_background.dispose();
         shop_backButton.dispose();
+        shop_title.dispose();
     }
 
     public static void loadGameTexture() {

@@ -27,6 +27,8 @@ public class PSAGame extends Game {
 		if (!prefs.contains("music volume")) prefs.putFloat("music volume", 1);
 		if (!prefs.contains("sfx volume")) prefs.putFloat("sfx volume", 0.5f);
 		if (!prefs.contains("level1_starLevel")) prefs.putInteger("level1_starLevel", 0);
+		if (!prefs.contains("crane_level")) prefs.putInteger("crane_level", 1);
+		if (!prefs.contains("moneyBalance")) prefs.putInteger("moneyBalance", 100);
 		prefs.flush();
 
 		//Open menu

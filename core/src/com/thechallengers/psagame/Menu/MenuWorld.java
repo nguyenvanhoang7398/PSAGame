@@ -96,12 +96,12 @@ public class MenuWorld implements ScreenWorld {
         stage.addActor(play_button);
         stage.addActor(tutorial_button);
         stage.addActor(setting_button);
-        stage.addActor(shop_button);
 
         //clouds and containers
         cloudArray = new Array<Cloud>();
         createClouds();
         createContainers();
+        stage.addActor(shop_button);
         //lookAt();
 
     }
