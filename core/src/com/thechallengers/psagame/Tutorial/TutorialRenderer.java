@@ -10,6 +10,11 @@ import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
+import java.util.ArrayDeque;
+
+import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.DESTROY_X_SCALE;
+import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.NEXT_BLOCK_SCALE;
+
 /**
  * Created by Phung Tuan Hoang on 10/1/2017.
  */
@@ -47,6 +52,11 @@ public class TutorialRenderer extends ScreenRenderer {
 
         drawCrane(world.box2DWorld.getCrane());
 
+        // INCOMING BLOCKS
+        ArrayDeque<Block> copiedNextBlockQ = world.box2DWorld.nextBlockQ.clone();
+        renderNextBlock(copiedNextBlockQ);
+        world.box2DWorld.cooldown = renderDestroyCooldown(world.box2DWorld.cooldown);
+
         batcher.end();
 
         world.getStage().draw();
@@ -55,6 +65,20 @@ public class TutorialRenderer extends ScreenRenderer {
     public void drawCrane(Body crane) {
         AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y);
         AssetLoader.game_crane.draw(batcher);
+    }
+
+    //NEXT BLOCKS
+    public void renderNextBlock(ArrayDeque<Block> copiedNextBlockQ) {
+        float offsetX = 50f;
+        float offsetY = Gdx.graphics.getHeight() - 50f;
+        while (!copiedNextBlockQ.isEmpty()) {
+            Block block = copiedNextBlockQ.poll();
+            Sprite sprite = AssetLoader.spriteHashtable.get(block.blockType);
+            sprite.setPosition(offsetX, offsetY-sprite.getHeight()*NEXT_BLOCK_SCALE);
+            sprite.setRotation(0);
+            offsetX += sprite.getWidth()*NEXT_BLOCK_SCALE;
+            batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getWidth()*NEXT_BLOCK_SCALE, sprite.getHeight()*NEXT_BLOCK_SCALE);
+        }
     }
 
     public Vector2 translatePosition(float world_x, float world_y, int blockType) {
@@ -69,5 +93,20 @@ public class TutorialRenderer extends ScreenRenderer {
         return_vector.y = world_y * 100f - height * 100f / 2;
 
         return return_vector;
+    }
+
+    public float renderDestroyCooldown(float cd) {
+        float step = 0.01f;
+        if (cd > 0) {
+            System.out.println("Cooldown " + cd);
+            float offsetX = 875f;
+            float offsetY = 1520f;
+            Sprite sprite = AssetLoader.destroy_X;
+            sprite.setPosition(offsetX, offsetY);
+            sprite.setRotation(0);
+            batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getWidth()*DESTROY_X_SCALE, sprite.getHeight()*DESTROY_X_SCALE);
+            cd -= step;
+        }
+        return cd;
     }
 }

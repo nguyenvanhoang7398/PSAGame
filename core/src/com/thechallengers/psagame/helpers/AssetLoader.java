@@ -56,6 +56,8 @@ public class AssetLoader {
     //tutorial
     public static Texture instructor_welcome;
     public static Texture balloon_welcome;
+    public static Texture pointer_drop;
+    public static Texture pointer_tilted;
 
     public static void loadMenuTexture() {
 
@@ -117,6 +119,9 @@ public class AssetLoader {
     public static void loadTutorialTexture() {
         instructor_welcome = new Texture(Gdx.files.internal("textures/tutorial/instructor_welcome.png"));
         balloon_welcome = new Texture(Gdx.files.internal("textures/tutorial/balloon_welcome.png"));
+        pointer_drop = new Texture(Gdx.files.internal("textures/tutorial/pointer_drop.png"));
+        pointer_tilted = new Texture(Gdx.files.internal("textures/tutorial/pointer_tilted.png"));
+
     }
 
     public static void loadSpritesAndHashTable() {

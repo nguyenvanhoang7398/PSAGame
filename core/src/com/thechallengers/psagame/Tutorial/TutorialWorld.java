@@ -66,6 +66,36 @@ public class TutorialWorld implements ScreenWorld {
     }
 
     private void createPointer(TutorialState state) {
+        switch (state) {
+            case WELCOME:
+                break;
+            case AIM:
+                break;
+            case DROP:
+                break;
+            case DROP_INDICATOR:
+                pointer = new FadeInFadeOutActor(AssetLoader.pointer_drop, 0, 0);
+                stage.addActor(pointer);
+                break;
+            case TILTED:
+                break;
+            case TILTED_INDICATOR:
+                pointer = new FadeInFadeOutActor(AssetLoader.pointer_tilted, 0, 0);
+                stage.addActor(pointer);
+                break;
+            case AFTER_TILTED:
+                break;
+            case AFTER_TILTED_INDICATOR:
+                break;
+            case PROGRESS:
+                break;
+            case DESTROY:
+                break;
+            case DESTROY_INDICATOR:
+                break;
+            case GOODLUCK:
+                break;
+        }
     }
 
     private void createInstructor(TutorialState state) {
@@ -82,13 +112,13 @@ public class TutorialWorld implements ScreenWorld {
             case DROP_INDICATOR:
                 break;
             case TILTED:
-                instructor = new FadeInFadeOutActor(AssetLoader.instructor_welcome, 58, 289);
+                instructor = new FadeInFadeOutActor(AssetLoader.instructor_welcome, 58, 289, 2f);
                 stage.addActor(instructor);
                 break;
             case TILTED_INDICATOR:
                 break;
             case AFTER_TILTED:
-                instructor = new FadeInFadeOutActor(AssetLoader.instructor_welcome, 58, 289);
+                instructor = new FadeInFadeOutActor(AssetLoader.instructor_welcome, 58, 289, 3.5f);
                 stage.addActor(instructor);
                 break;
             case AFTER_TILTED_INDICATOR:
@@ -126,13 +156,13 @@ public class TutorialWorld implements ScreenWorld {
             case DROP_INDICATOR:
                 break;
             case TILTED:
-                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920, 2f);
                 stage.addActor(balloon);
                 break;
             case TILTED_INDICATOR:
                 break;
             case AFTER_TILTED:
-                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920, 3.5f);
                 stage.addActor(balloon);
                 break;
             case AFTER_TILTED_INDICATOR:
@@ -174,21 +204,21 @@ public class TutorialWorld implements ScreenWorld {
                 balloon.clicked();
                 break;
             case DROP_INDICATOR:
-                //pointer.clicked();
+                pointer.clicked();
                 break;
             case TILTED:
                 instructor.clicked();
                 balloon.clicked();
                 break;
             case TILTED_INDICATOR:
-                //pointer.clicked();
+                pointer.clicked();
                 break;
             case AFTER_TILTED:
                 instructor.clicked();
                 balloon.clicked();
                 break;
             case AFTER_TILTED_INDICATOR:
-                //pointer.clicked();
+                pointer.clicked();
                 break;
             case PROGRESS:
                 balloon.clicked();
@@ -198,7 +228,7 @@ public class TutorialWorld implements ScreenWorld {
                 balloon.clicked();
                 break;
             case DESTROY_INDICATOR:
-                //pointer.clicked();
+                pointer.clicked();
                 break;
             case GOODLUCK:
                 instructor.clicked();

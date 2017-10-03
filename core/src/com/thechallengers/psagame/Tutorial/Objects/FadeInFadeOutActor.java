@@ -29,12 +29,20 @@ public class FadeInFadeOutActor extends Actor {
         this.setPosition(x, y);
     }
 
+    public FadeInFadeOutActor(Texture texture, int x, int y, float delayTime) {
+        this.texture = texture;
+        this.isClicked = false;
+        this.thisActor = this;
+        this.getColor().a = 0;
+        this.addAction(sequence(delay(delayTime), fadeIn(0.5f)));
+        this.setPosition(x, y);
+    }
+
     @Override
     public void act(float delta) {
         super.act(delta);
 
         if (isClicked) {
-            System.out.println("killed in base class");
             this.addAction(Actions.sequence(Actions.fadeOut(0.5f), run(new Runnable() {
                 @Override
                 public void run() {

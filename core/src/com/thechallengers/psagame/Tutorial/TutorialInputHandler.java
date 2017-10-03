@@ -50,20 +50,28 @@ public class TutorialInputHandler implements InputProcessor {
                     world.createOnScreenInstructions();
                     break;
                 case DROP_INDICATOR:
-                    world.clicked();
-                    world.getStateQueue().removeFirst();
-                    world.createOnScreenInstructions();
-                    break;
+                    if (screenX > 455 && screenX < 507 && screenY > 1775 && screenY < 1827) {
+                        inputForNormalGame(475, 1800);
+                        world.clicked();
+                        world.getStateQueue().removeFirst();
+                        world.createOnScreenInstructions();
+                        break;
+                    }
+                    else return false;
                 case TILTED:
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
                     break;
                 case TILTED_INDICATOR:
-                    world.clicked();
-                    world.getStateQueue().removeFirst();
-                    world.createOnScreenInstructions();
-                    break;
+                    if (screenX > 515 && screenX < 568 && screenY > 1713 && screenY < 1766) {
+                        inputForNormalGame(540, 1738);
+                        world.clicked();
+                        world.getStateQueue().removeFirst();
+                        world.createOnScreenInstructions();
+                        break;
+                    }
+                    else return false;
                 case AFTER_TILTED:
                     world.clicked();
                     world.getStateQueue().removeFirst();
@@ -96,17 +104,12 @@ public class TutorialInputHandler implements InputProcessor {
                     break;
                 default:
             }
+
+            return true;
         }
 
-        else {
-            if (!((CraneData) world.box2DWorld.getCrane().getUserData()).isMoving) {
-                float box2DWorld_x = screenX / 100f;
-                float box2DWorld_y = (1920 - screenY * 1920 / Gdx.graphics.getHeight()) / 100f;
-                System.out.printf("%f %f\n", box2DWorld_x, box2DWorld_y);
+        inputForNormalGame(screenX, screenY);
 
-                world.box2DWorld.moveCrane(box2DWorld_x, box2DWorld_y);
-            }
-        }
         return true;
     }
 
@@ -128,5 +131,19 @@ public class TutorialInputHandler implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    public void inputForNormalGame(int screenX, int screenY) {
+        float box2DWorld_x = screenX / 100f;
+        float box2DWorld_y = (1920 - screenY * 1920 / Gdx.graphics.getHeight()) / 100f;
+
+        if (!world.box2DWorld.destroyMode) {
+            if (!((CraneData) world.box2DWorld.getCrane().getUserData()).isMoving) {
+                world.box2DWorld.moveCrane(box2DWorld_x, box2DWorld_y);
+            }
+        } else if (world.box2DWorld.cooldown <= 0) {
+            world.box2DWorld.destroyBlock(box2DWorld_x, box2DWorld_y);
+            world.box2DWorld.destroyMode = false;
+        }
     }
 }
