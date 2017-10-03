@@ -19,6 +19,7 @@ public class AssetLoader {
     public static Texture menu_crane_texture;
     public static Texture game_background;
     public static Sprite game_crane;
+    public static Sprite destroy_X;
     public static Texture cloud_1, cloud_2;
     public static Texture containers;
     public static Texture play_button, play_button_pressed;
@@ -95,6 +96,7 @@ public class AssetLoader {
 
     public static void loadGameTexture() {
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
+        destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));
         game_background = new Texture(Gdx.files.internal("textures/game_background.png"));
         unitBlockTexture = new Texture("textures/unitBlock.png");
 

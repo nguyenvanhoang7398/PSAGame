@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -32,14 +33,17 @@ import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.UP
  */
 
 public class Box2DWorld {
-    private static final int numNextBlockInformed = 3;
+    private static final int NUM_NEXT_BLOCK_INFORMED = 3;
+    private static final float COOLDOWN_TIME = 5;
 
     private World world;
     private OrthographicCamera cam;
     private Box2DDebugRenderer debugRenderer;
     private Body ground, ceiling, crane;
+    public boolean destroyMode;
     public ArrayDeque<Block> nextBlockQ;
     public Array<Body> bodyArray;
+    public float cooldown;
 
     public Box2DWorld() {
         world = new World(new Vector2(0, -9.8f), true);
@@ -84,10 +88,12 @@ public class Box2DWorld {
         createGroundAndCeiling();
         createCrane();
         nextBlockQ = new ArrayDeque<Block>();
-        for (int i=0; i<numNextBlockInformed; i++) { // create next blocks and enqueue
+        for (int i = 0; i< NUM_NEXT_BLOCK_INFORMED; i++) { // create next blocks and enqueue
             nextBlockQ.addLast(createNextBlock());
         }
         bodyArray = new Array<Body>();
+        destroyMode = false;
+        cooldown = 0;
     }
 
     public void update(float delta) {
@@ -263,10 +269,19 @@ public class Box2DWorld {
         return body;
     }
 
-    public void renderNextBlockQ() {
-        ArrayDeque<Block> copiedNextBlockQ = nextBlockQ.clone(); // clone next block queue
-        while (!copiedNextBlockQ.isEmpty()) {
-
+    public void destroyBlock(float screenX, float screenY) {
+        for(int i = 0; i < bodyArray.size; i++) {
+            Body body = bodyArray.get(i);
+            Fixture fixture = body.getFixtureList().get(0);
+            if (!(body.getUserData() instanceof Block)) {
+                continue;
+            }
+            if (fixture.testPoint(screenX, screenY)) {
+                world.destroyBody(bodyArray.get(i));
+                bodyArray.removeIndex(i);
+                cooldown = COOLDOWN_TIME;
+                break;
+            }
         }
     }
 
