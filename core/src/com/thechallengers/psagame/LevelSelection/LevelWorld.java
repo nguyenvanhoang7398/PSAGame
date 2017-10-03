@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.thechallengers.psagame.Menu.MenuScreen;
+import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
@@ -23,17 +24,26 @@ class LevelWorld implements ScreenWorld {
     private PSAGame game;
     private Stage stage;
     private LevelSelectionBackground background;
+    private LevelTitle title;
     private TextButton.TextButtonStyle back_button_style;
     private TextButton back_button;
+    private TextButton.TextButtonStyle level1_style;
+    private TextButton level1_button;
+    private StarLevel level1_star;
 
     //constructor
     public LevelWorld (PSAGame game) {
         this.game = game;
         stage = new Stage();
         background = new LevelSelectionBackground();
+        title = new LevelTitle();
         createBackButton();
+        createLevel1Button();
         stage.addActor(background);
+        stage.addActor(title);
         stage.addActor(back_button);
+        stage.addActor(level1_button);
+        stage.addActor(level1_star);
 
     }
     @Override
@@ -58,6 +68,29 @@ class LevelWorld implements ScreenWorld {
             public void clicked(InputEvent event, float x, float y) {
                 back_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 game.setScreen(new MenuScreen(game));
+            }
+        });
+    }
+
+    public void createLevel1Button() {
+        level1_style = new TextButton.TextButtonStyle();
+        level1_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.level1_Button));
+        level1_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.level1_Button));
+        level1_style.font = AssetLoader.arial;
+
+        level1_button = new TextButton("", level1_style);
+        level1_button.setPosition(100, 1000);
+        level1_star = new StarLevel(100, 1000 - 100, 1);
+        addListenerToLevel1Button();
+
+    }
+
+    public void addListenerToLevel1Button() {
+        level1_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                level1_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
+                game.setScreen(new SinglePlayerGameScreen(game));
             }
         });
     }
