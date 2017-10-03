@@ -1,7 +1,6 @@
 package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,22 +17,28 @@ import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
 
-import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.DOWN;;
+import java.util.ArrayDeque;
+
+import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.DOWN;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.LEFT;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.RIGHT;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.STOP;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.UP;
+
+;
 
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.
  */
 
 public class Box2DWorld {
+    private static final int numNextBlockInformed = 3;
+
     private World world;
     private OrthographicCamera cam;
     private Box2DDebugRenderer debugRenderer;
     private Body ground, ceiling, crane;
-    private Block nextBlock;
+    public ArrayDeque<Block> nextBlockQ;
     public Array<Body> bodyArray;
 
     public Box2DWorld() {
@@ -67,8 +72,8 @@ public class Box2DWorld {
 
                 if ((craneData.cranedBody == bodyA && bodyB.getType() == BodyDef.BodyType.DynamicBody) ||
                         (craneData.cranedBody == bodyB && bodyA.getType() == BodyDef.BodyType.DynamicBody) ||
-                        (craneData.cranedBody == bodyA && bodyB.getUserData() == "ground") ||
-                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "groundd")) {
+                        (craneData.cranedBody == bodyA && bodyB.getUserData() == "Ground") ||
+                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "Ground")) {
                     craneData.cranedBody.setTransform(craneData.destination, 0);
                     craneData.cranedBody = null;
                 }
@@ -78,7 +83,10 @@ public class Box2DWorld {
 
         createGroundAndCeiling();
         createCrane();
-        nextBlock = createNextBlock();
+        nextBlockQ = new ArrayDeque<Block>();
+        for (int i=0; i<numNextBlockInformed; i++) { // create next blocks and enqueue
+            nextBlockQ.addLast(createNextBlock());
+        }
         bodyArray = new Array<Body>();
     }
 
@@ -88,6 +96,7 @@ public class Box2DWorld {
         destroyInvalidBlocks();
         world.step(delta, 6, 2);
     }
+
 
     public void createGroundAndCeiling() {
         BodyDef bodyDef = new BodyDef();
@@ -188,10 +197,11 @@ public class Box2DWorld {
 
                     craneData.state = DOWN;
                     crane.setLinearVelocity(0, -craneData.velocity);
+                    Block nextBlock = nextBlockQ.poll();
                     Body cranedBody = createBody(nextBlock);
                     cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - nextBlock.height / 2f, 0);
                     craneData.cranedBody = cranedBody;
-                    nextBlock = createNextBlock();
+                    nextBlockQ.addLast(createNextBlock());
                 }
                 break;
             }
@@ -201,10 +211,11 @@ public class Box2DWorld {
 
                     craneData.state = DOWN;
                     crane.setLinearVelocity(0, -craneData.velocity);
+                    Block nextBlock = nextBlockQ.poll();
                     Body cranedBody = createBody(nextBlock);
                     cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - nextBlock.height / 2f, 0);
                     craneData.cranedBody = cranedBody;
-                    nextBlock = createNextBlock();
+                    nextBlockQ.addLast(createNextBlock());
                 }
                 break;
             }
@@ -252,6 +263,13 @@ public class Box2DWorld {
         return body;
     }
 
+    public void renderNextBlockQ() {
+        ArrayDeque<Block> copiedNextBlockQ = nextBlockQ.clone(); // clone next block queue
+        while (!copiedNextBlockQ.isEmpty()) {
+
+        }
+    }
+
     public void destroyInvalidBlocks() {
         for(int i = 0; i < bodyArray.size; i++) {
             float rotation = bodyArray.get(i).getAngle();
@@ -262,6 +280,8 @@ public class Box2DWorld {
             }
         }
     }
+
+    // public void createNextBlockInform
 
     public void debugRender() {
         debugRenderer.render(world, cam.combined);

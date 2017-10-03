@@ -15,6 +15,8 @@ import com.thechallengers.psagame.SinglePlayer.Physics.Pattern;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
+import java.util.ArrayDeque;
+
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
  */
@@ -29,6 +31,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     private Texture debug_bg;
     public static float GROUND_HEIGHT = 75f;
     public static int size = 100;
+    public static float NEXT_BLOCK_SCALE = 0.5f;
 
     public SinglePlayerGameRenderer(SinglePlayerGameWorld world) {
         super();
@@ -83,6 +86,18 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         drawCrane(world.box2DWorld.getCrane());
 
+        // INCOMING BLOCKS
+        ArrayDeque<Block> copiedNextBlockQ = world.box2DWorld.nextBlockQ.clone();
+        float offsetX = 50f;
+        float offsetY = Gdx.graphics.getHeight() - 50f;
+        while (!copiedNextBlockQ.isEmpty()) {
+            Block block = copiedNextBlockQ.poll();
+            Sprite sprite = AssetLoader.spriteHashtable.get(block.blockType);
+            sprite.setPosition(offsetX, offsetY-sprite.getHeight()*NEXT_BLOCK_SCALE);
+            sprite.setRotation(0);
+            offsetX += sprite.getWidth()*NEXT_BLOCK_SCALE;
+            batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getWidth()*NEXT_BLOCK_SCALE, sprite.getHeight()*NEXT_BLOCK_SCALE);
+        }
         batcher.end();
         world.getStage().draw();
     }
