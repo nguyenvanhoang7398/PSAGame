@@ -15,6 +15,7 @@ import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
+import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
 import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
 
 /**
@@ -38,7 +39,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     //release button-related variables
     private TextButton releaseButton;
     private TextButton.TextButtonStyle releaseStyle;
+    private TextButton destroyButton;
+    private TextButton.TextButtonStyle destroyStyle;
     private Drawable releaseBG;
+    private Drawable destroyBG;
 
     //worker-related variables
 
@@ -50,10 +54,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         worker = new Worker();
         stage = new Stage();
         //stage.addActor(touchpad);
-        //stage.addActor(releaseButton);
+        // stage.addActor(releaseButton);
         //stage.addActor(worker);
-
-        //Gdx.input.setInputProcessor(stage);
+        stage.addActor(destroyButton);
+        // Gdx.input.setInputProcessor(stage);
 
         box2DWorld = new Box2DWorld();
         this.world = box2DWorld.getWorld();
@@ -76,6 +80,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         skin.add("touchBackground", new Texture("textures/touchBackground.png"));
         skin.add("touchKnob", new Texture("textures/touchKnob.png"));
         skin.add("releaseButton", new Texture("textures/releaseButton.png"));
+        skin.add("destroyButton", new Texture("textures/dynamite.png"));
 
         //create the style (from the skin) for touchpad
         touchpadStyle = new Touchpad.TouchpadStyle();
@@ -89,20 +94,40 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         touchpad.setBounds(SHORT_EDGE-(15+200),15, 200, 200);
 
         releaseStyle = new TextButton.TextButtonStyle();
+        destroyStyle = new TextButton.TextButtonStyle();
         releaseBG = skin.getDrawable("releaseButton");
+        destroyBG = skin.getDrawable("destroyButton");
         releaseStyle.up = releaseBG;
+        destroyStyle.up = destroyBG;
         releaseStyle.down = releaseBG;
+        destroyStyle.down = destroyBG;
         releaseStyle.font = AssetLoader.arial;
+        destroyStyle.font = AssetLoader.arial;
         releaseButton = new TextButton("", releaseStyle);
-        releaseButton.setBounds(SHORT_EDGE-(15+450),15, 200, 200);
+        destroyButton = new TextButton("", destroyStyle);
+        releaseButton.setBounds(SHORT_EDGE-(15+450), 15, 200, 200);
+        destroyButton.setBounds(SHORT_EDGE-(30+200), LONG_EDGE-(15+200), 200, 200);
         addListenerToReleaseButton();
+        addListenerToDestroyButton();
     }
 
     public void addListenerToReleaseButton() {
         releaseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Release button selected");
+            }
+        });
+    }
 
+    public void addListenerToDestroyButton() {
+        destroyButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Destroy button selected");
+                if (box2DWorld.cooldown <= 0) {
+                    box2DWorld.destroyMode = true;
+                }
             }
         });
     }

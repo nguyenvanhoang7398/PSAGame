@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -18,7 +19,9 @@ import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
 
-import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.DOWN;;
+import java.util.ArrayDeque;
+
+import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.DOWN;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.LEFT;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.RIGHT;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.STOP;
@@ -29,12 +32,17 @@ import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.UP
  */
 
 public class Box2DWorld {
+    private static final int NUM_NEXT_BLOCK_INFORMED = 3;
+    private static final float COOLDOWN_TIME = 5;
+
     private World world;
     private OrthographicCamera cam;
     private Box2DDebugRenderer debugRenderer;
     private Body ground, ceiling, crane;
-    private Block nextBlock;
+    public boolean destroyMode;
+    public ArrayDeque<Block> nextBlockQ;
     public Array<Body> bodyArray;
+    public float cooldown;
 
     public Box2DWorld() {
         world = new World(new Vector2(0, -9.8f), true);
@@ -67,8 +75,8 @@ public class Box2DWorld {
 
                 if ((craneData.cranedBody == bodyA && bodyB.getType() == BodyDef.BodyType.DynamicBody) ||
                         (craneData.cranedBody == bodyB && bodyA.getType() == BodyDef.BodyType.DynamicBody) ||
-                        (craneData.cranedBody == bodyA && bodyB.getUserData() == "ground") ||
-                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "ground")) {
+                        (craneData.cranedBody == bodyA && bodyB.getUserData() == "Ground") ||
+                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "Ground")) {
                     craneData.cranedBody.setTransform(craneData.destination, 0);
                     craneData.cranedBody = null;
                 }
@@ -78,8 +86,13 @@ public class Box2DWorld {
 
         createGroundAndCeiling();
         createCrane();
-        nextBlock = createNextBlock();
+        nextBlockQ = new ArrayDeque<Block>();
+        for (int i = 0; i< NUM_NEXT_BLOCK_INFORMED; i++) { // create next blocks and enqueue
+            nextBlockQ.addLast(createNextBlock());
+        }
         bodyArray = new Array<Body>();
+        destroyMode = false;
+        cooldown = 0;
     }
 
     public void update(float delta) {
@@ -188,10 +201,11 @@ public class Box2DWorld {
 
                     craneData.state = DOWN;
                     crane.setLinearVelocity(0, -craneData.velocity);
+                    Block nextBlock = nextBlockQ.poll();
                     Body cranedBody = createBody(nextBlock);
                     cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - nextBlock.height / 2f, 0);
                     craneData.cranedBody = cranedBody;
-                    nextBlock = createNextBlock();
+                    nextBlockQ.addLast(createNextBlock());
                 }
                 break;
             }
@@ -201,10 +215,11 @@ public class Box2DWorld {
 
                     craneData.state = DOWN;
                     crane.setLinearVelocity(0, -craneData.velocity);
+                    Block nextBlock = nextBlockQ.poll();
                     Body cranedBody = createBody(nextBlock);
                     cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - nextBlock.height / 2f, 0);
                     craneData.cranedBody = cranedBody;
-                    nextBlock = createNextBlock();
+                    nextBlockQ.addLast(createNextBlock());
                 }
                 break;
             }
@@ -250,6 +265,22 @@ public class Box2DWorld {
         body.createFixture(fixtureDef);
         body.setUserData(block);
         return body;
+    }
+
+    public void destroyBlock(float screenX, float screenY) {
+        for(int i = 0; i < bodyArray.size; i++) {
+            Body body = bodyArray.get(i);
+            Fixture fixture = body.getFixtureList().get(0);
+            if (!(body.getUserData() instanceof Block)) {
+                continue;
+            }
+            if (fixture.testPoint(screenX, screenY)) {
+                world.destroyBody(bodyArray.get(i));
+                bodyArray.removeIndex(i);
+                cooldown = COOLDOWN_TIME;
+                break;
+            }
+        }
     }
 
     public void destroyInvalidBlocks() {

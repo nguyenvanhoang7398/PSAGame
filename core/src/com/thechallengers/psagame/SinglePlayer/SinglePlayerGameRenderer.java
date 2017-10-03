@@ -15,6 +15,8 @@ import com.thechallengers.psagame.SinglePlayer.Physics.Pattern;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
+import java.util.ArrayDeque;
+
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
  */
@@ -29,6 +31,8 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     private Texture debug_bg;
     public static float GROUND_HEIGHT = 75f;
     public static int size = 100;
+    public static float NEXT_BLOCK_SCALE = 0.5f;
+    public static float DESTROY_X_SCALE = 0.5f;
 
     public SinglePlayerGameRenderer(SinglePlayerGameWorld world) {
         super();
@@ -45,7 +49,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         batcher.begin();
 
-        //world.box2DWorld.debugRender();
+        // world.box2DWorld.debugRender();
         batcher.draw(AssetLoader.game_background, 0, 0);
         //batcher.draw(debug_bg, 0, 0);
 
@@ -54,10 +58,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         float pattern_start_y = GROUND_HEIGHT;
         Frame myFrame = new Frame(size);
         myFrame.setPattern(new Pattern(size));
-        myFrame.calculatePercentage(world.bodyArray, pattern_start_x, pattern_start_y);
+        // myFrame.calculatePercentage(world.bodyArray, pattern_start_x, pattern_start_y);
         boolean[][] frame = myFrame.frame;
 
-        System.out.println("AAA");
         for (int i=0; i<size; i++) {
             for (int j = 0; j < size; j++) {
                 if (frame[i][j]) {
@@ -83,6 +86,10 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         drawCrane(world.box2DWorld.getCrane());
 
+        // INCOMING BLOCKS
+        ArrayDeque<Block> copiedNextBlockQ = world.box2DWorld.nextBlockQ.clone();
+        renderNextBlock(copiedNextBlockQ);
+        world.box2DWorld.cooldown = renderDestroyCooldown(world.box2DWorld.cooldown);
         batcher.end();
         world.getStage().draw();
     }
@@ -91,6 +98,20 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     public void drawCrane(Body crane) {
         AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y);
         AssetLoader.game_crane.draw(batcher);
+    }
+
+    //NEXT BLOCKS
+    public void renderNextBlock(ArrayDeque<Block> copiedNextBlockQ) {
+        float offsetX = 50f;
+        float offsetY = Gdx.graphics.getHeight() - 50f;
+        while (!copiedNextBlockQ.isEmpty()) {
+            Block block = copiedNextBlockQ.poll();
+            Sprite sprite = AssetLoader.spriteHashtable.get(block.blockType);
+            sprite.setPosition(offsetX, offsetY-sprite.getHeight()*NEXT_BLOCK_SCALE);
+            sprite.setRotation(0);
+            offsetX += sprite.getWidth()*NEXT_BLOCK_SCALE;
+            batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getWidth()*NEXT_BLOCK_SCALE, sprite.getHeight()*NEXT_BLOCK_SCALE);
+        }
     }
 
     //FOR TRANSLATING WORLD POSITION TO SCREEN POSITION - only for blocks
@@ -107,5 +128,20 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         return_vector.y = world_y * 100f - height * 100f / 2;
 
         return return_vector;
+    }
+
+    public float renderDestroyCooldown(float cd) {
+        float step = 0.01f;
+        if (cd > 0) {
+            System.out.println("Cooldown " + cd);
+            float offsetX = 875f;
+            float offsetY = 1520f;
+            Sprite sprite = AssetLoader.destroy_X;
+            sprite.setPosition(offsetX, offsetY);
+            sprite.setRotation(0);
+            batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getWidth()*DESTROY_X_SCALE, sprite.getHeight()*DESTROY_X_SCALE);
+            cd -= step;
+        }
+        return cd;
     }
 }
