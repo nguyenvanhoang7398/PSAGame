@@ -24,8 +24,10 @@ public class TutorialWorld implements ScreenWorld {
     private FadeInFadeOutActor pointer;
     public Box2DWorld box2DWorld;
     public enum TutorialState {
-        WELCOME, AIM, DROP, TILTED, AFTER_TILTED, PROGRESS, DESTROY, GOODLUCK
+        WELCOME, AIM, DROP, DROP_INDICATOR, TILTED, TILTED_INDICATOR, AFTER_TILTED, AFTER_TILTED_INDICATOR,
+        PROGRESS, DESTROY, DESTROY_INDICATOR, GOODLUCK
     }
+
     private Queue<TutorialState> stateQueue;
 
     public TutorialWorld() {
@@ -36,12 +38,14 @@ public class TutorialWorld implements ScreenWorld {
         stateQueue = new Queue<TutorialState>();
 
         initialiseStateQueue();
+
+        createOnScreenInstructions();
     }
 
     @Override
     public void update(float delta) {
-        updateInstruction();
         stage.act(delta);
+        box2DWorld.update(delta);
         //need a condition here box2DWorld.update(delta);
         world.getBodies(bodyArray);
     }
@@ -50,14 +54,18 @@ public class TutorialWorld implements ScreenWorld {
         stateQueue.addLast(TutorialState.WELCOME);
         stateQueue.addLast(TutorialState.AIM);
         stateQueue.addLast(TutorialState.DROP);
+        stateQueue.addLast(TutorialState.DROP_INDICATOR);
         stateQueue.addLast(TutorialState.TILTED);
+        stateQueue.addLast(TutorialState.TILTED_INDICATOR);
         stateQueue.addLast(TutorialState.AFTER_TILTED);
+        stateQueue.addLast(TutorialState.AFTER_TILTED_INDICATOR);
         stateQueue.addLast(TutorialState.PROGRESS);
         stateQueue.addLast(TutorialState.DESTROY);
+        stateQueue.addLast(TutorialState.DESTROY_INDICATOR);
         stateQueue.addLast(TutorialState.GOODLUCK);
     }
 
-    private void createPointer() {
+    private void createPointer(TutorialState state) {
     }
 
     private void createInstructor(TutorialState state) {
@@ -67,20 +75,35 @@ public class TutorialWorld implements ScreenWorld {
                 stage.addActor(instructor);
                 break;
             }
-
             case AIM:
                 break;
             case DROP:
                 break;
+            case DROP_INDICATOR:
+                break;
             case TILTED:
+                instructor = new FadeInFadeOutActor(AssetLoader.instructor_welcome, 58, 289);
+                stage.addActor(instructor);
+                break;
+            case TILTED_INDICATOR:
                 break;
             case AFTER_TILTED:
+                instructor = new FadeInFadeOutActor(AssetLoader.instructor_welcome, 58, 289);
+                stage.addActor(instructor);
+                break;
+            case AFTER_TILTED_INDICATOR:
                 break;
             case PROGRESS:
+                instructor = new FadeInFadeOutActor(AssetLoader.instructor_welcome, 58, 289);
+                stage.addActor(instructor);
                 break;
             case DESTROY:
                 break;
+            case DESTROY_INDICATOR:
+                break;
             case GOODLUCK:
+                instructor = new FadeInFadeOutActor(AssetLoader.instructor_welcome, 58, 289);
+                stage.addActor(instructor);
                 break;
         }
     }
@@ -93,41 +116,93 @@ public class TutorialWorld implements ScreenWorld {
                 break;
             }
             case AIM:
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                stage.addActor(balloon);
                 break;
             case DROP:
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                stage.addActor(balloon);
+                break;
+            case DROP_INDICATOR:
                 break;
             case TILTED:
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                stage.addActor(balloon);
+                break;
+            case TILTED_INDICATOR:
                 break;
             case AFTER_TILTED:
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                stage.addActor(balloon);
+                break;
+            case AFTER_TILTED_INDICATOR:
                 break;
             case PROGRESS:
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                stage.addActor(balloon);
                 break;
             case DESTROY:
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                stage.addActor(balloon);
+                break;
+            case DESTROY_INDICATOR:
                 break;
             case GOODLUCK:
+                balloon = new FadeInFadeOutActor(AssetLoader.balloon_welcome, 170, 920);
+                stage.addActor(balloon);
                 break;
         }
     }
 
-    public void updateInstruction() {
+    public void createOnScreenInstructions() {
+        if (stateQueue.size == 0) return;
+        createInstructor(stateQueue.first());
+        createBalloon(stateQueue.first());
+        createPointer(stateQueue.first());
+    }
+
+    public void clicked() {
         switch (stateQueue.first()) {
-            case WELCOME: {
-                createInstructor(stateQueue.first());
-                createBalloon(stateQueue.first());
-            }
+            case WELCOME:
+                balloon.clicked();
+                break;
             case AIM:
+                balloon.clicked();
                 break;
             case DROP:
+                instructor.clicked();
+                balloon.clicked();
+                break;
+            case DROP_INDICATOR:
+                //pointer.clicked();
                 break;
             case TILTED:
+                instructor.clicked();
+                balloon.clicked();
+                break;
+            case TILTED_INDICATOR:
+                //pointer.clicked();
                 break;
             case AFTER_TILTED:
+                instructor.clicked();
+                balloon.clicked();
+                break;
+            case AFTER_TILTED_INDICATOR:
+                //pointer.clicked();
                 break;
             case PROGRESS:
+                balloon.clicked();
                 break;
             case DESTROY:
+                instructor.clicked();
+                balloon.clicked();
+                break;
+            case DESTROY_INDICATOR:
+                //pointer.clicked();
                 break;
             case GOODLUCK:
+                instructor.clicked();
+                balloon.clicked();
                 break;
         }
     }

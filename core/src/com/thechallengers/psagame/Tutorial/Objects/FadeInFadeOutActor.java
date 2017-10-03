@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 
 /**
  * Created by Phung Tuan Hoang on 10/1/2017.
@@ -23,7 +25,7 @@ public class FadeInFadeOutActor extends Actor {
         this.isClicked = false;
         this.thisActor = this;
         this.getColor().a = 0;
-        this.addAction(fadeIn(0.5f));
+        this.addAction(sequence(delay(0.5f), fadeIn(0.5f)));
         this.setPosition(x, y);
     }
 
@@ -32,7 +34,7 @@ public class FadeInFadeOutActor extends Actor {
         super.act(delta);
 
         if (isClicked) {
-            System.out.println("CLICKED");
+            System.out.println("killed in base class");
             this.addAction(Actions.sequence(Actions.fadeOut(0.5f), run(new Runnable() {
                 @Override
                 public void run() {

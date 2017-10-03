@@ -1,6 +1,8 @@
 package com.thechallengers.psagame.Tutorial;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
 
 /**
  * Created by Phung Tuan Hoang on 10/1/2017.
@@ -30,27 +32,80 @@ public class TutorialInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        switch (world.getStateQueue().first()) {
-            case WELCOME: {
-                world.getStateQueue().removeFirst();
-                world.getInstructor().clicked();
-                world.getBalloon().clicked();
-                break;
+        if (world.getStateQueue().size != 0) {
+            switch (world.getStateQueue().first()) {
+                case WELCOME:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case AIM:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case DROP:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case DROP_INDICATOR:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case TILTED:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case TILTED_INDICATOR:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case AFTER_TILTED:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case AFTER_TILTED_INDICATOR:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case PROGRESS:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case DESTROY:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case DESTROY_INDICATOR:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                case GOODLUCK:
+                    world.clicked();
+                    world.getStateQueue().removeFirst();
+                    world.createOnScreenInstructions();
+                    break;
+                default:
             }
-            case AIM:
-                break;
-            case DROP:
-                break;
-            case TILTED:
-                break;
-            case AFTER_TILTED:
-                break;
-            case PROGRESS:
-                break;
-            case DESTROY:
-                break;
-            case GOODLUCK:
-                break;
+        }
+
+        else {
+            if (!((CraneData) world.box2DWorld.getCrane().getUserData()).isMoving) {
+                float box2DWorld_x = screenX / 100f;
+                float box2DWorld_y = (1920 - screenY * 1920 / Gdx.graphics.getHeight()) / 100f;
+                System.out.printf("%f %f\n", box2DWorld_x, box2DWorld_y);
+
+                world.box2DWorld.moveCrane(box2DWorld_x, box2DWorld_y);
+            }
         }
         return true;
     }
