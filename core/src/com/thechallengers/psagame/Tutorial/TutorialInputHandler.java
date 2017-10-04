@@ -1,8 +1,12 @@
 package com.thechallengers.psagame.Tutorial;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
+
+import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
+import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
 
 /**
  * Created by Phung Tuan Hoang on 10/1/2017.
@@ -78,10 +82,14 @@ public class TutorialInputHandler implements InputProcessor {
                     world.createOnScreenInstructions();
                     break;
                 case AFTER_TILTED_INDICATOR:
-                    world.clicked();
-                    world.getStateQueue().removeFirst();
-                    world.createOnScreenInstructions();
-                    break;
+                    if (screenX > 455 && screenX < 507 && screenY > 1675 && screenY < 1727) {
+                        inputForNormalGame(475, 1700);
+                        world.clicked();
+                        world.getStateQueue().removeFirst();
+                        world.createOnScreenInstructions();
+                        break;
+                    }
+                    else return false;
                 case PROGRESS:
                     world.clicked();
                     world.getStateQueue().removeFirst();
@@ -92,15 +100,33 @@ public class TutorialInputHandler implements InputProcessor {
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
                     break;
-                case DESTROY_INDICATOR:
-                    world.clicked();
-                    world.getStateQueue().removeFirst();
-                    world.createOnScreenInstructions();
-                    break;
+                case DESTROY_INDICATOR_1:
+                    if (screenX > SHORT_EDGE-(30+200) && screenX < SHORT_EDGE-(30) && screenY >1920 - (LONG_EDGE-(15)) && screenY < 1920 - (LONG_EDGE-(15+200))) {
+                        world.clicked();
+                        world.getStateQueue().removeFirst();
+                        world.createOnScreenInstructions();
+                        world.box2DWorld.destroyMode = true;
+                        return false;
+                    }
+                    return false;
+                case DESTROY_INDICATOR_2:
+                    if (screenX > 455 && screenX < 507 && screenY > 1775 && screenY < 1827) {
+                        inputForNormalGame(475, 1800);
+                        world.clicked();
+                        world.getStateQueue().removeFirst();
+                        world.createOnScreenInstructions();
+                        break;
+                    }
+                    else return false;
                 case GOODLUCK:
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
+                    world.addListenerToDestroyButton();
+                    InputMultiplexer multiplexer = new InputMultiplexer();
+                    multiplexer.addProcessor(world.getStage());
+                    multiplexer.addProcessor(this);
+                    Gdx.input.setInputProcessor(multiplexer);
                     break;
                 default:
             }

@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.Tutorial;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
@@ -25,7 +26,10 @@ public class TutorialScreen implements Screen{
         renderer = new TutorialRenderer(world);
         this.tutorialInputHandler = new TutorialInputHandler(world);
         //NEED ASSETLOADER LOAD
-        Gdx.input.setInputProcessor(tutorialInputHandler);
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(tutorialInputHandler);
+        inputMultiplexer.addProcessor(world.getStage());
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override

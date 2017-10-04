@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 
 import java.util.Hashtable;
 
@@ -55,9 +57,26 @@ public class AssetLoader {
 
     //tutorial
     public static Texture instructor_welcome;
+    public static Texture instructor_after_tilted;
+    public static Texture instructor_aim;
+    public static Texture instructor_destroy;
+    public static Texture instructor_drop;
+    public static Texture instructor_goodluck;
+    public static Texture instructor_progress;
+    public static Texture instructor_tilted;
+    public static Texture balloon_after_tilted;
+    public static Texture balloon_aim;
+    public static Texture balloon_destroy;
+    public static Texture balloon_drop;
+    public static Texture balloon_goodluck;
+    public static Texture balloon_progress;
+    public static Texture balloon_tilted;
     public static Texture balloon_welcome;
     public static Texture pointer_drop;
     public static Texture pointer_tilted;
+    public static Texture pointer_after_tilted;
+    public static Texture pointer_destroy_1;
+    public static Texture pointer_destroy_2;
 
     public static void loadMenuTexture() {
 
@@ -121,7 +140,23 @@ public class AssetLoader {
         balloon_welcome = new Texture(Gdx.files.internal("textures/tutorial/balloon_welcome.png"));
         pointer_drop = new Texture(Gdx.files.internal("textures/tutorial/pointer_drop.png"));
         pointer_tilted = new Texture(Gdx.files.internal("textures/tutorial/pointer_tilted.png"));
-
+        pointer_after_tilted = new Texture(Gdx.files.internal("textures/tutorial/pointer_after_tilted.png"));
+        instructor_after_tilted = new Texture(Gdx.files.internal("textures/tutorial/instructor_after_tilted.png"));
+        instructor_aim = new Texture(Gdx.files.internal("textures/tutorial/instructor_aim.png"));
+        instructor_destroy = new Texture(Gdx.files.internal("textures/tutorial/instructor_destroy.png"));
+        instructor_drop = new Texture(Gdx.files.internal("textures/tutorial/instructor_drop.png"));
+        instructor_goodluck = new Texture(Gdx.files.internal("textures/tutorial/instructor_goodluck.png"));
+        instructor_progress = new Texture(Gdx.files.internal("textures/tutorial/instructor_progress.png"));
+        instructor_tilted = new Texture(Gdx.files.internal("textures/tutorial/instructor_tilted.png"));
+        balloon_after_tilted = new Texture(Gdx.files.internal("textures/tutorial/balloon_after_tilted.png"));
+        balloon_aim = new Texture(Gdx.files.internal("textures/tutorial/balloon_aim.png"));
+        balloon_destroy = new Texture(Gdx.files.internal("textures/tutorial/balloon_destroy.png"));
+        balloon_drop = new Texture(Gdx.files.internal("textures/tutorial/balloon_drop.png"));
+        balloon_goodluck = new Texture(Gdx.files.internal("textures/tutorial/balloon_goodluck.png"));
+        balloon_progress = new Texture(Gdx.files.internal("textures/tutorial/balloon_progress.png"));
+        balloon_tilted = new Texture(Gdx.files.internal("textures/tutorial/balloon_tilted.png"));
+        pointer_destroy_1 = new Texture(Gdx.files.internal("textures/tutorial/pointer_destroy_1.png"));
+        pointer_destroy_2 = new Texture(Gdx.files.internal("textures/tutorial/pointer_destroy_2.png"));
     }
 
     public static void loadSpritesAndHashTable() {
