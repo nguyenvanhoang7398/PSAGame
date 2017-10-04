@@ -95,6 +95,58 @@ public class Box2DWorld {
         cooldown = 0;
     }
 
+    public Box2DWorld(String string) {
+        world = new World(new Vector2(0, -9.8f), true);
+        cam = new OrthographicCamera();
+        cam.setToOrtho(false, 10.80f, 19.20f);
+        debugRenderer = new Box2DDebugRenderer();
+
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+                Body bodyA = contact.getFixtureA().getBody();
+                Body bodyB = contact.getFixtureB().getBody();
+
+                CraneData craneData = (CraneData) crane.getUserData();
+
+                if ((craneData.cranedBody == bodyA && bodyB.getType() == BodyDef.BodyType.DynamicBody) ||
+                        (craneData.cranedBody == bodyB && bodyA.getType() == BodyDef.BodyType.DynamicBody) ||
+                        (craneData.cranedBody == bodyA && bodyB.getUserData() == "Ground") ||
+                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "Ground")) {
+                    craneData.cranedBody.setTransform(craneData.destination, 0);
+                    craneData.cranedBody = null;
+                }
+
+            }
+        });
+
+        createGroundAndCeiling();
+        createCrane();
+        nextBlockQ = new ArrayDeque<Block>();
+        // create next blocks and enqueue
+            nextBlockQ.addLast(new Block(1, 1, 1));
+            nextBlockQ.addLast(new Block(4, 3, 2));
+            nextBlockQ.addLast(new Block(5, 2, 1));
+        bodyArray = new Array<Body>();
+        destroyMode = false;
+        cooldown = 0;
+    }
+
     public void update(float delta) {
         updateCrane();
         world.getBodies(bodyArray);

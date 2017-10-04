@@ -44,7 +44,7 @@ public class TutorialWorld implements ScreenWorld {
     private Queue<TutorialState> stateQueue;
 
     public TutorialWorld() {
-        box2DWorld = new Box2DWorld();
+        box2DWorld = new Box2DWorld("tutorial");
         this.world = box2DWorld.getWorld();
         stage = new Stage();
         bodyArray = new Array<Body>();
