@@ -35,6 +35,18 @@ public class AssetLoader {
     public static Texture setting_box;
     public static Texture slider_bg, slider_knob;
     public static Texture unitBlockTexture;
+    public static Texture shop_button, shop_backButton;
+    public static Texture shop_background;
+    public static Texture level_selection_background;
+    public static Texture level_backButton;
+    public static Texture level1_Button;
+    public static Texture level_title;
+    public static Texture star0, star1, star2, star3 ;
+    public static Texture shop_title;
+    public static Texture crane_lv1, crane_lv2, crane_lv3, crane_title, selection_bar;
+    public static Texture purchase_message, purchase_success_message, purchase_fail_message, yes_button, no_button;
+
+
     public static Texture silhouette_1;
     public static Texture actual_1;
 
@@ -111,6 +123,8 @@ public class AssetLoader {
         setting_box = new Texture(Gdx.files.internal("textures/setting_box.png"));
         slider_bg = new Texture(Gdx.files.internal("textures/slider_bg.png"));
         slider_knob = new Texture(Gdx.files.internal("textures/slider_knob.png"));
+        shop_button = new Texture(Gdx.files.internal("textures/shop_icon.png"));
+
 
 
 
@@ -126,6 +140,62 @@ public class AssetLoader {
         background_texture.dispose();
         button_texture.dispose();
         arial.dispose();
+    }
+
+    public static void loadLevelSelectionTexture() {
+        level_selection_background = new Texture(Gdx.files.internal("textures/level_selection_background.png"));
+        level_backButton = new Texture(Gdx.files.internal("textures/shop_backButton.png"));
+        level1_Button = new Texture(Gdx.files.internal("textures/level1.png"));
+        level_title = new Texture(Gdx.files.internal("textures/level_title.png"));
+        star0 = new Texture(Gdx.files.internal("textures/0_stars.png"));
+        star1 = new Texture(Gdx.files.internal("textures/1_stars.png"));
+        star2 = new Texture(Gdx.files.internal("textures/2_stars.png"));
+        star3 = new Texture(Gdx.files.internal("textures/3_stars.png"));
+    }
+
+    public static void disposeLevelSelectionTexture() {
+        level_selection_background.dispose();
+        level_backButton.dispose();
+        level1_Button.dispose();
+        level_title.dispose();
+        star0.dispose();
+        star1.dispose();
+        star2.dispose();
+        star3.dispose();
+    }
+
+    public static void loadShopTexture() {
+        shop_background = new Texture(Gdx.files.internal("textures/gamebackground.png"));
+        shop_backButton = new Texture(Gdx.files.internal("textures/shop_backButton.png"));
+        shop_title = new Texture(Gdx.files.internal("textures/shop_title.png"));
+        crane_lv1 = new Texture(Gdx.files.internal("textures/crane_lv1.png"));
+        crane_lv2 = new Texture(Gdx.files.internal("textures/crane_lv2.png"));
+        crane_lv3 = new Texture(Gdx.files.internal("textures/crane_lv3.png"));
+        crane_title = new Texture(Gdx.files.internal("textures/crane_title.png"));
+        selection_bar = new Texture(Gdx.files.internal("textures/selection_bar.png"));
+        purchase_message = new Texture(Gdx.files.internal("textures/purchasing_message.png"));
+        purchase_fail_message =  new Texture(Gdx.files.internal("textures/purchasing_fail_message.png"));
+        purchase_success_message =  new Texture(Gdx.files.internal("textures/purchasing_success_message.png"));
+        yes_button = new Texture(Gdx.files.internal("textures/yes_button.png"));
+        no_button = new Texture(Gdx.files.internal("textures/no_button.png"));
+
+    }
+
+    public static void disposeShopTexture() {
+        shop_background.dispose();
+        shop_backButton.dispose();
+        shop_title.dispose();
+        crane_lv1.dispose();
+        crane_lv2.dispose();
+        crane_lv3.dispose();
+        crane_title.dispose();
+        selection_bar.dispose();
+        purchase_message.dispose();
+        purchase_fail_message.dispose();
+        purchase_success_message.dispose();
+        yes_button.dispose();
+        no_button.dispose();
+
     }
 
     public static void loadGameTexture() {

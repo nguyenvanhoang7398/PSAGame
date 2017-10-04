@@ -29,4 +29,6 @@ public class MenuRenderer extends ScreenRenderer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }
+
+
 }

@@ -18,13 +18,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.thechallengers.psagame.LevelSelection.LevelSelectionScreen;
 import com.thechallengers.psagame.Menu.Objects.Background;
 import com.thechallengers.psagame.Menu.Objects.Cloud;
 import com.thechallengers.psagame.Menu.Objects.Containers;
+import com.thechallengers.psagame.Shop.ShopScreen;
+import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.Menu.Objects.MenuCrane;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
+
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
@@ -56,8 +60,15 @@ public class MenuWorld implements ScreenWorld {
 
     private boolean isInTransition = false;
 
+    //for shop
+    private TextButton shop_button;
+    private TextButton.TextButtonStyle shop_button_style;
+
+    private PSAGame game;
+
     //constructor
-    public MenuWorld() {
+    public MenuWorld(PSAGame game) {
+        this.game = game;
         stage = new Stage();
 
         //play button
@@ -77,6 +88,9 @@ public class MenuWorld implements ScreenWorld {
         background = new Background();
         //add all actors to stage
 
+        //shop button
+        createShopButton();
+
         stage.addActor(background);
         //stage.addActor(menu_crane);
         stage.addActor(play_button);
@@ -87,6 +101,7 @@ public class MenuWorld implements ScreenWorld {
         cloudArray = new Array<Cloud>();
         createClouds();
         createContainers();
+        stage.addActor(shop_button);
         //lookAt();
 
     }
@@ -96,7 +111,7 @@ public class MenuWorld implements ScreenWorld {
         stage.act(delta);
 
         if (zoomTime == 57) {
-            CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+            CURRENT_SCREEN = PSAGame.Screen.LevelSelectionScreen;
         }
 
         if (isZooming && zoomTime < 57) {
@@ -121,6 +136,32 @@ public class MenuWorld implements ScreenWorld {
     public void createContainers() {
         containers = new Containers();
         stage.addActor(containers);
+    }
+
+    //SHOP BUTTON
+    public void createShopButtonStyle() {
+        shop_button_style = new TextButton.TextButtonStyle();
+        shop_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button));
+        shop_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button));
+        shop_button_style.font = AssetLoader.arial;
+    }
+
+    public void createShopButton() {
+        createShopButtonStyle();
+
+        shop_button = new TextButton("", shop_button_style);
+        shop_button.setPosition(700, 1700);
+        addListenerToShopButton();
+    }
+
+    public void addListenerToShopButton() {
+        shop_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                shop_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
+                CURRENT_SCREEN = PSAGame.Screen.ShopScreen;
+            }
+        });
     }
 
     //PLAY BUTTON
@@ -389,4 +430,6 @@ public class MenuWorld implements ScreenWorld {
     public void translate() {
         stage.getCamera().translate(-2.75f, +2f, 0);
     }
+
+
 }

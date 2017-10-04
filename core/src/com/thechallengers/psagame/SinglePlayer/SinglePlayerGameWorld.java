@@ -128,10 +128,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         box2DWorld.update(delta);
         world.getBodies(bodyArray);
         //worker.toSad();
-        if (box2DWorld.getPercentageOverlap() > 0.1) {
+        if (box2DWorld.getPercentageOverlap() > 0.95) {
             AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
             EndGameWorld.star = 3;
-            CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
+            CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
         }
     }
 
