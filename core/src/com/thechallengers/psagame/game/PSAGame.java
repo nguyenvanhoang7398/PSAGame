@@ -29,6 +29,10 @@ public class PSAGame extends Game {
 		if (!prefs.contains("level1_starLevel")) prefs.putInteger("level1_starLevel", 0);
 		if (!prefs.contains("crane_level")) prefs.putInteger("crane_level", 1);
 		if (!prefs.contains("moneyBalance")) prefs.putInteger("moneyBalance", 100);
+		if (!prefs.contains("crane_present")) prefs.putInteger("crane_present", 1);
+		if (!prefs.contains("craneLv2_purchased")) prefs.putBoolean("craneLv2_purchased", false);
+		if (!prefs.contains("craneLv3_purchased")) prefs.putBoolean("craneLv3_purchased", false);
+
 		prefs.flush();
 
 		//Open menu

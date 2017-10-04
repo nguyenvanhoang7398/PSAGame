@@ -37,6 +37,22 @@ public class ShopRender extends ScreenRenderer {
         batch.begin();
         moneyBalanceFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         moneyBalanceFont.draw(batch, moneyBalance, 600, 1700);
+        if (world.showPrice) {
+            moneyBalanceFont.draw(batch, "Owned", 100, 850);
+            boolean crane2_purchased = Gdx.app.getPreferences("prefs").getBoolean("craneLv2_purchased");
+            boolean crane3_purchased = Gdx.app.getPreferences("prefs").getBoolean("craneLv3_purchased");
+            if (!crane2_purchased) {
+                moneyBalanceFont.draw(batch, "Price: 10", 450, 850);
+            } else {
+                moneyBalanceFont.draw(batch, "Owned", 450, 850);
+            }
+            if (!crane3_purchased) {
+                moneyBalanceFont.draw(batch, "Price: 20", 800, 850);
+            } else {
+                moneyBalanceFont.draw(batch, "Owned", 800, 850);
+            }
+        }
+
         batch.end();
 
 
