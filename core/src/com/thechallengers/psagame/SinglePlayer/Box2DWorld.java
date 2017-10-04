@@ -1,7 +1,10 @@
 package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -17,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
+import com.thechallengers.psagame.SinglePlayer.Physics.Frame;
 import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
 
 import java.util.ArrayDeque;
@@ -43,6 +47,11 @@ public class Box2DWorld {
     public ArrayDeque<Block> nextBlockQ;
     public Array<Body> bodyArray;
     public float cooldown;
+    public Polygon pattern;
+    public static int size = 100;
+    public Frame myFrame;
+    private float patternArea;
+    private float percentageOverlap = 0;
 
     public Box2DWorld() {
         world = new World(new Vector2(0, -9.8f), true);
@@ -93,6 +102,10 @@ public class Box2DWorld {
         bodyArray = new Array<Body>();
         destroyMode = false;
         cooldown = 0;
+
+        myFrame = new Frame(size);
+        float[] pattern_verts = {1f, 1f, 1f, 1.50f, 6f, 5f, 11.80f, 1.50f, 11.80f, 1f};
+        renderPattern(pattern_verts, world);
     }
 
     public Box2DWorld(String string) {
@@ -145,6 +158,10 @@ public class Box2DWorld {
         bodyArray = new Array<Body>();
         destroyMode = false;
         cooldown = 0;
+
+        myFrame = new Frame(size);
+        float[] pattern_verts = {1f, 1f, 1f, 1.50f, 6f, 5f, 11.80f, 1.50f, 11.80f, 1f};
+        renderPattern(pattern_verts, world);
     }
 
     public void update(float delta) {
@@ -152,6 +169,9 @@ public class Box2DWorld {
         world.getBodies(bodyArray);
         destroyInvalidBlocks();
         world.step(delta, 6, 2);
+        if(bodyArray != null && myFrame != null) {
+            calculateOverlap(bodyArray);
+        }
     }
 
     public void createGroundAndCeiling() {
@@ -346,6 +366,59 @@ public class Box2DWorld {
         }
     }
 
+    public void renderPattern(float[] vertices, World world) {
+        PolygonShape poly = new PolygonShape();
+        ShapeRenderer renderer = new ShapeRenderer();
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        Body body = world.createBody(bodyDef);
+        poly.set(vertices);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = poly;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 1f;
+        fixtureDef.restitution = 0f;
+        fixtureDef.isSensor = true;
+        body.createFixture(fixtureDef);
+        pattern = new Polygon();
+        pattern.setVertices(vertices);
+        patternArea = calculateArea(vertices, vertices.length / 2);
+    }
+
+    public void calculateOverlap(Array<Body> bodyArray) {
+        float overlapArea = 0;
+        for(Body body: bodyArray) {
+            if(body.getUserData() instanceof Block) {
+                float x = body.getPosition().x ;
+                float y = body.getPosition().y ;
+                float width = ((Block) body.getUserData()).width ;
+                float height = ((Block) body.getUserData()).height ;
+                float[] blockVertices = {x - width / 2, y - width / 2, x - width / 2, y + width / 2,
+                        x + width / 2, y + width / 2, x + width / 2, y - width / 2};
+                Polygon blockPoly = new Polygon();
+                blockPoly.setVertices(blockVertices);
+                Polygon overlapPoly = new Polygon();
+                boolean a = Intersector.intersectPolygons(pattern, blockPoly, overlapPoly);
+                overlapArea += calculateArea(overlapPoly.getVertices(), overlapPoly.getVertices().length / 2);
+            }
+        }
+
+        percentageOverlap = overlapArea / patternArea;
+
+        System.out.println("Percent: " + percentageOverlap);
+    }
+
+    public float calculateArea(float[] vertices, int numPoints) {
+        float area = 0;
+        int j = numPoints-1;  // The last vertex is the 'previous' one to the first
+
+        for (int i=0; i<numPoints; i++)
+        { area = area +  (vertices[2*j]+vertices[2*i]) * (vertices[2*j + 1]-vertices[2*i+1]);
+            j = i;  //j is previous vertex to i
+        }
+        return area/2;
+    }
+
     public void debugRender() {
         debugRenderer.render(world, cam.combined);
     }
@@ -372,5 +445,9 @@ public class Box2DWorld {
 
     public Body getCrane() {
         return crane;
+    }
+
+    public float getPercentageOverlap() {
+        return percentageOverlap;
     }
 }

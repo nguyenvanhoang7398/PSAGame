@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 /**
@@ -34,6 +35,8 @@ public class AssetLoader {
     public static Texture setting_box;
     public static Texture slider_bg, slider_knob;
     public static Texture unitBlockTexture;
+    public static Texture silhouette_1;
+    public static Texture actual_1;
 
     //box sprites
     public static Sprite block_sprite_1_11, block_sprite_1_12, block_sprite_1_21, block_sprite_1_22, block_sprite_1_32, block_sprite_1_31;
@@ -45,6 +48,7 @@ public class AssetLoader {
     //texture region
     public static TextureRegion button_up, button_down;
     public static TextureRegion background;
+    public static TextureRegion winningBG;
 
     public static Hashtable<String, Sprite> spriteHashtable;
 
@@ -77,6 +81,11 @@ public class AssetLoader {
     public static Texture pointer_after_tilted;
     public static Texture pointer_destroy_1;
     public static Texture pointer_destroy_2;
+
+    //end game
+    public static Texture tips_1;
+    public static Texture star_background;
+    public static ArrayList<Texture> star;
 
     public static void loadMenuTexture() {
 
@@ -124,6 +133,14 @@ public class AssetLoader {
         destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));
         game_background = new Texture(Gdx.files.internal("textures/game_background.png"));
         unitBlockTexture = new Texture("textures/unitBlock.png");
+        silhouette_1 = new Texture(Gdx.files.internal("textures/silhouette_1.png"));
+        actual_1 = new Texture(Gdx.files.internal("textures/actual_1.png"));
+        tips_1 = new Texture(Gdx.files.internal("textures/tips_1.png"));
+        star_background = new Texture(Gdx.files.internal("textures/star_background.png"));
+        star = new ArrayList<Texture>();
+        star.add(new Texture(Gdx.files.internal("textures/star_1.png")));
+        star.add(new Texture(Gdx.files.internal("textures/star_2.png")));
+        star.add(new Texture(Gdx.files.internal("textures/star_3.png")));
 
         loadSpritesAndHashTable();
     }

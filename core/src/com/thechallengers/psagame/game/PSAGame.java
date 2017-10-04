@@ -3,6 +3,7 @@ package com.thechallengers.psagame.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.thechallengers.psagame.EndGame.EndGameScreen;
 import com.thechallengers.psagame.Menu.MenuScreen;
 import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.Tutorial.TutorialScreen;
@@ -11,7 +12,7 @@ public class PSAGame extends Game {
 	public static final float LONG_EDGE = 1920;
 	public static final float SHORT_EDGE = 1080;
 	public static enum Screen {
-		MenuScreen, SinglePlayerGameScreen, ShopScreen, TutorialScreen
+		MenuScreen, SinglePlayerGameScreen, ShopScreen, TutorialScreen, EndGameScreen
 	}
 	public static Screen CURRENT_SCREEN;
 
@@ -33,6 +34,7 @@ public class PSAGame extends Game {
 	public void render () {
 		super.render();
 		updateScreen();
+		System.out.println(CURRENT_SCREEN);
 	}
 	
 	@Override
@@ -57,6 +59,10 @@ public class PSAGame extends Game {
 				}
 				case TutorialScreen: {
 					setScreen(new TutorialScreen(this));
+					break;
+				}
+				case EndGameScreen: {
+					setScreen(new EndGameScreen());
 					break;
 				}
 				default:

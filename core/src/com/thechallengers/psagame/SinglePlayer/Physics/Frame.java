@@ -96,57 +96,6 @@ public class Frame {
 //        PolygonShape pat = new PolygonShape();
 //    }
 
-    public void calculateOverlap(Array<Body> bodyArray) {
-        float overlapArea = 0;
-        for(Body body: bodyArray) {
-            if(body.getUserData() instanceof  Block) {
-                float x = body.getPosition().x ;
-                float y = body.getPosition().y ;
-                float width = ((Block) body.getUserData()).width ;
-                float height = ((Block) body.getUserData()).height ;
-                float[] blockVertices = {x - width / 2, y - width / 2, x - width / 2, y + width / 2,
-                        x + width / 2, y + width / 2, x + width / 2, y - width / 2};
-                Polygon blockPoly = new Polygon();
-                blockPoly.setVertices(blockVertices);
-                Polygon overlapPoly = new Polygon();
-                boolean a = Intersector.intersectPolygons(pattern, blockPoly, overlapPoly);
-                overlapArea += calculateArea(overlapPoly.getVertices(), overlapPoly.getVertices().length / 2);
-            }
-        }
-        System.out.println("Pattern area: " + patternArea);
-        System.out.println("Overlap area: " + overlapArea);
-    }
-
-    public float calculateArea(float[] vertices, int numPoints) {
-        float area = 0;
-        int j = numPoints-1;  // The last vertex is the 'previous' one to the first
-
-        for (int i=0; i<numPoints; i++)
-        { area = area +  (vertices[2*j]+vertices[2*i]) * (vertices[2*j + 1]-vertices[2*i+1]);
-            j = i;  //j is previous vertex to i
-        }
-        return area/2;
-    }
-
-    public void renderPattern(float[] vertices, World world) {
-        PolygonShape poly = new PolygonShape();
-        ShapeRenderer renderer = new ShapeRenderer();
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
-        Body body = world.createBody(bodyDef);
-        poly.set(vertices);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = poly;
-        fixtureDef.density = 1f;
-        fixtureDef.friction = 1f;
-        fixtureDef.restitution = 0f;
-        fixtureDef.isSensor = true;
-        body.createFixture(fixtureDef);
-        pattern = new Polygon();
-        pattern.setVertices(vertices);
-        patternArea = calculateArea(vertices, vertices.length / 2);
-    }
-
     public void getVertices(PolygonShape s) {
         Array<Vector2> verts = new Array<Vector2>();
         Vector2 tmp = new Vector2();
