@@ -46,15 +46,18 @@ public class PSAGame extends Game {
 			switch (CURRENT_SCREEN) {
 				case MenuScreen: {
 					setScreen(new MenuScreen(this));
+					break;
 				}
 				case SinglePlayerGameScreen: {
 					setScreen(new SinglePlayerGameScreen(this));
+					break;
 				}
 				case ShopScreen: {
 					//setScreen(new ShopScreen());
 				}
 				case TutorialScreen: {
 					setScreen(new TutorialScreen(this));
+					break;
 				}
 				default:
 			}
