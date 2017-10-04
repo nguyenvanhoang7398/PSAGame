@@ -47,6 +47,8 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     private World world;
     public Array<Body> bodyArray = new Array<Body>();
     private Worker worker;
+    private float gameTime = 0;
+    public boolean hasStarted = false;
 
 
     //touchpad-related variables
@@ -123,11 +125,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     @Override
     public void update(float delta) {
-        //updateCraneAction();
         stage.act(delta);
         box2DWorld.update(delta);
         world.getBodies(bodyArray);
-        //worker.toSad();
+        if (hasStarted) gameTime += delta;
         if (box2DWorld.getPercentageOverlap() > 0.95) {
             AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
             EndGameWorld.star = 3;

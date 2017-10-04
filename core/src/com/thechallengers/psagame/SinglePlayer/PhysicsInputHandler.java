@@ -32,6 +32,7 @@ public class PhysicsInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (!world.hasStarted) world.hasStarted = true;
         float box2DWorld_x = screenX / 100f;
         float box2DWorld_y = (1920 - screenY * 1920 / Gdx.graphics.getHeight()) / 100f;
         System.out.printf("%f %f\n", box2DWorld_x, box2DWorld_y);

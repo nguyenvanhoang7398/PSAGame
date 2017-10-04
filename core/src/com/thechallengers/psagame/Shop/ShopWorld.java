@@ -75,9 +75,6 @@ public class ShopWorld implements ScreenWorld{
         stage.addActor(crane_lv2);
         stage.addActor(crane_lv3);
         stage.addActor(selection_bar);
-
-
-
     }
 
     public void update(float delta) { stage.act(delta);}
