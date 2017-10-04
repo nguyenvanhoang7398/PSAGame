@@ -1,7 +1,17 @@
 package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.PolygonRegion;
+import com.badlogic.gdx.graphics.g2d.PolygonSprite;
+import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
+import com.thechallengers.psagame.SinglePlayer.Physics.Frame;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
@@ -61,6 +72,27 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
         box2DWorld = new Box2DWorld();
         this.world = box2DWorld.getWorld();
+//
+//        Frame myFrame = new Frame(100);
+//        float[] pat_vertices = {1f, 1f, 1f, 1.50f, 11.80f, 1.50f, 11.80f, 1f};
+//        Polygon p1 = myFrame.renderPolygon(pat_vertices, this.world);
+//
+//        float[] clip_vertices = {1f, 1f, 1f, 1.50f, 11.80f, 1.50f, 11.80f, 1f};
+//        Polygon p2 = myFrame.renderPolygon(clip_vertices, this.world);
+//
+//        Polygon result = new Polygon();
+//        boolean b= Intersector.intersectPolygons(p1, p2, result);
+//
+//        System.out.println(b);
+//        System.out.println("Vertices :" + result.getVertices().length);
+//        System.out.println("Area " + myFrame.calculate(result.getVertices(), result.getVertices().length / 2));
+//        for(Float a: result.getVertices()) {
+//            System.out.println(a);
+//        }
+//
+//        PolygonShape clip = new PolygonShape();
+//        PolygonShape res = new PolygonShape();
+
     }
 
     /*
