@@ -270,7 +270,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 removePlayOptions();
-
+                CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
                 //move to multi player code here
             }
         });

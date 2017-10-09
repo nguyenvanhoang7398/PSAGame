@@ -52,7 +52,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
 
 
-        // world.box2DWorld.debugRender();
+        //world.box2DWorld.debugRender();
         batcher.draw(AssetLoader.game_background, 0, 0);
         batcher.draw(AssetLoader.silhouette_1, 0, 0);
 
