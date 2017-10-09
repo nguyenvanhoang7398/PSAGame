@@ -3,7 +3,6 @@ package com.thechallengers.psagame.SinglePlayer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -47,11 +46,13 @@ public class Box2DWorld {
     public ArrayDeque<Block> nextBlockQ;
     public Array<Body> bodyArray;
     public float cooldown;
+    public float timeCount = 0;
     public Polygon pattern;
     public static int size = 100;
     public Frame myFrame;
     private float patternArea;
     private float percentageOverlap = 0;
+    private int num_width_3_consecutively = 0; // number of 3 consecutive block with width = 3
 
     public Box2DWorld() {
         world = new World(new Vector2(0, -9.8f), true);
@@ -320,7 +321,20 @@ public class Box2DWorld {
     }
 
     public Block createNextBlock() {
-        return RandomController.randomBlock();
+        Block _nextBlock = RandomController.randomBlock();
+
+        if (num_width_3_consecutively == 2) {
+            while (_nextBlock.width == 3) {
+                _nextBlock = RandomController.randomBlock();
+            }
+            num_width_3_consecutively = 0;
+        }
+
+        if (_nextBlock.width == 3) {
+            num_width_3_consecutively++;
+        }
+
+        return _nextBlock;
     }
 
     public Body createBody(Block block) {

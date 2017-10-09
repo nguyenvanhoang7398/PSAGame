@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -61,6 +59,7 @@ public class AssetLoader {
     public static TextureRegion button_up, button_down;
     public static TextureRegion background;
     public static TextureRegion winningBG;
+    public static TextureRegion losingBG;
 
     public static Hashtable<String, Sprite> spriteHashtable;
 

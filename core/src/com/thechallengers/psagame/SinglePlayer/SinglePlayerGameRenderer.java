@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.Frame;
-import com.thechallengers.psagame.SinglePlayer.Physics.Pattern;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenRenderer;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
@@ -31,7 +30,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     private Texture debug_bg;
     public static float GROUND_HEIGHT = 75f;
     public static int size = 100;
-    public static float NEXT_BLOCK_SCALE = 0.5f;
+    public static float NEXT_BLOCK_SCALE = 0.7f;
     public static float DESTROY_X_SCALE = 0.5f;
     public Frame myFrame;
 
@@ -89,14 +88,20 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
     //NEXT BLOCKS
     public void renderNextBlock(ArrayDeque<Block> copiedNextBlockQ) {
         float offsetX = 50f;
+        final float GAP = 20f;
+        final float MAX_HEIGHT = 200f;
+        float offsetGap = 0;
         float offsetY = Gdx.graphics.getHeight() - 50f;
+
         while (!copiedNextBlockQ.isEmpty()) {
-            Block block = copiedNextBlockQ.poll();
+            Block block = copiedNextBlockQ.removeLast();
             Sprite sprite = AssetLoader.spriteHashtable.get(block.blockType);
-            sprite.setPosition(offsetX, offsetY-sprite.getHeight()*NEXT_BLOCK_SCALE);
-            sprite.setRotation(0);
+            sprite.setPosition(offsetX + offsetGap, offsetY-MAX_HEIGHT*NEXT_BLOCK_SCALE);
+            sprite.rotate(90f);
             offsetX += sprite.getWidth()*NEXT_BLOCK_SCALE;
-            batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getWidth()*NEXT_BLOCK_SCALE, sprite.getHeight()*NEXT_BLOCK_SCALE);
+            offsetGap += GAP*NEXT_BLOCK_SCALE;
+            batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getWidth()*NEXT_BLOCK_SCALE,
+                    sprite.getHeight()*NEXT_BLOCK_SCALE);
         }
     }
 
