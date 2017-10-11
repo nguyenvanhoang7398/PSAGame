@@ -36,18 +36,22 @@ public class EndGameWorld implements ScreenWorld {
 
     public EndGameWorld() {
         stage = new Stage();
+
         background = new ActorWithTexture(AssetLoader.winningBG, 0, 0);
-        background.addAction(sequence(delay(0.5f), fadeOut(0.5f)));
-        background.getColor().a = 1;
+        background.addAction(fadeOut(0.5f));
         stage.addActor(background);
+
         actual = new ActorWithTexture(AssetLoader.actual_1, 0, 0);
-        actual.addAction(sequence(delay(0.5f), fadeIn(0.5f), run(new Runnable() {
+        actual.addAction(sequence(fadeIn(0.5f), run(new Runnable() {
             @Override
             public void run() {
                 showTheRest();
             }
         })));
         actual.getColor().a = 0;
+        stage.addActor(actual);
+
+        showTheRest();
     }
 
     public void showTheRest() {
@@ -77,15 +81,18 @@ public class EndGameWorld implements ScreenWorld {
         //TIPS
         tips = new ActorWithTexture(AssetLoader.tips_1, 0, 0);
         tips.addAction(fadeIn(0.1f));
+        stage.addActor(tips);
 
         //STAR BACKGROUND
         starBackground = new ActorWithTexture(AssetLoader.star_background, 0, 0);
         starBackground.addAction(fadeIn(0.1f));
+        stage.addActor(starBackground);
 
         //stars
         for (int i = 0; i < star; i++) {
             stars.add(new ActorWithTexture(AssetLoader.star.get(i), 0, 0));
             stars.get(i).addAction(sequence(delay(i * 0.5f), fadeIn(0.1f)));
+            stage.addActor(stars.get(i));
         }
     }
 

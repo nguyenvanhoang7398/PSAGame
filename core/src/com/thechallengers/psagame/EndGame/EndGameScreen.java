@@ -24,8 +24,7 @@ public class EndGameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        world.getStage().act(delta);
-        world.getStage().draw();
+        world.update(delta);
     }
 
     @Override
