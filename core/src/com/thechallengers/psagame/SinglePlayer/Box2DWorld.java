@@ -29,14 +29,15 @@ import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.LE
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.RIGHT;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.STOP;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.UP;
+import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.cooldown_animation_runTime;
 
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.
  */
 
 public class Box2DWorld {
-    private static final int NUM_NEXT_BLOCK_INFORMED = 3;
-    private static final float COOLDOWN_TIME = 5;
+    public static final int NUM_NEXT_BLOCK_INFORMED = 3;
+    private static final float COOLDOWN_TIME = 4;
 
     private World world;
     private OrthographicCamera cam;
@@ -54,7 +55,7 @@ public class Box2DWorld {
     private float percentageOverlap = 0;
     private int num_width_3_consecutively = 0; // number of 3 consecutive block with width = 3
 
-    public Box2DWorld() {
+    public Box2DWorld(int level) {
         world = new World(new Vector2(0, -9.8f), true);
         cam = new OrthographicCamera();
         cam.setToOrtho(false, 10.80f, 19.20f);
@@ -189,19 +190,6 @@ public class Box2DWorld {
         fixtureDef.restitution = 0f;
         ground.createFixture(fixtureDef);
         ground.setUserData("Ground");
-
-        BodyDef bodyDef2 = new BodyDef();
-        bodyDef2.type = BodyDef.BodyType.StaticBody;
-        ceiling = world.createBody(bodyDef2);
-        PolygonShape ceiling_shape = new PolygonShape();
-        float[] vertices2 = {0, 17.5f, 0, 18f, 10.80f, 18f, 10.80f, 17.5f};
-        ceiling_shape.set(vertices2);
-        FixtureDef fixtureDef2 = new FixtureDef();
-        fixtureDef2.shape = ceiling_shape;
-        fixtureDef2.density = 1f;
-        fixtureDef2.friction = 1f;
-        ceiling.createFixture(fixtureDef2);
-        ceiling.setUserData("Ceiling");
     }
 
     public void createCrane() {
@@ -216,14 +204,14 @@ public class Box2DWorld {
         fixtureDef.friction = 1f;
         fixtureDef.isSensor = true;
         crane.createFixture(fixtureDef);
-        crane.setTransform(5.4f, 17.5f - 0.1f, 0);
+        crane.setTransform(5.4f, 15.4f, 0);
         crane.setUserData(new CraneData());
     }
 
     public void moveCrane(float screenX, float screenY) {
         System.out.println("called");
-        float distance = (17.4f - crane.getPosition().y) + (Math.abs(screenX - crane.getPosition().x))
-                            + (17.4f - screenY);
+        float distance = (15.4f - crane.getPosition().y) + (Math.abs(screenX - crane.getPosition().x))
+                            + (15.4f - screenY);
 
         float velocity = distance / 2f;
 
@@ -252,9 +240,9 @@ public class Box2DWorld {
                 break;
             }
             case UP: {
-                if (crane.getPosition().y < 17.4f) break;
+                if (crane.getPosition().y < 15.4f) break;
                 else {
-                    crane.setTransform(crane.getPosition().x, 17.4f, 0);
+                    crane.setTransform(crane.getPosition().x, 15.4f, 0);
 
                     float horizontal_velocity = craneData.velocity * (craneData.destination.x >= crane.getPosition().x ? 1 : -1);
 
@@ -364,6 +352,7 @@ public class Box2DWorld {
                 world.destroyBody(bodyArray.get(i));
                 bodyArray.removeIndex(i);
                 cooldown = COOLDOWN_TIME;
+                cooldown_animation_runTime = 0;
                 break;
             }
         }
@@ -418,8 +407,6 @@ public class Box2DWorld {
         }
 
         percentageOverlap = overlapArea / patternArea;
-
-        System.out.println("Percent: " + percentageOverlap);
     }
 
     public float calculateArea(float[] vertices, int numPoints) {

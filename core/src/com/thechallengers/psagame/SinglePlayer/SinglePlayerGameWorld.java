@@ -1,5 +1,6 @@
 package com.thechallengers.psagame.SinglePlayer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -39,7 +40,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public Array<Body> bodyArray = new Array<Body>();
     private Worker worker;
     private float gameTime;
-    private int worldTime;
+    private float worldTime;
     public boolean hasStarted = false;
 
     private Label countdownLabel;
@@ -63,41 +64,22 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public Box2DWorld box2DWorld;
 
 
-    public SinglePlayerGameWorld() {
+    public SinglePlayerGameWorld(int level) {
         worldTime = 300;
         gameTime = 0;
-        createUI();
         worker = new Worker();
         stage = new Stage();
         //stage.addActor(touchpad);
         // stage.addActor(releaseButton);
         //stage.addActor(worker);
-        stage.addActor(destroyButton);
-        stage.addActor(countdownLabel);
+
         // Gdx.input.setInputProcessor(stage);
 
-        box2DWorld = new Box2DWorld();
+        box2DWorld = new Box2DWorld(level);
         this.world = box2DWorld.getWorld();
     }
 
-    //create everthing considering user interface
-    public void createUI() {
-        //create the skin library for touchpad and release Button
-        skin = new Skin();
-        skin.add("destroyButton", new Texture("textures/dynamite.png"));
-
-        destroyStyle = new TextButton.TextButtonStyle();
-        destroyBG = skin.getDrawable("destroyButton");
-        destroyStyle.up = destroyBG;
-        destroyStyle.down = destroyBG;
-        destroyStyle.font = AssetLoader.arial;
-        destroyButton = new TextButton("", destroyStyle);
-        destroyButton.setBounds(SHORT_EDGE-(30+200), LONG_EDGE-(15+200), 200, 200);
-        countdownLabel = new Label(String.format("%03d", worldTime), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        countdownLabel.setFontScale(TIMER_FONT_SIZE, TIMER_FONT_SIZE);
-        countdownLabel.setBounds(SHORT_EDGE-(30+200), LONG_EDGE-(15+450), 200, 200);
-        addListenerToDestroyButton();
-    }
+    //create everything considering user interface
 
     public void addListenerToReleaseButton() {
         releaseButton.addListener(new ClickListener() {
@@ -125,12 +107,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         stage.act(delta);
         box2DWorld.update(delta);
         world.getBodies(bodyArray);
-        if (hasStarted) gameTime += delta;
-
-        if (gameTime >= 1) {
-            worldTime--;
-            countdownLabel.setText(String.format("%03d", worldTime));
-            gameTime = 0;
+        if (box2DWorld.cooldown > 0) box2DWorld.cooldown -= delta;
+        if (hasStarted) {
+            gameTime += delta;
+            worldTime -= delta;
         }
 
         if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
@@ -144,6 +124,19 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             EndGameWorld.star = 0;
             CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
         }
+
+        float xGrav = Gdx.input.getAccelerometerX() / 9.81f;
+        float yGrav = Gdx.input.getAccelerometerY() / 9.81f;
+        float zGrav = Gdx.input.getAccelerometerZ() / 9.81f;
+
+        // gForce will be close to 1 when there is no movement.
+        float gForce = (float)Math.sqrt((xGrav * xGrav) + (yGrav * yGrav) + (zGrav * zGrav));
+
+        if (gForce > 2 && box2DWorld.cooldown <= 0) {
+            box2DWorld.destroyMode = true;
+        }
+
+        System.out.println(box2DWorld.getCrane().getPosition().y);
     }
 
     public Stage getStage() {
@@ -155,4 +148,8 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     }
 
     public Worker getWorker() { return worker;}
+
+    public float getWorldTime() {
+        return worldTime;
+    }
 }

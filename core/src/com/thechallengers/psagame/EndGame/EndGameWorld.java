@@ -38,6 +38,7 @@ public class EndGameWorld implements ScreenWorld {
         stage = new Stage();
         background = new ActorWithTexture(AssetLoader.winningBG, 0, 0);
         background.addAction(sequence(delay(0.5f), fadeOut(0.5f)));
+        background.getColor().a = 1;
         stage.addActor(background);
         actual = new ActorWithTexture(AssetLoader.actual_1, 0, 0);
         actual.addAction(sequence(delay(0.5f), fadeIn(0.5f), run(new Runnable() {
@@ -46,6 +47,7 @@ public class EndGameWorld implements ScreenWorld {
                 showTheRest();
             }
         })));
+        actual.getColor().a = 0;
     }
 
     public void showTheRest() {

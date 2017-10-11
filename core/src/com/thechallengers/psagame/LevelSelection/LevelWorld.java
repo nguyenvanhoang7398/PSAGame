@@ -19,6 +19,7 @@ import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static com.thechallengers.psagame.game.PSAGame.LEVEL;
 
 /**
  * Created by name on 3/10/2017.
@@ -141,6 +142,7 @@ class LevelWorld implements ScreenWorld {
             public void clicked(InputEvent event, float x, float y) {
                 level1_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+                LEVEL = 2;
             }
         });
     }

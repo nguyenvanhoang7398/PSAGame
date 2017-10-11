@@ -11,15 +11,13 @@ import com.thechallengers.psagame.helpers.AssetLoader;
  */
 
 public class SinglePlayerGameScreen implements Screen {
-    private PSAGame game;
     protected SinglePlayerGameWorld world;
     protected SinglePlayerGameRenderer renderer;
     private PhysicsInputHandler physicsInputHandler;
     private float runTime = 0;
 
-    public SinglePlayerGameScreen(PSAGame game) {
-        this.game = game;
-        world = new SinglePlayerGameWorld();
+    public SinglePlayerGameScreen(int level) {
+        world = new SinglePlayerGameWorld(level);
         renderer = new SinglePlayerGameRenderer(world);
         physicsInputHandler = new PhysicsInputHandler(world);
         AssetLoader.loadGameTexture();

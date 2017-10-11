@@ -3,6 +3,7 @@ package com.thechallengers.psagame.SinglePlayer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
+import com.thechallengers.psagame.helpers.AssetLoader;
 
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.

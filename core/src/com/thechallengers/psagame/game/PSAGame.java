@@ -17,6 +17,7 @@ public class PSAGame extends Game {
 		MenuScreen, SinglePlayerGameScreen, ShopScreen, TutorialScreen, EndGameScreen, LevelSelectionScreen
 	}
 	public static Screen CURRENT_SCREEN;
+	public static int LEVEL;
 
 	@Override
 	public void create() {
@@ -43,7 +44,6 @@ public class PSAGame extends Game {
 	public void render() {
 		super.render();
 		updateScreen();
-		System.out.println(CURRENT_SCREEN);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class PSAGame extends Game {
 					break;
 				}
 				case SinglePlayerGameScreen: {
-					setScreen(new SinglePlayerGameScreen(this));
+					setScreen(new SinglePlayerGameScreen(LEVEL));
 					break;
 				}
 				case ShopScreen: {

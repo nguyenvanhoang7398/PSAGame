@@ -2,6 +2,7 @@ package com.thechallengers.psagame.helpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -66,6 +67,7 @@ public class AssetLoader {
     //font
     public static BitmapFont arial;
     public static BitmapFont consolas_15;
+    public static BitmapFont consolas_60;
 
     //position for game background (zoomed in from menu)
     public static int starting_x, starting_y, end_x, end_y;
@@ -92,6 +94,10 @@ public class AssetLoader {
     public static Texture pointer_after_tilted;
     public static Texture pointer_destroy_1;
     public static Texture pointer_destroy_2;
+    public static Texture destroy_mode;
+
+    //animation
+    public static Animation<TextureRegion> cooldown_animation;
 
     //end game
     public static Texture tips_1;
@@ -133,6 +139,7 @@ public class AssetLoader {
 
         arial = new BitmapFont(Gdx.files.internal("font/arial.fnt"));
         consolas_15 = new BitmapFont(Gdx.files.internal("font/consolas_15.fnt"));
+        consolas_60 = new BitmapFont(Gdx.files.internal("font/consolas_60.fnt"));
     }
 
     public static void disposeMenuTexture() {
@@ -210,6 +217,9 @@ public class AssetLoader {
         star.add(new Texture(Gdx.files.internal("textures/star_1.png")));
         star.add(new Texture(Gdx.files.internal("textures/star_2.png")));
         star.add(new Texture(Gdx.files.internal("textures/star_3.png")));
+        destroy_mode = new Texture("textures/destroy_mode.png");
+
+        cooldown_animation = createAnimation(new Texture("textures/cooldown_animation.png"), 1, 5, 1);
 
         loadSpritesAndHashTable();
     }
@@ -243,6 +253,26 @@ public class AssetLoader {
         balloon_tilted = new Texture(Gdx.files.internal("textures/tutorial/balloon_tilted.png"));
         pointer_destroy_1 = new Texture(Gdx.files.internal("textures/tutorial/pointer_destroy_1.png"));
         pointer_destroy_2 = new Texture(Gdx.files.internal("textures/tutorial/pointer_destroy_2.png"));
+    }
+
+    public static Animation<TextureRegion> createAnimation(Texture texture, int row, int col, float interval) {
+        TextureRegion[][] tmp = TextureRegion.split(texture,
+                texture.getWidth() / col,
+                texture.getHeight() / row);
+
+        TextureRegion[] frames = new TextureRegion[row * col];
+
+        int index = 0;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                frames[index++] = tmp[i][j];
+            }
+        }
+
+        Animation<TextureRegion> animation = new Animation<TextureRegion>(interval, frames);
+        animation.setPlayMode(Animation.PlayMode.LOOP);
+
+        return animation;
     }
 
     public static void loadSpritesAndHashTable() {
