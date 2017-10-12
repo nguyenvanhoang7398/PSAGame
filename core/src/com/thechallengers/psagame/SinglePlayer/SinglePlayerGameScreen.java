@@ -25,6 +25,13 @@ public class SinglePlayerGameScreen implements Screen {
         inputMultiplexer.addProcessor(world.getStage());
         inputMultiplexer.addProcessor(physicsInputHandler);
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        //handling silhouette pattern
+        switch (level) {
+            case 2:
+
+                break;
+        }
     }
 
     @Override

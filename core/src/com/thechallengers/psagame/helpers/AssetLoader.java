@@ -68,6 +68,8 @@ public class AssetLoader {
     public static TextureRegion losingBG;
 
     public static Hashtable<String, Sprite> spriteHashtable;
+    public static ArrayList<Texture> silhouetteArrayList;
+    public static ArrayList<Texture> actualArrayList;
 
     //font
     public static BitmapFont arial;
@@ -101,6 +103,12 @@ public class AssetLoader {
     public static Texture pointer_destroy_2;
     public static Texture destroy_mode;
     public static Texture bomb;
+    public static Texture endGameBackground;
+    public static Texture level_selection;
+    public static Texture next_button_down;
+    public static Texture level_selection_down;
+    public static Texture menu_button_down;
+    public static Texture replay_button_down;
 
     //animation
     public static Animation<TextureRegion> cooldown_animation;
@@ -108,7 +116,7 @@ public class AssetLoader {
     public static Animation<TextureRegion> arrow_animation;
 
     //end game
-    public static Texture tips_1;
+    public static Texture[] tips = new Texture[5];
     public static Texture star_background;
     public static ArrayList<Texture> star;
 
@@ -220,7 +228,11 @@ public class AssetLoader {
         unitBlockTexture = new Texture("textures/unitBlock.png");
         silhouette_1 = new Texture(Gdx.files.internal("textures/silhouette_1.png"));
         actual_1 = new Texture(Gdx.files.internal("textures/actual_1.png"));
-        tips_1 = new Texture(Gdx.files.internal("textures/tips_1.png"));
+
+        for (int i = 1; i <= 5; i++) {
+            tips[i - 1] = new Texture("textures/tips_" + String.valueOf(i) +".png");
+        }
+
         star_background = new Texture(Gdx.files.internal("textures/star_background.png"));
         star = new ArrayList<Texture>();
         star.add(new Texture(Gdx.files.internal("textures/star_1.png")));
@@ -229,6 +241,7 @@ public class AssetLoader {
         destroy_mode = new Texture("textures/destroy_mode.png");
         start_game = new Texture("textures/start_game.png");
         next_block_frame = new Texture("textures/next_block_frame.png");
+        level_selection = new Texture("textures/level_selection.png");
         bomb = new Texture("textures/bomb.png");
         TextureRegion[][] tmp = TextureRegion.split(new Texture("textures/progress.png"),
                 100, 100);
@@ -245,6 +258,24 @@ public class AssetLoader {
         arrow_animation = createAnimation(new Texture("textures/arrow_indicator.png"), 1, 9, 0.1f);
 
         loadSpritesAndHashTable();
+
+        endGameBackground = new Texture("textures/end_game_background.png");
+
+        next_button_down = new Texture("textures/next_button_down.png");
+        level_selection_down = new Texture("textures/level_selection_down.png");
+        menu_button_down = new Texture("textures/menu_button_down.png");
+        replay_button_down = new Texture("textures/replay_button_down.png");
+        /*
+        silhouetteArrayList = new ArrayList<Texture>();
+        for (int i = 1; i <= 5; i++) {
+            silhouetteArrayList.add(new Texture("textures/silhouette_" + String.valueOf(i)));
+        }
+
+        actualArrayList = new ArrayList<Texture>();
+        for (int i = 1; i <= 5; i++) {
+            actualArrayList.add(new Texture("textures/actual_" + String.valueOf(i)));
+        }
+        */
     }
 
     public static void updateGameBackGroundDetails(int _starting_x, int _starting_y, int _end_x, int _end_y) {

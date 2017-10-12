@@ -54,6 +54,7 @@ public class Box2DWorld {
     private float patternArea;
     private float percentageOverlap = 0;
     private int num_width_3_consecutively = 0; // number of 3 consecutive block with width = 3
+    public float endGameWaitTime = 0;
 
     public Box2DWorld(int level) {
         world = new World(new Vector2(0, -9.8f), true);
@@ -106,8 +107,18 @@ public class Box2DWorld {
         cooldown = 0;
 
         myFrame = new Frame(size);
-        float[] pattern_verts = {1f, 1f, 1f, 1.50f, 6f, 5f, 11.80f, 1.50f, 11.80f, 1f};
-        renderPattern(pattern_verts, world);
+
+        //handling different levels
+        switch (level) {
+            case 2:
+                float [] pattern_verts = {1.44f, 13.26f, 9.32f, 13.26f, 9.32f, 8.42f, 1.44f, 8.42f};
+                renderPattern(pattern_verts, world);
+                break;
+            default:
+        }
+
+
+
     }
 
     public Box2DWorld(String string) {
@@ -167,7 +178,10 @@ public class Box2DWorld {
     }
 
     public void update(float delta) {
-        if (percentageOverlap > 0.6f) return;
+        if (percentageOverlap > 0.1f) {
+            endGameWaitTime += delta;
+            return;
+        }
         updateCrane();
         world.getBodies(bodyArray);
         destroyInvalidBlocks();

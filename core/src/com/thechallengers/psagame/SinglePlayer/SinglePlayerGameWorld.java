@@ -38,7 +38,7 @@ import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
 
 public class SinglePlayerGameWorld implements ScreenWorld {
     final float TIMER_FONT_SIZE = 7;
-    final float PERCENTAGE_THRESHOLD = 0.6f;
+    final float PERCENTAGE_THRESHOLD = 0.1f;
     private Body crane;
     float CRANE_SPEED = 8f;
     private Stage stage;
@@ -86,9 +86,15 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     @Override
     public void update(float delta) {
-        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) return;
-        stage.act(delta);
         box2DWorld.update(delta);
+        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
+            if (box2DWorld.endGameWaitTime >= 1) {
+                AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
+                CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
+            }
+            return;
+        }
+        stage.act(delta);
         world.getBodies(bodyArray);
         if (box2DWorld.cooldown > 0) box2DWorld.cooldown -= delta;
         if (hasStarted) {
@@ -96,16 +102,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             worldTime -= delta;
         }
 
-        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
-            AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
-            EndGameWorld.star = 3;
-            CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
-        }
-
         if (worldTime < 0) {
             AssetLoader.losingBG = ScreenUtils.getFrameBufferTexture();
-            EndGameWorld.star = 0;
             CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
+            return;
         }
 
         float xGrav = Gdx.input.getAccelerometerX() / 9.81f;
