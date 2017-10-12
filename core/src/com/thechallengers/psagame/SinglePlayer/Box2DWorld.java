@@ -167,6 +167,7 @@ public class Box2DWorld {
     }
 
     public void update(float delta) {
+        if (percentageOverlap > 0.6f) return;
         updateCrane();
         world.getBodies(bodyArray);
         destroyInvalidBlocks();
@@ -204,14 +205,14 @@ public class Box2DWorld {
         fixtureDef.friction = 1f;
         fixtureDef.isSensor = true;
         crane.createFixture(fixtureDef);
-        crane.setTransform(5.4f, 15.4f, 0);
+        crane.setTransform(5.4f, 14.4f, 0);
         crane.setUserData(new CraneData());
     }
 
     public void moveCrane(float screenX, float screenY) {
         System.out.println("called");
-        float distance = (15.4f - crane.getPosition().y) + (Math.abs(screenX - crane.getPosition().x))
-                            + (15.4f - screenY);
+        float distance = (14.4f - crane.getPosition().y) + (Math.abs(screenX - crane.getPosition().x))
+                            + (14.4f - screenY);
 
         float velocity = distance / 2f;
 
@@ -240,9 +241,9 @@ public class Box2DWorld {
                 break;
             }
             case UP: {
-                if (crane.getPosition().y < 15.4f) break;
+                if (crane.getPosition().y < 14.4f) break;
                 else {
-                    crane.setTransform(crane.getPosition().x, 15.4f, 0);
+                    crane.setTransform(crane.getPosition().x, 14.4f, 0);
 
                     float horizontal_velocity = craneData.velocity * (craneData.destination.x >= crane.getPosition().x ? 1 : -1);
 

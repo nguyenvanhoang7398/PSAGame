@@ -17,10 +17,10 @@ public class SinglePlayerGameScreen implements Screen {
     private float runTime = 0;
 
     public SinglePlayerGameScreen(int level) {
+        AssetLoader.loadGameTexture();
         world = new SinglePlayerGameWorld(level);
         renderer = new SinglePlayerGameRenderer(world);
         physicsInputHandler = new PhysicsInputHandler(world);
-        AssetLoader.loadGameTexture();
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(world.getStage());
         inputMultiplexer.addProcessor(physicsInputHandler);
