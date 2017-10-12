@@ -22,9 +22,6 @@ import static com.thechallengers.psagame.SinglePlayer.Box2DWorld.NUM_NEXT_BLOCK_
  * Created by Phung Tuan Hoang on 9/11/2017.
  */
 
-/*
-    Khi draw sprite, multiply y voi
- */
 public class SinglePlayerGameRenderer extends ScreenRenderer {
     private SinglePlayerGameWorld world;
     Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
@@ -53,6 +50,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         //world.box2DWorld.debugRender();
         batcher.draw(AssetLoader.game_background, 0, 0);
+        if (!world.hasStarted) batcher.draw(AssetLoader.start_game, 0, 0);
         if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
         batcher.draw(AssetLoader.silhouette_1, 0, 0);
 
@@ -71,68 +69,46 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         }
 
         drawCrane(world.box2DWorld.getCrane());
+        batcher.draw(AssetLoader.game_background_2, 0, 0);
+        if (world.hasStarted) batcher.draw(AssetLoader.arrow_animation.getKeyFrame(runTime, false), 135, 1563);
+        else batcher.draw(AssetLoader.arrow_animation.getKeyFrame(0, false), 135, 1563);
 
-        // INCOMING BLOCKS
-        ArrayDeque<Block> copiedNextBlockQ = world.box2DWorld.nextBlockQ.clone();
-        renderNextBlock(copiedNextBlockQ);
 
-        AssetLoader.consolas_60.draw(batcher, "Next", 40, 1600);
-        AssetLoader.consolas_60.draw(batcher, String.format("Progress: %d%%", (int) (world.box2DWorld.getPercentageOverlap() * 100)), 620, 1880);
-        AssetLoader.consolas_60.draw(batcher, String.format("Time: %.0f", world.getWorldTime()), 620, 1780);
 
-        if (world.box2DWorld.cooldown <= 0) AssetLoader.consolas_60.draw(batcher, String.format("Destroy: Rdy!", world.getWorldTime()), 620, 1680);
+
+        if (world.box2DWorld.cooldown <= 0) batcher.draw(AssetLoader.bomb, 915, 1582);
         else {
-            AssetLoader.consolas_60.draw(batcher, String.format("Destroy: ", world.getWorldTime()), 620, 1680);
             cooldown_animation_runTime += Gdx.graphics.getDeltaTime();
-            if (cooldown_animation_runTime <= 4) batcher.draw(AssetLoader.cooldown_animation.getKeyFrame(cooldown_animation_runTime, false), 900, 1610);
+            if (cooldown_animation_runTime <= 4) batcher.draw(AssetLoader.cooldown_animation.getKeyFrame(cooldown_animation_runTime, false), 915, 1582);
         }
 
+        float percentage = world.box2DWorld.getPercentageOverlap();
 
+        if (percentage < 0.125f) batcher.draw(AssetLoader.progress[0], 600 ,1582);
+        else if (percentage < 0.25f) batcher.draw(AssetLoader.progress[1], 600 ,1582);
+        else if (percentage < 0.375f) batcher.draw(AssetLoader.progress[2], 600 ,1582);
+        else if (percentage < 0.5f) batcher.draw(AssetLoader.progress[3], 600 ,1582);
+        else if (percentage < 0.625f) batcher.draw(AssetLoader.progress[4], 600 ,1582);
+        else if (percentage < 0.75f) batcher.draw(AssetLoader.progress[5], 600 ,1582);
+        else if (percentage < 0.875f) batcher.draw(AssetLoader.progress[6], 600 ,1582);
+        else if (percentage < 1f) batcher.draw(AssetLoader.progress[7], 600 ,1582);
+        else batcher.draw(AssetLoader.progress[8], 600 ,1582);
+        AssetLoader.consolas_60.draw(batcher, String.format("%d%%", (int) (world.box2DWorld.getPercentageOverlap() * 100)), 710, 1650);
+
+        if (world.hasStarted) batcher.draw(AssetLoader.clock_animation.getKeyFrame(runTime, false), 340, 1582);
+        else batcher.draw(AssetLoader.clock_animation.getKeyFrame(0, false), 340, 1582);
+        AssetLoader.consolas_60.draw(batcher, String.format("%d:%d", (int) (world.getWorldTime() / 60),
+                                                (int) (world.getWorldTime() - 60 * (int) (world.getWorldTime() / 60))), 450, 1650);
         batcher.end();
+
+        //INCOMING BLOCK
+        world.getStage().draw();
     }
 
     //CRANE
     public void drawCrane(Body crane) {
         AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y);
         AssetLoader.game_crane.draw(batcher);
-    }
-
-    //NEXT BLOCKS
-    public void renderNextBlock(ArrayDeque<Block> copiedNextBlockQ) {
-        float nextX = 50f;
-        float offsetX = 50f;
-        final float GAP = 20f;
-        final float MAX_HEIGHT = 200f;
-        float offsetGap = 0;
-        float offsetY = Gdx.graphics.getHeight() - 200f;
-
-        for (int i = 0; i < NUM_NEXT_BLOCK_INFORMED; i++) {
-            if (copiedNextBlockQ.isEmpty()) break;
-            System.out.println(nextX);
-            Block block = copiedNextBlockQ.removeLast();
-            Sprite sprite = AssetLoader.spriteHashtable.get(block.blockType);
-
-            if (i == 2) {
-                sprite.setPosition(220f / 1080f * Gdx.graphics.getWidth(), 1470f / 1920f * Gdx.graphics.getHeight());
-                if (block.height == 1) {
-                    sprite.setPosition(220f / 1080f * Gdx.graphics.getWidth(), 1470f / 1920f * Gdx.graphics.getHeight() + 50);
-                }
-                sprite.draw(batcher);
-            }
-            else {
-                sprite.setScale(NEXT_BLOCK_SCALE);
-                nextX -= block.width * 100f * (1 - NEXT_BLOCK_SCALE) / 2f;
-                sprite.setPosition(nextX, offsetY);
-
-                if (block.height == 1) {
-                    sprite.setPosition(nextX, offsetY + 50);
-                }
-                nextX += block.width * 100f * (1 - NEXT_BLOCK_SCALE) / 2f + block.width * 100f * NEXT_BLOCK_SCALE + 20f;
-                sprite.draw(batcher);
-                sprite.setScale(1);
-            }
-        }
-
     }
 
     //FOR TRANSLATING WORLD POSITION TO SCREEN POSITION - only for blocks
