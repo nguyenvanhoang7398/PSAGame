@@ -106,8 +106,7 @@ public class Box2DWorld {
         cooldown = 0;
 
         myFrame = new Frame(size);
-        float[] pattern_verts = {
-                1.98f, 16.1f, 2.06f, 16.2f, 5.78f, 16.2f, 5.86f, 16.1f, 5.86f, 12.52f, 6.72f, 12.52f, 6.82f, 12.42f, 6.82f, 8.92f, 8.74f, 8.92f, 8.82f, 8.84f, 8.82f, 4.92f, 8.74f, 4.82f, 4.78f, 4.82f, 4.7f, 4.88f, 4.7f, 8f, 3.7f, 8f, 3.62f, 8.08f, 3.62f, 11.5f, 2.06f, 11.5f, 1.98f, 11.58f};
+        float[] pattern_verts = {1f, 1f, 1f, 1.50f, 6f, 5f, 11.80f, 1.50f, 11.80f, 1f};
         renderPattern(pattern_verts, world);
     }
 

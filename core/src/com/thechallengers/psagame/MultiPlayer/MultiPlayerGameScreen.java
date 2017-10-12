@@ -14,7 +14,7 @@ public class MultiPlayerGameScreen extends  SinglePlayerGameScreen {
     private float runTime = 0;
 
     public MultiPlayerGameScreen(PSAGame game) {
-        super(game);
+        super(1);
         WarpController.renderer = this.renderer;
     }
 

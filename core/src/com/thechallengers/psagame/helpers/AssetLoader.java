@@ -25,6 +25,7 @@ public class AssetLoader {
     public static Texture cloud_1, cloud_2;
     public static Texture containers;
     public static Texture play_button, play_button_pressed;
+    public static Texture menu_button, replay_button, next_button;
     public static Texture tutorial_button, tutorial_button_pressed;
     public static Texture single_player_button, single_player_button_pressed;
     public static Texture multi_player_button, multi_player_button_pressed;
@@ -114,6 +115,9 @@ public class AssetLoader {
         containers = new Texture(Gdx.files.internal("textures/containers.png"));
         play_button = new Texture(Gdx.files.internal("textures/play_button.png"));
         play_button_pressed = new Texture(Gdx.files.internal("textures/play_button_pressed.png"));
+        menu_button = new Texture(Gdx.files.internal("textures/menu_button.png"));
+        replay_button = new Texture(Gdx.files.internal("textures/replay_button.png"));
+        next_button = new Texture(Gdx.files.internal("textures/next_button.png"));
         tutorial_button = new Texture(Gdx.files.internal("textures/tutorial_button.png"));
         tutorial_button_pressed = new Texture(Gdx.files.internal("textures/tutorial_button_pressed.png"));
         single_player_button = new Texture(Gdx.files.internal("textures/single_player_button.png"));
