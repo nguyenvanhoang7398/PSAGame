@@ -38,7 +38,7 @@ import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
 
 public class SinglePlayerGameWorld implements ScreenWorld {
     final float TIMER_FONT_SIZE = 7;
-    final float PERCENTAGE_THRESHOLD = 0.1f;
+    final float PERCENTAGE_THRESHOLD = 0.9f;
     private Body crane;
     float CRANE_SPEED = 8f;
     private Stage stage;
