@@ -22,6 +22,6 @@ public class CraneData {
         cranedBody = null;
         velocity = 0;
         state = STATE.STOP;
-        destination = new Vector2(5.4f, 14.4f);
+        destination = new Vector2(5.4f, 14.2f);
     }
 }

@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.LevelSelection;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -53,6 +54,9 @@ class LevelWorld implements ScreenWorld {
     @Override
     public void update(float delta) {
         stage.act(delta);
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
+            CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
+        }
     }
 
     public void createBackButton() {
@@ -142,7 +146,7 @@ class LevelWorld implements ScreenWorld {
             public void clicked(InputEvent event, float x, float y) {
                 level1_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
-                LEVEL = 2;
+                LEVEL = 1;
             }
         });
     }

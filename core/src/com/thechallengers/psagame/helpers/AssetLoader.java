@@ -113,6 +113,7 @@ public class AssetLoader {
     public static Texture level_selection_down;
     public static Texture menu_button_down;
     public static Texture replay_button_down;
+    public static Texture time_end_screen;
 
     //animation
     public static Animation<TextureRegion> cooldown_animation;
@@ -251,6 +252,7 @@ public class AssetLoader {
     }
 
     public static void loadGameTexture() {
+        time_end_screen = new Texture("textures/time_end_screen.png");
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));
         game_background = new Texture(Gdx.files.internal("textures/game_background.png"));
@@ -294,17 +296,17 @@ public class AssetLoader {
         level_selection_down = new Texture("textures/level_selection_down.png");
         menu_button_down = new Texture("textures/menu_button_down.png");
         replay_button_down = new Texture("textures/replay_button_down.png");
-        /*
+
         silhouetteArrayList = new ArrayList<Texture>();
         for (int i = 1; i <= 5; i++) {
-            silhouetteArrayList.add(new Texture("textures/silhouette_" + String.valueOf(i)));
+            silhouetteArrayList.add(new Texture("textures/silhouette_" + String.valueOf(i) + ".png"));
         }
 
         actualArrayList = new ArrayList<Texture>();
         for (int i = 1; i <= 5; i++) {
-            actualArrayList.add(new Texture("textures/actual_" + String.valueOf(i)));
+            actualArrayList.add(new Texture("textures/actual_" + String.valueOf(i) + ".png"));
         }
-        */
+
     }
 
     public static void updateGameBackGroundDetails(int _starting_x, int _starting_y, int _end_x, int _end_y) {
