@@ -3,42 +3,29 @@ package com.thechallengers.psagame.Menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.thechallengers.psagame.LevelSelection.LevelSelectionScreen;
 import com.thechallengers.psagame.Menu.Objects.Background;
 import com.thechallengers.psagame.Menu.Objects.Cloud;
 import com.thechallengers.psagame.Menu.Objects.Containers;
-import com.thechallengers.psagame.Shop.ShopScreen;
-import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
-import com.thechallengers.psagame.game.PSAGame;
-import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.Menu.Objects.MenuCrane;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
+import com.thechallengers.psagame.game.PSAGame;
+import com.thechallengers.psagame.helpers.AssetLoader;
 
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
-import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
-import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
 
 /**
  * Created by Phung Tuan Hoang on 9/6/2017.
@@ -63,6 +50,10 @@ public class MenuWorld implements ScreenWorld {
     //for shop
     private TextButton shop_button;
     private TextButton.TextButtonStyle shop_button_style;
+
+    //for leaderboard
+    private TextButton leaderboard_button;
+    private TextButton.TextButtonStyle leaderboard_button_style;
 
     private PSAGame game;
 
@@ -90,7 +81,7 @@ public class MenuWorld implements ScreenWorld {
 
         //shop button
         createShopButton();
-
+        createLeaderboardButton();
         stage.addActor(background);
         //stage.addActor(menu_crane);
         stage.addActor(play_button);
@@ -102,6 +93,7 @@ public class MenuWorld implements ScreenWorld {
         createClouds();
         createContainers();
         stage.addActor(shop_button);
+        stage.addActor(leaderboard_button);
         //lookAt();
 
     }
@@ -160,6 +152,32 @@ public class MenuWorld implements ScreenWorld {
             public void clicked(InputEvent event, float x, float y) {
                 shop_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 CURRENT_SCREEN = PSAGame.Screen.ShopScreen;
+            }
+        });
+    }
+
+    //LEADERBOARD BUTTON
+    public void createLeaderboardButtonStyle() {
+        leaderboard_button_style = new TextButton.TextButtonStyle();
+        leaderboard_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_button));
+        leaderboard_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_button));
+        leaderboard_button_style.font = AssetLoader.arial;
+    }
+
+    public void createLeaderboardButton() {
+        createLeaderboardButtonStyle();
+
+        leaderboard_button = new TextButton("", leaderboard_button_style);
+        leaderboard_button.setPosition(700, 1500);
+        addListenerToLeaderboardButton();
+    }
+
+    public void addListenerToLeaderboardButton() {
+        leaderboard_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                leaderboard_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
+                CURRENT_SCREEN = PSAGame.Screen.LeaderboardScreen;
             }
         });
     }

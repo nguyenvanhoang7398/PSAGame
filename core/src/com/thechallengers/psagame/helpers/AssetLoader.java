@@ -32,18 +32,22 @@ public class AssetLoader {
     public static Texture multi_player_button, multi_player_button_pressed;
     public static Texture overlay_button, overlay_button_pressed;
     public static Texture setting_button, setting_button_pressed;
+    public static Texture highscore_message_button, highscore_message_button_pressed;
     public static Texture setting_overlay;
     public static Texture setting_box;
     public static Texture slider_bg, slider_knob;
     public static Texture unitBlockTexture;
     public static Texture shop_button, shop_backButton;
     public static Texture shop_background;
+    public static Texture leaderboard_button, leaderboard_backButton, leaderboard_addButton;
+    public static Texture leaderboard_background;
     public static Texture level_selection_background;
     public static Texture level_backButton;
-    public static Texture level1_Button;
+    public static Texture level1_Button, level2_Button;
     public static Texture level_title;
     public static Texture star0, star1, star2, star3 ;
     public static Texture shop_title;
+    public static Texture leaderboard_title;
     public static Texture crane_lv1, crane_lv2, crane_lv3, crane_title, selection_bar;
     public static Texture purchase_message, purchase_success_message, purchase_fail_message, yes_button, no_button;
     public static Texture start_game;
@@ -149,6 +153,7 @@ public class AssetLoader {
         slider_bg = new Texture(Gdx.files.internal("textures/slider_bg.png"));
         slider_knob = new Texture(Gdx.files.internal("textures/slider_knob.png"));
         shop_button = new Texture(Gdx.files.internal("textures/shop_icon.png"));
+        leaderboard_button = new Texture(Gdx.files.internal("textures/leaderboard_icon.png"));
 
         background = new TextureRegion(background_texture, 0, 0, 1080, 1920);
         button_up = new TextureRegion(button_texture, 0, 0, 200, 100);
@@ -219,6 +224,30 @@ public class AssetLoader {
         yes_button.dispose();
         no_button.dispose();
 
+    }
+
+    public static void loadLeaderboardTexture() {
+        leaderboard_background = new Texture(Gdx.files.internal("textures/leaderboard_background.jpg"));
+        leaderboard_backButton = new Texture(Gdx.files.internal("textures/leaderboard_backButton.png"));
+        leaderboard_title = new Texture(Gdx.files.internal("textures/leaderboard_title.png"));
+        leaderboard_addButton = new Texture(Gdx.files.internal("textures/leaderboard_addButton.png"));
+        level1_Button = new Texture(Gdx.files.internal("textures/level1.png"));
+        level2_Button = new Texture(Gdx.files.internal("textures/level1.png"));
+        highscore_message_button = new Texture(Gdx.files.internal("textures/overlay_button.png"));
+        highscore_message_button_pressed = new Texture(Gdx.files.internal("textures/overlay_button_pressed.png"));
+        no_button = new Texture(Gdx.files.internal("textures/no_button.png"));
+    }
+
+    public static void disposeLeaderboardTexture() {
+        leaderboard_background.dispose();
+        leaderboard_backButton.dispose();
+        leaderboard_title.dispose();
+        leaderboard_addButton.dispose();
+        level1_Button.dispose();
+        level2_Button.dispose();
+        highscore_message_button.dispose();
+        highscore_message_button_pressed.dispose();
+        no_button.dispose();
     }
 
     public static void loadGameTexture() {

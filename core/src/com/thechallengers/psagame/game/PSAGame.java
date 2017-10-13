@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.thechallengers.psagame.EndGame.EndGameScreen;
+import com.thechallengers.psagame.Leaderboard.LeaderboardScreen;
 import com.thechallengers.psagame.LevelSelection.LevelSelectionScreen;
 import com.thechallengers.psagame.Menu.MenuScreen;
 import com.thechallengers.psagame.Shop.ShopScreen;
@@ -14,7 +15,7 @@ public class PSAGame extends Game {
 	public static final float LONG_EDGE = 1920;
 	public static final float SHORT_EDGE = 1080;
 	public static enum Screen {
-		MenuScreen, SinglePlayerGameScreen, ShopScreen, TutorialScreen, EndGameScreen, LevelSelectionScreen
+		MenuScreen, SinglePlayerGameScreen, ShopScreen, TutorialScreen, EndGameScreen, LevelSelectionScreen, LeaderboardScreen
 	}
 	public static Screen CURRENT_SCREEN;
 	public static int LEVEL;
@@ -65,6 +66,10 @@ public class PSAGame extends Game {
 				}
 				case ShopScreen: {
 					setScreen(new ShopScreen(this));
+					break;
+				}
+				case LeaderboardScreen: {
+					setScreen(new LeaderboardScreen(this));
 					break;
 				}
 				case TutorialScreen: {
