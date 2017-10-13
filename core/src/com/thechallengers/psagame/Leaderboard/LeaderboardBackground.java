@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 
 public class LeaderboardBackground extends Actor {
-    Texture texture = new Texture(Gdx.files.internal("textures/leaderboard_background.png"));
+    Texture texture = new Texture(Gdx.files.internal("textures/leaderboard_background.jpg"));
     @Override
     public void draw(Batch batch, float alpha){
         batch.draw(texture,0,0);

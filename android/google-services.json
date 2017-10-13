@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "153656926498",
+    "firebase_url": "https://psagame-a9fa4.firebaseio.com",
+    "project_id": "psagame-a9fa4",
+    "storage_bucket": "psagame-a9fa4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153656926498:android:cfc3a146148d3f4f",
+        "android_client_info": {
+          "package_name": "com.thechallengers.psagame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153656926498-7tho3mdgupg5l4p82n7se4fj21nuo2uj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.thechallengers.psagame",
+            "certificate_hash": "06d10f5e317098830226bebd4a5b869e371a9603"
+          }
+        },
+        {
+          "client_id": "153656926498-7otke6fqvhin4s7shlg0m4fp3fc7ka4d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYsy9LEpoDtzvCgkolhT9fWIU2Ze1zip0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "153656926498-7otke6fqvhin4s7shlg0m4fp3fc7ka4d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

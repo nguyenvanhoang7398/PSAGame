@@ -30,6 +30,7 @@ public class AssetLoader {
     public static Texture multi_player_button, multi_player_button_pressed;
     public static Texture overlay_button, overlay_button_pressed;
     public static Texture setting_button, setting_button_pressed;
+    public static Texture highscore_message_button, highscore_message_button_pressed;
     public static Texture setting_overlay;
     public static Texture setting_box;
     public static Texture slider_bg, slider_knob;
@@ -40,7 +41,7 @@ public class AssetLoader {
     public static Texture leaderboard_background;
     public static Texture level_selection_background;
     public static Texture level_backButton;
-    public static Texture level1_Button;
+    public static Texture level1_Button, level2_Button;
     public static Texture level_title;
     public static Texture star0, star1, star2, star3 ;
     public static Texture shop_title;
@@ -209,10 +210,15 @@ public class AssetLoader {
     }
 
     public static void loadLeaderboardTexture() {
-        leaderboard_background = new Texture(Gdx.files.internal("textures/leaderboard_background.png"));
+        leaderboard_background = new Texture(Gdx.files.internal("textures/leaderboard_background.jpg"));
         leaderboard_backButton = new Texture(Gdx.files.internal("textures/leaderboard_backButton.png"));
         leaderboard_title = new Texture(Gdx.files.internal("textures/leaderboard_title.png"));
         leaderboard_addButton = new Texture(Gdx.files.internal("textures/leaderboard_addButton.png"));
+        level1_Button = new Texture(Gdx.files.internal("textures/level1.png"));
+        level2_Button = new Texture(Gdx.files.internal("textures/level1.png"));
+        highscore_message_button = new Texture(Gdx.files.internal("textures/overlay_button.png"));
+        highscore_message_button_pressed = new Texture(Gdx.files.internal("textures/overlay_button_pressed.png"));
+        no_button = new Texture(Gdx.files.internal("textures/no_button.png"));
     }
 
     public static void disposeLeaderboardTexture() {
@@ -220,6 +226,11 @@ public class AssetLoader {
         leaderboard_backButton.dispose();
         leaderboard_title.dispose();
         leaderboard_addButton.dispose();
+        level1_Button.dispose();
+        level2_Button.dispose();
+        highscore_message_button.dispose();
+        highscore_message_button_pressed.dispose();
+        no_button.dispose();
     }
 
     public static void loadGameTexture() {

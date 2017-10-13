@@ -25,8 +25,9 @@ public class ShopRender extends ScreenRenderer {
         stage.setViewport(viewport);
         Gdx.input.setInputProcessor(stage);
         batch = new SpriteBatch();
-        moneyBalanceFont = AssetLoader.arial;
-        moneyBalanceFont.getData().setScale(1.5f, 1.5f);
+        moneyBalanceFont = AssetLoader.consolas_15;
+        moneyBalanceFont.getData().setScale(3.5f, 3.5f);
+        moneyBalanceFont.setColor(1.0f,1.0f,1.0f,1.0f);
         moneyBalance = "";
     }
 

@@ -43,3 +43,9 @@
    boolean reportFixture(long);
    float   reportRayFixture(long, float, float, float, float, float);
 }
+
+-keep class mk.gdx.firebase.**{*;}
+-keepattributes Signature
+-keepattributes *Annotation*
+# Keep all POJO objects which you had used as Database models.
+-keepclassmembers class com.yourcompany.models.** {*;}
