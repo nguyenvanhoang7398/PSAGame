@@ -38,7 +38,7 @@ import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.c
 public class Box2DWorld {
     public static final int NUM_NEXT_BLOCK_INFORMED = 3;
     private static final float COOLDOWN_TIME = 4;
-
+    final float PERCENTAGE_THRESHOLD = 0.9f;
     private World world;
     private OrthographicCamera cam;
     private Box2DDebugRenderer debugRenderer;
@@ -48,10 +48,10 @@ public class Box2DWorld {
     public Array<Body> bodyArray;
     public float cooldown;
     public float timeCount = 0;
-    public Polygon pattern;
+    public Array<Polygon> pattern = new Array<Polygon>();
     public static int size = 100;
     public Frame myFrame;
-    private float patternArea;
+    public float totalArea = 0;
     private float percentageOverlap = 0;
     private int num_width_3_consecutively = 0; // number of 3 consecutive block with width = 3
     public float endGameWaitTime = 0;
@@ -108,11 +108,63 @@ public class Box2DWorld {
 
         myFrame = new Frame(size);
 
+        Array<float[]> vert_arr = new Array<float[]> ();
+
         //handling different levels
         switch (level) {
+            //TODO: Re-factor this.
+            case 5:
+                float[] pattern_verts = {1.44f, 13.26f, 9.32f, 13.26f, 9.32f, 8.42f, 1.44f, 8.42f};
+                vert_arr.add(pattern_verts);
+                renderPattern(vert_arr, world);
+                break;
+            case 3:
+                float[] pattern_verts1 = {1.68f, 12.22f, 2.04f, 12.58f, 3.84f, 12.58f, 4.16f, 12.26f, 4.16f, 8.54f, 3.84f, 8.14f, 2.04f, 8.14f, 1.68f, 8.6f};
+                vert_arr.add(pattern_verts1);
+                float[] pattern_verts2 = {4.16f, 12.26f, 4.4f, 12.58f, 6.3f, 12.58f, 6.6f, 12.26f, 6.6f, 8.54f, 6.32f, 8.14f, 4.4f, 8.14f, 4.16f, 8.56f};
+                vert_arr.add(pattern_verts2);
+                float[] pattern_verts3 = {6.6f, 12.28f, 6.84f, 12.58f, 8.74f, 12.58f, 9.08f, 12.22f, 9.08f, 8.62f, 8.76f, 8.14f, 6.82f, 8.14f, 6.6f, 8.54f};
+                vert_arr.add(pattern_verts3);
+                renderPattern(vert_arr, world);
+                break;
+            case 4:
+                float[] pattern_verts4 = {3.28f, 15.14f, 7.64f, 15.14f, 7.64f, 10.8f, 3.28f, 10.8f};
+                vert_arr.add(pattern_verts4);
+                float[] pattern_verts5 = {2.22f, 14.12f, 3.28f, 14.12f, 3.28f, 11.6f, 2.22f, 11.6f};
+                vert_arr.add(pattern_verts5);
+                float[] pattern_verts6 = {7.66f, 14.12f, 8.7f, 14.12f, 8.7f, 11.6f, 7.66f, 11.6f};
+                vert_arr.add(pattern_verts6);
+                float[] pattern_verts7 = {4.86f, 10.8f, 6.08f, 10.8f, 6.08f, 8.84f, 4.86f, 8.84f};
+                vert_arr.add(pattern_verts7);
+                float[] pattern_verts8 = {3.28f, 8.84f, 7.64f, 8.84f, 7.64f, 8.02f, 3.28f, 8.02f};
+                vert_arr.add(pattern_verts8);
+                float[] pattern_verts9 = {2.6f, 8.02f, 8.34f, 8.02f, 8.34f, 6.54f, 2.6f, 6.54f};
+                vert_arr.add(pattern_verts9);
+                renderPattern(vert_arr, world);
+                break;
             case 2:
-                float [] pattern_verts = {1.44f, 13.26f, 9.32f, 13.26f, 9.32f, 8.42f, 1.44f, 8.42f};
-                renderPattern(pattern_verts, world);
+                float[] pattern_verts10 = {1.98f, 16.1f, 2.08f, 16.2f, 5.76f, 16.2f, 5.86f, 16.1f, 5.86f, 11.5f, 2.08f, 11.5f, 1.98f, 11.6f};
+                vert_arr.add(pattern_verts10);
+                float[] pattern_verts11 = {3.62f, 12.52f, 6.72f, 12.52f, 6.82f, 12.42f, 6.82f, 8f, 3.72f, 8f, 3.62f, 8.1f};
+                vert_arr.add(pattern_verts11);
+                float[] pattern_verts12 = {4.7f, 8.92f, 8.74f, 8.92f, 8.84f, 8.82f, 8.84f, 4.9f, 8.74f, 4.82f, 4.8f, 4.82f, 4.7f, 4.9f};
+                vert_arr.add(pattern_verts12);
+                renderPattern(vert_arr, world);
+                break;
+            case 6:
+                float[] pattern_verts13 = {3.4f, 13.12f, 4.92f, 13.12f, 4.92f, 12.2f, 3.4f, 12.2f};
+                vert_arr.add(pattern_verts13);
+                float[] pattern_verts14 = {2.66f, 12.2f, 5.62f, 12.2f, 5.62f, 11.2f, 2.66f, 11.2f};
+                vert_arr.add(pattern_verts14);
+                float[] pattern_verts15 = {1.92f, 11.2f, 6.38f, 11.2f, 6.38f, 10.28f, 1.92f, 10.28f};
+                vert_arr.add(pattern_verts15);
+                float[] pattern_verts16 = {0.82f, 10.26f, 9.88f, 10.26f, 9.88f, 6.4f, 3.58f, 6.4f};
+                vert_arr.add(pattern_verts16);
+                float[] pattern_verts17 = {6.92f, 11.54f, 9.88f, 11.54f, 9.88f, 10.26f, 6.92f, 10.26f};
+                vert_arr.add(pattern_verts17);
+                float[] pattern_verts18 = {8.88f, 13.08f, 9.88f, 13.08f, 9.88f, 11.54f, 8.88f, 11.54f};
+                vert_arr.add(pattern_verts18);
+                renderPattern(vert_arr, world);
                 break;
             default:
         }
@@ -173,12 +225,14 @@ public class Box2DWorld {
         cooldown = 0;
 
         myFrame = new Frame(size);
-        float[] pattern_verts = {1f, 1f, 1f, 1.50f, 6f, 5f, 11.80f, 1.50f, 11.80f, 1f};
-        renderPattern(pattern_verts, world);
+        Array<float[]> vert_arr = new Array<float[]> ();
+        float[] pattern_verts = {1.44f, 13.26f, 9.32f, 13.26f, 9.32f, 8.42f, 1.44f, 8.42f};
+        vert_arr.add(pattern_verts);
+        renderPattern(vert_arr, world);
     }
 
     public void update(float delta) {
-        if (percentageOverlap > 0.1f) {
+        if (percentageOverlap > PERCENTAGE_THRESHOLD) {
             endGameWaitTime += delta;
             return;
         }
@@ -384,44 +438,53 @@ public class Box2DWorld {
         }
     }
 
-    public void renderPattern(float[] vertices, World world) {
-        PolygonShape poly = new PolygonShape();
-        ShapeRenderer renderer = new ShapeRenderer();
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
-        Body body = world.createBody(bodyDef);
-        poly.set(vertices);
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = poly;
-        fixtureDef.density = 1f;
-        fixtureDef.friction = 1f;
-        fixtureDef.restitution = 0f;
-        fixtureDef.isSensor = true;
-        body.createFixture(fixtureDef);
-        pattern = new Polygon();
-        pattern.setVertices(vertices);
-        patternArea = calculateArea(vertices, vertices.length / 2);
+    public void renderPattern(Array<float[]> verts_arr, World world) {
+        totalArea = 0;
+        for(int i = 0; i < verts_arr.size; i ++) {
+            float[] vertices = verts_arr.get(i);
+            PolygonShape poly = new PolygonShape();
+            ShapeRenderer renderer = new ShapeRenderer();
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.type = BodyDef.BodyType.KinematicBody;
+            Body body = world.createBody(bodyDef);
+            poly.set(vertices);
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = poly;
+            fixtureDef.density = 1f;
+            fixtureDef.friction = 1f;
+            fixtureDef.restitution = 0f;
+            fixtureDef.isSensor = true;
+            body.createFixture(fixtureDef);
+            Polygon patPoly = new Polygon();
+            patPoly.setVertices(vertices);
+            pattern.add(new Polygon());
+            pattern.set(i, patPoly);
+            totalArea += calculateArea(vertices, vertices.length / 2);
+        }
     }
 
     public void calculateOverlap(Array<Body> bodyArray) {
         float overlapArea = 0;
-        for(Body body: bodyArray) {
-            if(body.getUserData() instanceof Block) {
-                float x = body.getPosition().x ;
-                float y = body.getPosition().y ;
-                float width = ((Block) body.getUserData()).width ;
-                float height = ((Block) body.getUserData()).height ;
-                float[] blockVertices = {x - width / 2, y - height / 2, x - width / 2, y + height / 2,
-                        x + width / 2, y + height / 2, x + width / 2, y - height / 2};
-                Polygon blockPoly = new Polygon();
-                blockPoly.setVertices(blockVertices);
-                Polygon overlapPoly = new Polygon();
-                boolean a = Intersector.intersectPolygons(pattern, blockPoly, overlapPoly);
-                overlapArea += calculateArea(overlapPoly.getVertices(), overlapPoly.getVertices().length / 2);
+        for(int i = 0; i < pattern.size; i ++) {
+            for (Body body : bodyArray) {
+                if (body.getUserData() instanceof Block) {
+                    float x = body.getPosition().x;
+                    float y = body.getPosition().y;
+                    float width = ((Block) body.getUserData()).width;
+                    float height = ((Block) body.getUserData()).height;
+                    float[] blockVertices = {x - width / 2, y - height / 2, x - width / 2, y + height / 2,
+                            x + width / 2, y + height / 2, x + width / 2, y - height / 2};
+                    Polygon blockPoly = new Polygon();
+                    blockPoly.setVertices(blockVertices);
+                    Polygon overlapPoly = new Polygon();
+                    boolean a = Intersector.intersectPolygons(pattern.get(i), blockPoly, overlapPoly);
+                    overlapArea += calculateArea(overlapPoly.getVertices(), overlapPoly.getVertices().length / 2);
+                }
             }
         }
 
-        percentageOverlap = overlapArea / patternArea;
+        percentageOverlap = overlapArea / totalArea;
+        System.out.println(percentageOverlap);
     }
 
     public float calculateArea(float[] vertices, int numPoints) {

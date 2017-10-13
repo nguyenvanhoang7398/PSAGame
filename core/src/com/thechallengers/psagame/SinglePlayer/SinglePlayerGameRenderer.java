@@ -48,11 +48,11 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         batcher.begin();
 
-        //world.box2DWorld.debugRender();
-        batcher.draw(AssetLoader.game_background, 0, 0);
+        world.box2DWorld.debugRender();
+//        batcher.draw(AssetLoader.game_background, 0, 0);
         if (!world.hasStarted) batcher.draw(AssetLoader.start_game, 0, 0);
         if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
-        batcher.draw(AssetLoader.silhouette_1, 0, 0);
+//        batcher.draw(AssetLoader.silhouette_1, 0, 0);
 
         //BLOCKS
         for (int i = 0; i < world.box2DWorld.bodyArray.size; i++) {
