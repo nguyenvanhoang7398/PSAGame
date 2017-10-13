@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.EndGame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,6 +20,8 @@ import com.thechallengers.psagame.helpers.AssetLoader;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
+import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
+import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 
 /**
  * Created by Phung Tuan Hoang on 10/4/2017.
@@ -44,17 +47,17 @@ public class EndGameWorld implements ScreenWorld {
         stage = new Stage();
 
         winningBG = new ActorWithTexture(AssetLoader.winningBG, 0, 0);
-        winningBG.addAction(fadeIn(0.1f));
-        winningBG.addAction(fadeOut(1.4f));
+        winningBG.addAction(fadeOut(3f));
+        winningBG.getColor().a = 1;
         stage.addActor(winningBG);
 //
         actual = new ActorWithTexture(AssetLoader.actual_1, 0, 0);
-        actual.addAction(sequence(fadeIn(1.5f), fadeIn(0.5f)));
+        actual.addAction(sequence(fadeIn(3f), delay(0.5f)));
         actual.getColor().a = 0;
         stage.addActor(actual);
 
         background = new ActorWithTexture(AssetLoader.endGameBackground, 0, 0);
-        background.addAction(sequence(delay(1.5f), fadeIn(0.5f), run(new Runnable() {
+        background.addAction(sequence(delay(3.5f), fadeIn(0.5f), run(new Runnable() {
             @Override
             public void run() {
                 showTheRest();
@@ -65,17 +68,37 @@ public class EndGameWorld implements ScreenWorld {
     }
 
     public void showTheRest() {
+        //get time in String
+        float time = END_SCREEN_TIME;
+        int minute = (int) (time / 60f);
+        int seconds = (int) (time - minute * 60);
+        String secondsString;
+        if (seconds < 10) secondsString = "0" + String.valueOf(seconds);
+        else secondsString = String.valueOf(seconds);
+        String timeString = "Time: " + String.valueOf(minute) + ":" +secondsString;
+
+        //time
+        TextButton.TextButtonStyle timeStyle = new TextButton.TextButtonStyle();
+        timeStyle.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.time_end_screen));
+        timeStyle.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.time_end_screen));
+        timeStyle.font = AssetLoader.consolas_60;
+
+        TextButton timeIndicator = new TextButton(timeString, timeStyle);
+        timeIndicator.setPosition(390, 1400);
+        timeIndicator.addAction(fadeIn(0.5f));
+        timeIndicator.getColor().a = 0;
+        stage.addActor(timeIndicator);
 
         //stars
         for (int i = 0; i < star; i++) {
             stars.add(new ActorWithTexture(AssetLoader.star.get(i), 0, 0));
-            stars.get(i).addAction(sequence(delay(i * 0.5f), fadeIn(0.1f)));
+            stars.get(i).addAction(sequence(delay(0.5f + i * 0.5f), fadeIn(0.1f)));
             stage.addActor(stars.get(i));
         }
 
         //TIPS
-        tips = new ActorWithTexture(AssetLoader.tips[END_SCREEN_LEVEL], 0, 0);
-        tips.addAction(sequence(delay(2f), fadeIn(0.3f)));
+        tips = new ActorWithTexture(AssetLoader.tips[END_SCREEN_LEVEL - 1], 0, 0);
+        tips.addAction(sequence(delay(2.5f), fadeIn(0.3f)));
         stage.addActor(tips);
 
         //NEXT LEVEL
@@ -86,12 +109,12 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton nextLevel = new TextButton("", nextLevelStyle);
         nextLevel.setPosition(750, 50);
-        nextLevel.addAction(sequence(delay(3f), fadeIn(0.3f)));
+        nextLevel.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
         nextLevel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 PSAGame.LEVEL++;
-                PSAGame.CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+                CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
             }
         });
         nextLevel.getColor().a = 0;
@@ -105,11 +128,11 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton levelSelection = new TextButton("", levelSelectionStyle);
         levelSelection.setPosition(430, 50);
-        levelSelection.addAction(sequence(delay(3f), fadeIn(0.3f)));
+        levelSelection.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
         levelSelection.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                PSAGame.CURRENT_SCREEN = PSAGame.Screen.LevelSelectionScreen;
+                CURRENT_SCREEN = PSAGame.Screen.LevelSelectionScreen;
             }
         });
         levelSelection.getColor().a = 0;
@@ -124,11 +147,11 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton mainMenu = new TextButton("", mainMenuStyle);
         mainMenu.setPosition(120, 50);
-        mainMenu.addAction(sequence(delay(3f), fadeIn(0.3f)));
+        mainMenu.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
         mainMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                PSAGame.CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
+                CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
             }
         });
         mainMenu.getColor().a = 0;
@@ -144,11 +167,11 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton replay = new TextButton("", replayStyle);
         replay.setPosition(430, 320);
-        replay.addAction(sequence(delay(3f), fadeIn(0.3f)));
+        replay.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
         replay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                PSAGame.CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+                CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
             }
         });
         replay.getColor().a = 0;
@@ -160,6 +183,7 @@ public class EndGameWorld implements ScreenWorld {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(delta);
         stage.draw();
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
     }
 
     public Stage getStage() {

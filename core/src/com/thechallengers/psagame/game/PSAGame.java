@@ -10,6 +10,7 @@ import com.thechallengers.psagame.Menu.MenuScreen;
 import com.thechallengers.psagame.Shop.ShopScreen;
 import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.Tutorial.TutorialScreen;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 public class PSAGame extends Game {
 	public static final float LONG_EDGE = 1920;
@@ -33,12 +34,18 @@ public class PSAGame extends Game {
 		if (!prefs.contains("crane_present")) prefs.putInteger("crane_present", 1);
 		if (!prefs.contains("craneLv2_purchased")) prefs.putBoolean("craneLv2_purchased", false);
 		if (!prefs.contains("craneLv3_purchased")) prefs.putBoolean("craneLv3_purchased", false);
+		if (!prefs.contains("level")) prefs.putInteger("level", 1);
 
 		prefs.flush();
+
+        Gdx.input.setCatchBackKey(true);
 
 		//Open menu
 		CURRENT_SCREEN = Screen.MenuScreen;
 		setScreen(new MenuScreen(this));
+
+		//Load sfx
+		SoundLoader.loadSFX();
 	}
 
 	@Override

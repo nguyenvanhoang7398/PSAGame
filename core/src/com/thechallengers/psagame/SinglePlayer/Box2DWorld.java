@@ -168,9 +168,6 @@ public class Box2DWorld {
                 break;
             default:
         }
-
-
-
     }
 
     public Box2DWorld(String string) {

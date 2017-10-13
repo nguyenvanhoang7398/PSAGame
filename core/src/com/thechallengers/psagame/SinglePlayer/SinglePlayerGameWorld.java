@@ -28,6 +28,9 @@ import com.thechallengers.psagame.helpers.AssetLoader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
+import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
+import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_PERCENT;
+import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
 import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
@@ -50,6 +53,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public boolean hasStarted = false;
     public ArrayList<NextBlock> nextBlockArrayList;
     public ArrayDeque<Block> previousNextBlockQ;
+    private int level;
 
     private Label countdownLabel;
 
@@ -75,6 +79,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public SinglePlayerGameWorld(int level) {
         worldTime = 300;
         gameTime = 0;
+        this.level = level;
         worker = new Worker();
         stage = new Stage();
         nextBlockArrayList = new ArrayList<NextBlock>();
@@ -88,7 +93,9 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public void update(float delta) {
         box2DWorld.update(delta);
         if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
-            if (box2DWorld.endGameWaitTime >= 1) {
+            END_SCREEN_TIME = gameTime;
+            END_SCREEN_LEVEL = level;
+            if (box2DWorld.endGameWaitTime >= 0.5f) {
                 AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
                 CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
             }

@@ -20,6 +20,7 @@ import com.thechallengers.psagame.Menu.Objects.MenuCrane;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
@@ -151,6 +152,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 shop_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
+                SoundLoader.click.play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
                 CURRENT_SCREEN = PSAGame.Screen.ShopScreen;
             }
         });
@@ -207,6 +209,7 @@ public class MenuWorld implements ScreenWorld {
                 stage.addActor(overlay_button);
                 stage.addActor(single_player_button);
                 stage.addActor(multi_player_button);
+                SoundLoader.click.play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
             }
         });
     }
@@ -259,6 +262,8 @@ public class MenuWorld implements ScreenWorld {
                     cloudArray.get(i).addAction(fadeOut(0.6f));
                 }
 
+                SoundLoader.click.play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
+
                 isZooming = true;
             }
         });
@@ -290,6 +295,7 @@ public class MenuWorld implements ScreenWorld {
                 removePlayOptions();
                 CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
                 //move to multi player code here
+                SoundLoader.click.play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
             }
         });
     }
@@ -318,6 +324,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 removePlayOptions();
+                SoundLoader.click.play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
             }
         });
     }
@@ -352,6 +359,7 @@ public class MenuWorld implements ScreenWorld {
                 stage.addActor(setting_box);
                 stage.addActor(music_slider);
                 stage.addActor(sfx_slider);
+                SoundLoader.click.play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
             }
         });
     }
@@ -370,6 +378,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 removeSettingOptions();
+                SoundLoader.click.play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
             }
         });
     }
