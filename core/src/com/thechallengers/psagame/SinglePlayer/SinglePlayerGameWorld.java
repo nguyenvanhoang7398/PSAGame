@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -17,10 +18,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.thechallengers.psagame.EndGame.EndGameWorld;
+import com.thechallengers.psagame.SinglePlayer.Objects.NextBlock;
 import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
+import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
@@ -32,7 +38,7 @@ import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
 
 public class SinglePlayerGameWorld implements ScreenWorld {
     final float TIMER_FONT_SIZE = 7;
-    final float PERCENTAGE_THRESHOLD = 0.1f;
+    final float PERCENTAGE_THRESHOLD = 0.9f;
     private Body crane;
     float CRANE_SPEED = 8f;
     private Stage stage;
@@ -42,6 +48,8 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     private float gameTime;
     private float worldTime;
     public boolean hasStarted = false;
+    public ArrayList<NextBlock> nextBlockArrayList;
+    public ArrayDeque<Block> previousNextBlockQ;
 
     private Label countdownLabel;
 
@@ -69,43 +77,24 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         gameTime = 0;
         worker = new Worker();
         stage = new Stage();
-        //stage.addActor(touchpad);
-        // stage.addActor(releaseButton);
-        //stage.addActor(worker);
-
-        // Gdx.input.setInputProcessor(stage);
-
+        nextBlockArrayList = new ArrayList<NextBlock>();
         box2DWorld = new Box2DWorld(level);
+        previousNextBlockQ = box2DWorld.nextBlockQ.clone();
         this.world = box2DWorld.getWorld();
-    }
-
-    //create everything considering user interface
-
-    public void addListenerToReleaseButton() {
-        releaseButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Release button selected");
-            }
-        });
-    }
-
-    public void addListenerToDestroyButton() {
-        destroyButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Destroy button selected");
-                if (box2DWorld.cooldown <= 0) {
-                    box2DWorld.destroyMode = true;
-                }
-            }
-        });
+        loadNextBlockActors();
     }
 
     @Override
     public void update(float delta) {
-        stage.act(delta);
         box2DWorld.update(delta);
+        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
+            if (box2DWorld.endGameWaitTime >= 1) {
+                AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
+                CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
+            }
+            return;
+        }
+        stage.act(delta);
         world.getBodies(bodyArray);
         if (box2DWorld.cooldown > 0) box2DWorld.cooldown -= delta;
         if (hasStarted) {
@@ -113,16 +102,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             worldTime -= delta;
         }
 
-        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
-            AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
-            EndGameWorld.star = 3;
-            CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
-        }
-
         if (worldTime < 0) {
             AssetLoader.losingBG = ScreenUtils.getFrameBufferTexture();
-            EndGameWorld.star = 0;
             CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
+            return;
         }
 
         float xGrav = Gdx.input.getAccelerometerX() / 9.81f;
@@ -136,8 +119,65 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             box2DWorld.destroyMode = true;
         }
 
-        System.out.println(box2DWorld.getCrane().getPosition().y);
+        if (checkIfDropped()) {
+            nextBlockArrayList.get(0).remove();
+            nextBlockArrayList.remove(0);
+            updateActorQ();
+        }
+
+        previousNextBlockQ = box2DWorld.nextBlockQ.clone();
     }
+
+    public void loadNextBlockActors() {
+        ArrayDeque<Block> nextBlockQ = box2DWorld.nextBlockQ.clone();
+
+        for (int i = 0; i < 3; i++) {
+            NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
+            switch (i) {
+                case 0:
+                    nextBlock.setPosition(0, 1920 - 225);
+                    break;
+                case 1:
+                    nextBlock.setPosition(360, 1920 - 225);
+                    break;
+                case 2:
+                    nextBlock.setPosition(720, 1920 - 225);
+                    break;
+                default:
+
+            }
+            stage.addActor(nextBlock);
+            nextBlockArrayList.add(nextBlock);
+        }
+    }
+
+    public void updateActorQ() {
+        if (nextBlockArrayList.size() < 3) {
+            ArrayDeque<Block> nextBlockQ = box2DWorld.nextBlockQ.clone();
+            NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
+            nextBlock.setPosition(1080, 1920 - 225);
+            stage.addActor(nextBlock);
+            nextBlockArrayList.add(nextBlock);
+
+            for (int i = 0; i < nextBlockArrayList.size(); i++) {
+                NextBlock thisBlock = nextBlockArrayList.get(i);
+                thisBlock.addAction(Actions.moveTo(thisBlock.getX() - 360, thisBlock.getY(), 0.2f));
+            }
+        }
+    }
+
+    public boolean checkIfDropped() {
+        Object[] array_1 = previousNextBlockQ.toArray();
+        Object[] array_2 = box2DWorld.nextBlockQ.toArray();
+
+        if (((Block) array_1[0]).blockType.equals(((Block) array_2[0]).blockType) &&
+                ((Block) array_1[1]).blockType.equals(((Block) array_2[1]).blockType) &&
+                ((Block) array_1[2]).blockType.equals(((Block) array_2[2]).blockType)) {
+            return false;
+        }
+        else return true;
+    }
+
 
     public Stage getStage() {
         return stage;
