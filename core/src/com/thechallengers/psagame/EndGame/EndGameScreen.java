@@ -37,6 +37,8 @@ public class EndGameScreen implements Screen {
         }
         prefs.flush();
 
+        prefs.putInteger("moneyBalance", prefs.getInteger("moneyBalance") + star).flush();
+
         int previousStar = prefs.getInteger("level" + String.valueOf(END_SCREEN_LEVEL) + "star");
         if (star > previousStar) prefs.putInteger("level" + String.valueOf(END_SCREEN_LEVEL) + "star", star);
         prefs.flush();

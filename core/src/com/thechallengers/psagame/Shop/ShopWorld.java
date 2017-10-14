@@ -51,21 +51,15 @@ public class ShopWorld implements ScreenWorld{
     private ImageButton.ImageButtonStyle purchase_response_style;
     public boolean showPrice = true;
 
-
     //constructor
     public ShopWorld(PSAGame game) {
         //for testing
-        Gdx.app.getPreferences("prefs").putInteger("moneyBalance", 100).flush();
-        Gdx.app.getPreferences("prefs").putBoolean("craneLv2_purchased", false).flush();
-        Gdx.app.getPreferences("prefs").putBoolean("craneLv3_purchased", false).flush();
-        Gdx.app.getPreferences("prefs").putInteger("crane_present", 1).flush();
         this.game = game;
         stage = new Stage();
         shop_background = new ShopBackground();
         createBackButton();
         //createTitle();
         createCraneSelection();
-
 
         stage.addActor(shop_background);
         stage.addActor(back_button);
@@ -82,7 +76,7 @@ public class ShopWorld implements ScreenWorld{
     public void createBackButton() {
         back_button_style = new TextButton.TextButtonStyle();
         back_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_backButton));
-        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_backButton));
+        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_backButton_down));
         back_button_style.font = AssetLoader.arial;
 
         back_button = new TextButton("", back_button_style);
@@ -155,8 +149,8 @@ public class ShopWorld implements ScreenWorld{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.getPreferences("prefs").putInteger("crane_present", 1).flush();
+                Gdx.app.getPreferences("prefs").putFloat("crane speed", 10f).flush();
                 selection_bar.setPosition(100+100, 950-60);
-
             }
         });
     }
@@ -171,6 +165,7 @@ public class ShopWorld implements ScreenWorld{
                     createPurchaseMessage(2);
                 } else {
                     Gdx.app.getPreferences("prefs").putInteger("crane_present", 2).flush();
+                    Gdx.app.getPreferences("prefs").putFloat("crane speed", 15f).flush();
                     selection_bar.setPosition(100+100, 950-270);
                 }
             }
@@ -186,6 +181,7 @@ public class ShopWorld implements ScreenWorld{
                     createPurchaseMessage(3);
                 } else {
                     Gdx.app.getPreferences("prefs").putInteger("crane_present", 3).flush();
+                    Gdx.app.getPreferences("prefs").putFloat("crane speed", 20f).flush();
                     selection_bar.setPosition(100+100, 950-480);
                 }
             }
@@ -271,6 +267,7 @@ public class ShopWorld implements ScreenWorld{
                             selection_bar.setPosition(100+100, 950-270);
                             Gdx.app.getPreferences("prefs").putInteger("crane_present", 2).flush();
                             Gdx.app.getPreferences("prefs").putBoolean("craneLv2_purchased", true).flush();
+                            Gdx.app.getPreferences("prefs").putFloat("crane speed", 15f).flush();
                             purchase_message.remove();
                             yes_button.remove();
                             no_button.remove();
@@ -291,6 +288,7 @@ public class ShopWorld implements ScreenWorld{
                             selection_bar.setPosition(100+100, 950-480);
                             Gdx.app.getPreferences("prefs").putInteger("crane_present", 3).flush();
                             Gdx.app.getPreferences("prefs").putBoolean("craneLv3_purchased", true).flush();
+                            Gdx.app.getPreferences("prefs").putFloat("crane speed", 20f).flush();
                             purchase_message.remove();
                             yes_button.remove();
                             no_button.remove();
@@ -319,9 +317,6 @@ public class ShopWorld implements ScreenWorld{
         });
 
     }
-
-
-
 
     public Stage getStage() {return stage;}
 

@@ -47,7 +47,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        world.getStage().setViewport(viewport);
         batcher.begin();
 
         //world.box2DWorld.debugRender();

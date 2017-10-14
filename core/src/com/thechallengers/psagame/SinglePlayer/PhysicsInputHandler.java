@@ -35,6 +35,10 @@ public class PhysicsInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        //HANDLE RESOLUTION DIFFERENCE
+        screenX = (int) ((screenX / (float) Gdx.graphics.getWidth()) * 1080);
+        screenY = (int) ((screenY / (float) Gdx.graphics.getHeight()) * 1920);
+
         if (!world.hasStarted) world.hasStarted = true;
         if (screenY < 380) return false;
         else if (screenY < 480) screenY = 480;

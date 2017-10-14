@@ -36,6 +36,10 @@ public class TutorialInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        //HANDLE RESOLUTION DIFFERENCE
+        screenX = (int) ((screenX / (float) Gdx.graphics.getWidth()) * 1080);
+        screenY = (int) ((screenY / (float) Gdx.graphics.getHeight()) * 1920);
+
         if (world.getStateQueue().size != 0) {
             switch (world.getStateQueue().first()) {
                 case WELCOME:
@@ -155,7 +159,7 @@ public class TutorialInputHandler implements InputProcessor {
 
     public void inputForNormalGame(int screenX, int screenY) {
         float box2DWorld_x = screenX / 100f;
-        float box2DWorld_y = (1920 - screenY * 1920 / Gdx.graphics.getHeight()) / 100f;
+        float box2DWorld_y = (1920 - screenY) / 100f;
 
         if (!world.box2DWorld.destroyMode) {
             if (!((CraneData) world.box2DWorld.getCrane().getUserData()).isMoving) {

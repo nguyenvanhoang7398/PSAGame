@@ -27,13 +27,11 @@ public class TutorialRenderer extends ScreenRenderer {
     public TutorialRenderer(TutorialWorld world) {
         super();
         this.world = world;
-
-        cam.setToOrtho(false, 10.80f, 19.20f);
     }
 
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        world.getStage().setViewport(viewport);
         batcher.begin();
 
         //world.box2DWorld.debugRender();

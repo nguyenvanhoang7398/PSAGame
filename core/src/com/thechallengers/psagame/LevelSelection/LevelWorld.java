@@ -77,7 +77,7 @@ class LevelWorld implements ScreenWorld {
     public void createBackButton() {
         back_button_style = new TextButton.TextButtonStyle();
         back_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.level_backButton));
-        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.level_backButton));
+        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.level_backButton_down));
         back_button_style.font = AssetLoader.arial;
 
         back_button = new TextButton("", back_button_style);

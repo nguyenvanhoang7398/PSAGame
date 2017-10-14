@@ -24,6 +24,7 @@ import com.thechallengers.psagame.SinglePlayer.Objects.Dust;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.Frame;
 import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
+import com.thechallengers.psagame.game.PSAGame;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -336,7 +337,7 @@ public class Box2DWorld {
 
         craneData.isMoving = true;
 
-        craneData.velocity = 10;
+        craneData.velocity = PSAGame.CRANE_VELOCITY;
 
         craneData.destination = new Vector2(screenX, screenY);
     }

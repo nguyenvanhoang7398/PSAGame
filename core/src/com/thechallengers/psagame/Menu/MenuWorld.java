@@ -100,8 +100,8 @@ public class MenuWorld implements ScreenWorld {
 
         //clouds and containers
         cloudArray = new Array<Cloud>();
-        createClouds();
         createContainers();
+        createClouds();
 
         //lookAt();
 
@@ -143,7 +143,7 @@ public class MenuWorld implements ScreenWorld {
     public void createShopButtonStyle() {
         shop_button_style = new TextButton.TextButtonStyle();
         shop_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button));
-        shop_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button));
+        shop_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button_pressed));
         shop_button_style.font = AssetLoader.arial;
     }
 
@@ -171,7 +171,7 @@ public class MenuWorld implements ScreenWorld {
     public void createLeaderboardButtonStyle() {
         leaderboard_button_style = new TextButton.TextButtonStyle();
         leaderboard_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_button));
-        leaderboard_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_button));
+        leaderboard_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_button_pressed));
         leaderboard_button_style.font = AssetLoader.arial;
     }
 
@@ -341,7 +341,7 @@ public class MenuWorld implements ScreenWorld {
         createOverlayButtonStyle();
 
         overlay_button = new TextButton("", overlay_button_style);
-        overlay_button.setPosition(WIDTH/2-overlay_button.getWidth()/2, PLAY_MODE_BUBBLE_Y_OFFSET);
+        overlay_button.setPosition(0,0);
         overlay_button.getColor().a = 0;
         overlay_button.addAction(fadeIn(0.1f));
 
