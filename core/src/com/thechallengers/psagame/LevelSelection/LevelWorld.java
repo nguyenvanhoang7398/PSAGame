@@ -46,7 +46,8 @@ class LevelWorld implements ScreenWorld {
     private Texture[] levelButton = {AssetLoader.level1_Button, AssetLoader.level2_Button,
                                     AssetLoader.level3_Button, AssetLoader.level4_Button,
                                     AssetLoader.level5_Button};
-    private int[] x_coord = {200, 450, 700, 325, 575};
+    private Texture[] levelButton_down = AssetLoader.levelButton_down;
+    private int[] x_coord = {225, 475, 725, 350, 600};
     private int[] y_coord = {1000, 1000, 1000, 600, 600};
     private int playerLevel = Gdx.app.getPreferences("prefs").getInteger("level");
 
@@ -98,7 +99,7 @@ class LevelWorld implements ScreenWorld {
         for(int i = 0; i < LevelNum; i ++) {
             level_style[i] = new TextButton.TextButtonStyle();
             level_style[i].up = new TextureRegionDrawable(new TextureRegion(levelButton[i]));
-            level_style[i].down = new TextureRegionDrawable(new TextureRegion(levelButton[i]));
+            level_style[i].down = new TextureRegionDrawable(new TextureRegion(levelButton_down[i]));
             level_style[i].font = AssetLoader.arial;
 
             level_button[i] = new TextButton("", level_style[i]);
@@ -126,7 +127,7 @@ class LevelWorld implements ScreenWorld {
             level_star_style[i].imageUp = style;
             level_star_style[i].imageDown = style;
             level_star[i] = new ImageButton(level_star_style[i]);
-            level_star[i].setPosition(x_coord[i], y_coord[i] - 100);
+            level_star[i].setPosition(x_coord[i] - 20, y_coord[i] - 110);
             if((i + 1) <= playerLevel) {
                 addListenerToLevelButton(i);
                 addListenerToLevelStar(i);

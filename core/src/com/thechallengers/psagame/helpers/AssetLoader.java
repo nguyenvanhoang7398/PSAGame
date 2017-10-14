@@ -114,6 +114,7 @@ public class AssetLoader {
     public static Texture menu_button_down;
     public static Texture replay_button_down;
     public static Texture time_end_screen;
+    public static Texture[] levelButton_down;
 
     //animation
     public static Animation<TextureRegion> cooldown_animation;
@@ -126,7 +127,10 @@ public class AssetLoader {
     public static ArrayList<Texture> star;
 
     public static void loadMenuTexture() {
-
+        levelButton_down = new Texture[5];
+        for (int i = 1; i <= 5; i++) {
+            levelButton_down[i - 1] = new Texture("textures/new_stage" + String.valueOf(i) + "_icon_down.png");
+        }
         background_texture = new Texture(Gdx.files.internal("textures/new_Menu_background.png"));
         game_background_2 = new Texture("textures/game_background_2.png");
         button_texture = new Texture(Gdx.files.internal("textures/button.png"));
@@ -314,7 +318,6 @@ public class AssetLoader {
         for (int i = 1; i <= 5; i++) {
             actualArrayList.add(new Texture("textures/actual_" + String.valueOf(i) + ".png"));
         }
-
     }
 
     public static void updateGameBackGroundDetails(int _starting_x, int _starting_y, int _end_x, int _end_y) {

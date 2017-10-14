@@ -72,6 +72,8 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     @Override
     public void update(float delta) {
+        System.out.println(stage.getActors().size);
+        System.out.println(nextBlockArrayList.size());
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
         box2DWorld.update(delta);
         if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
@@ -124,16 +126,15 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
             switch (i) {
                 case 0:
-                    nextBlock.setPosition(0, 1920 - 225);
+                    nextBlock.setPosition(720, 1920 - 225);
                     break;
                 case 1:
                     nextBlock.setPosition(360, 1920 - 225);
                     break;
                 case 2:
-                    nextBlock.setPosition(720, 1920 - 225);
+                    nextBlock.setPosition(0, 1920 - 225);
                     break;
                 default:
-
             }
             stage.addActor(nextBlock);
             nextBlockArrayList.add(nextBlock);

@@ -540,7 +540,6 @@ public class Box2DWorld {
         }
 
         percentageOverlap = overlapArea / totalArea;
-        System.out.println(percentageOverlap);
     }
 
     public float calculateArea(float[] vertices, int numPoints) {

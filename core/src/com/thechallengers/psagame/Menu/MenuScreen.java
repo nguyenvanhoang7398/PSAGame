@@ -62,7 +62,6 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        AssetLoader.disposeMenuTexture();
         menu_world.getStage().dispose();
         SoundLoader.musicHashtable.get("menu_bgm.mp3").stop();
     }
