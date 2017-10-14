@@ -157,9 +157,9 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
 
         Collections.sort(highscore_of_this_level);
         highscore_text_style = new TextButton.TextButtonStyle();
-        highscore_text_style.font = AssetLoader.consolas_15;
+        highscore_text_style.font = AssetLoader.consolas_60;
         highscore_text_style.fontColor = Color.YELLOW;
-        highscore_text_style.font.getData().setScale(FONT_SCALE, FONT_SCALE);
+        //highscore_text_style.font.getData().setScale(FONT_SCALE, FONT_SCALE);
 
         if (!result) {
             TextButton error_line1 = new TextButton("", highscore_text_style);

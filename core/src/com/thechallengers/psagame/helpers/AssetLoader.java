@@ -268,7 +268,7 @@ public class AssetLoader {
         time_end_screen = new Texture("textures/time_end_screen.png");
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));
-        game_background = new Texture(Gdx.files.internal("textures/new_Menu_background.png"));
+        game_background = new Texture(Gdx.files.internal("textures/new_SinglePlay_background.png"));
         unitBlockTexture = new Texture("textures/unitBlock.png");
         silhouette_1 = new Texture(Gdx.files.internal("textures/silhouette_1.png"));
         actual_1 = new Texture(Gdx.files.internal("textures/actual_1.png"));
@@ -286,9 +286,9 @@ public class AssetLoader {
         start_game = new Texture("textures/start_game.png");
         next_block_frame = new Texture("textures/next_block_frame.png");
         level_selection = new Texture("textures/level_selection.png");
-        bomb = new Texture("textures/bomb.png");
-        TextureRegion[][] tmp = TextureRegion.split(new Texture("textures/progress.png"),
-                100, 100);
+        bomb = new Texture("textures/new_bomb.png");
+        TextureRegion[][] tmp = TextureRegion.split(new Texture("textures/new_progress.png"),
+                641/9, 100);
 
         progress = new TextureRegion[9];
 
@@ -297,9 +297,9 @@ public class AssetLoader {
             progress[index++] = tmp[0][i];
         }
 
-        cooldown_animation = createAnimation(new Texture("textures/cooldown_animation.png"), 1, 4, 1);
+        cooldown_animation = createAnimation(new Texture("textures/new_cooldown_animation.png"), 1, 4, 1);
         clock_animation = createAnimation(new Texture("textures/clock.png"), 1, 4, 1);
-        arrow_animation = createAnimation(new Texture("textures/arrow_indicator.png"), 1, 9, 0.1f);
+        arrow_animation = createAnimation(new Texture("textures/new_arrow_indicator.png"), 1, 9, 0.1f);
 
         loadSpritesAndHashTable();
 
