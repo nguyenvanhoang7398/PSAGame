@@ -22,6 +22,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 10/4/2017.
@@ -118,6 +119,7 @@ public class EndGameWorld implements ScreenWorld {
         nextLevel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 PSAGame.LEVEL++;
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
             }
@@ -137,6 +139,7 @@ public class EndGameWorld implements ScreenWorld {
         levelSelection.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.LevelSelectionScreen;
             }
         });
@@ -156,6 +159,7 @@ public class EndGameWorld implements ScreenWorld {
         mainMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
             }
         });
@@ -176,6 +180,7 @@ public class EndGameWorld implements ScreenWorld {
         replay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
             }
         });

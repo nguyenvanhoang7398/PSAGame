@@ -27,6 +27,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.game.PSAGame.LEVEL;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by name on 3/10/2017.
@@ -89,6 +90,7 @@ class LevelWorld implements ScreenWorld {
         back_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 back_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
             }
@@ -171,6 +173,7 @@ class LevelWorld implements ScreenWorld {
         level_button[i].addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 level_button[i].addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 if (i == 0) CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
                 else CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
