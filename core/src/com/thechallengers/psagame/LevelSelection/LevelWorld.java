@@ -48,7 +48,7 @@ class LevelWorld implements ScreenWorld {
                                     AssetLoader.level5_Button};
     private Texture[] levelButton_down = AssetLoader.levelButton_down;
     private int[] x_coord = {225, 475, 725, 350, 600};
-    private int[] y_coord = {1000, 1000, 1000, 600, 600};
+    private int[] y_coord = {1000, 1000, 1000, 650, 650};
     private int playerLevel = Gdx.app.getPreferences("prefs").getInteger("level");
 
     //constructor
@@ -105,7 +105,7 @@ class LevelWorld implements ScreenWorld {
             level_button[i] = new TextButton("", level_style[i]);
             level_button[i].setPosition(x_coord[i], y_coord[i]);
             level_star_style[i] = new ImageButton.ImageButtonStyle();
-            int star_Level = Gdx.app.getPreferences("prefs").getInteger("level" + Integer.toString(i+1)+"_starLevel");
+            int star_Level = Gdx.app.getPreferences("prefs").getInteger("level" + Integer.toString(i+1)+"star");
             Drawable style;
             switch (star_Level) {
                 case 0:
@@ -124,13 +124,14 @@ class LevelWorld implements ScreenWorld {
                     style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star0));
                     break;
             }
+
             level_star_style[i].imageUp = style;
             level_star_style[i].imageDown = style;
+
             level_star[i] = new ImageButton(level_star_style[i]);
             level_star[i].setPosition(x_coord[i] - 20, y_coord[i] - 110);
             if((i + 1) <= playerLevel) {
                 addListenerToLevelButton(i);
-                addListenerToLevelStar(i);
             } else {
                 level_button[i].getColor().a = 0.5f;
             }

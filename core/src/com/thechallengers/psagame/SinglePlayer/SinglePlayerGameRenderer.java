@@ -72,8 +72,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         drawCrane(world.box2DWorld.getCrane());
         batcher.draw(AssetLoader.game_background_2, 0, 0);
-        if (world.hasStarted) batcher.draw(AssetLoader.arrow_animation.getKeyFrame(runTime, false), 135, 1563);
-        else batcher.draw(AssetLoader.arrow_animation.getKeyFrame(0, false), 135, 1563);
+        batcher.draw(AssetLoader.arrow_animation.getKeyFrame(runTime, false), 135, 1583);
 
         if (world.box2DWorld.cooldown <= 0) batcher.draw(AssetLoader.bomb, 915, 1582);
         else {

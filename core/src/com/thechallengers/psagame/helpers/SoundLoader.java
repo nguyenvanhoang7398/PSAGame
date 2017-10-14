@@ -17,7 +17,7 @@ public class SoundLoader {
     public static void loadSFX() {
         String[] sfx_name = {"activate_destroymode.mp3", "block_destroyed.mp3", "click.wav", "crane_pulley.mp3",
                             "item_purchased.mp3", "last_few_seconds.mp3", "star_appearance.mp3", "start_game.mp3",
-                            "win_sound.mp3"};
+                            "win_sound_1.mp3", "win_sound_2.mp3", "win_sound.mp3"};
 
         soundHashtable = new Hashtable<String, Sound>();
 
@@ -26,12 +26,17 @@ public class SoundLoader {
                     Gdx.audio.newSound(Gdx.files.internal("sfx/" + sfx_name[i])));
         }
 
-        String[] music_name = {"ingame_bgm.mp3", "shop_bgm.mp3", "menu_bgm.mp3"};
+        String[] music_name = {"ingame_bgm.mp3", "shop_bgm.mp3", "menu_bgm.mp3", "win_sound.mp3"};
 
         musicHashtable = new Hashtable<String, Music>();
 
         for (int i = 0; i < music_name.length; i++) {
             Music temp = Gdx.audio.newMusic(Gdx.files.internal("sfx/" + music_name[i]));
+            if (music_name[i].equals("win_sound.mp3")) {
+                temp.setLooping(false);
+                musicHashtable.put(music_name[i], temp);
+                continue;
+            }
             temp.setLooping(true);
             musicHashtable.put(music_name[i], temp);
         }

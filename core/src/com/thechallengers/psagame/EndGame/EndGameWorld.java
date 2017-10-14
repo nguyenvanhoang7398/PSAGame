@@ -92,7 +92,12 @@ public class EndGameWorld implements ScreenWorld {
         //stars
         for (int i = 0; i < star; i++) {
             stars.add(new ActorWithTexture(AssetLoader.star.get(i), 0, 0));
-            stars.get(i).addAction(sequence(delay(0.5f + i * 0.5f), fadeIn(0.1f)));
+            stars.get(i).addAction(sequence(delay(0.5f + i * 0.5f), run(new Runnable() {
+                @Override
+                public void run() {
+                    PSAGame.playSound("star_appearance.mp3");
+                }
+            }),fadeIn(0.1f)));
             stage.addActor(stars.get(i));
         }
 

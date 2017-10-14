@@ -45,13 +45,14 @@ public class AssetLoader {
     public static Texture level_backButton;
     public static Texture level1_Button, level2_Button, level3_Button, level4_Button, level5_Button;
     public static Texture level_title;
-    public static Texture star0, star1, star2, star3 ;
+    public static Texture star0, star1, star2, star3;
     public static Texture shop_title;
     public static Texture crane_lv1, crane_lv2, crane_lv3, crane_title, selection_bar;
     public static Texture purchase_message, purchase_success_message, purchase_fail_message, yes_button, no_button;
     public static Texture start_game;
     public static Texture next_block_frame;
     public static TextureRegion[] progress;
+    public static Texture dust_left, dust_right;
 
 
     public static Texture silhouette_1;
@@ -119,6 +120,7 @@ public class AssetLoader {
     public static Animation<TextureRegion> cooldown_animation;
     public static Animation<TextureRegion> clock_animation;
     public static Animation<TextureRegion> arrow_animation;
+    public static Animation<TextureRegion> cloud_animation;
 
     //end game
     public static Texture[] tips = new Texture[5];
@@ -162,6 +164,8 @@ public class AssetLoader {
         background = new TextureRegion(background_texture, 0, 0, 1080, 1920);
         button_up = new TextureRegion(button_texture, 0, 0, 200, 100);
         button_down = new TextureRegion(button_texture, 200, 0, 200, 100);
+
+        cloud_animation = createAnimation(new Texture("textures/cloud_animation.png"), 1, 3, 0.33f);
 
         arial = new BitmapFont(Gdx.files.internal("font/arial.fnt"));
         consolas_15 = new BitmapFont(Gdx.files.internal("font/consolas_15.fnt"));
@@ -265,6 +269,8 @@ public class AssetLoader {
     }
 
     public static void loadGameTexture() {
+        dust_left = new Texture("textures/dust_left.png");
+        dust_right = new Texture("textures/dust_right.png");
         time_end_screen = new Texture("textures/time_end_screen.png");
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));
@@ -288,7 +294,7 @@ public class AssetLoader {
         level_selection = new Texture("textures/level_selection.png");
         bomb = new Texture("textures/bomb.png");
         TextureRegion[][] tmp = TextureRegion.split(new Texture("textures/progress.png"),
-                100, 100);
+                71, 100);
 
         progress = new TextureRegion[9];
 
@@ -299,7 +305,7 @@ public class AssetLoader {
 
         cooldown_animation = createAnimation(new Texture("textures/cooldown_animation.png"), 1, 4, 1);
         clock_animation = createAnimation(new Texture("textures/clock.png"), 1, 4, 1);
-        arrow_animation = createAnimation(new Texture("textures/arrow_indicator.png"), 1, 9, 0.1f);
+        arrow_animation = createAnimation((new Texture("textures/arrow_indicator.png")), 1, 9, 0.1f);
 
         loadSpritesAndHashTable();
 

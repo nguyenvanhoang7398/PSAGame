@@ -3,6 +3,7 @@ package com.thechallengers.psagame.EndGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 /**
  * Created by Phung Tuan Hoang on 10/4/2017.
@@ -31,7 +32,9 @@ public class EndGameScreen implements Screen {
         Preferences prefs = Gdx.app.getPreferences("prefs");
         prefs.putInteger("star", prefs.getInteger("star") + star);
         prefs.flush();
-        if (star > 0) prefs.putInteger("level", prefs.getInteger("level") + 1);
+        if (star > 0 && prefs.getInteger("level") == END_SCREEN_LEVEL) {
+            prefs.putInteger("level", prefs.getInteger("level") + 1);
+        }
         prefs.flush();
 
         int previousStar = prefs.getInteger("level" + String.valueOf(END_SCREEN_LEVEL) + "star");
