@@ -40,14 +40,13 @@ public class AssetLoader {
     public static Texture shop_button, shop_backButton;
     public static Texture shop_background;
     public static Texture leaderboard_button, leaderboard_backButton, leaderboard_addButton;
-    public static Texture leaderboard_background;
+    public static Texture leaderboard_background, leaderboard_overlay;
     public static Texture level_selection_background;
     public static Texture level_backButton;
     public static Texture level1_Button, level2_Button, level3_Button, level4_Button, level5_Button;
     public static Texture level_title;
     public static Texture star0, star1, star2, star3 ;
     public static Texture shop_title;
-    public static Texture leaderboard_title;
     public static Texture crane_lv1, crane_lv2, crane_lv3, crane_title, selection_bar;
     public static Texture purchase_message, purchase_success_message, purchase_fail_message, yes_button, no_button;
     public static Texture start_game;
@@ -236,21 +235,23 @@ public class AssetLoader {
     }
 
     public static void loadLeaderboardTexture() {
-        leaderboard_background = new Texture(Gdx.files.internal("textures/leaderboard_background.jpg"));
-        leaderboard_backButton = new Texture(Gdx.files.internal("textures/leaderboard_backButton.png"));
-        leaderboard_title = new Texture(Gdx.files.internal("textures/leaderboard_title.png"));
+        leaderboard_background = new Texture(Gdx.files.internal("textures/new_leaderBoard_background.png"));
+        leaderboard_backButton = new Texture(Gdx.files.internal("textures/new_leaderBoard_backButton.png"));
         leaderboard_addButton = new Texture(Gdx.files.internal("textures/leaderboard_addButton.png"));
-        level1_Button = new Texture(Gdx.files.internal("textures/level1.png"));
-        level2_Button = new Texture(Gdx.files.internal("textures/level1.png"));
+        level1_Button = new Texture(Gdx.files.internal("textures/new_stage1_icon.png"));
+        level2_Button = new Texture(Gdx.files.internal("textures/new_stage2_icon.png"));
+        level3_Button = new Texture(Gdx.files.internal("textures/new_stage3_icon.png"));
+        level4_Button = new Texture(Gdx.files.internal("textures/new_stage4_icon.png"));
+        level5_Button = new Texture(Gdx.files.internal("textures/new_stage5_icon.png"));
         highscore_message_button = new Texture(Gdx.files.internal("textures/overlay_button.png"));
         highscore_message_button_pressed = new Texture(Gdx.files.internal("textures/overlay_button_pressed.png"));
         no_button = new Texture(Gdx.files.internal("textures/no_button.png"));
+        leaderboard_overlay = new Texture(Gdx.files.internal("textures/new_leaderBoard_bubble.png"));
     }
 
     public static void disposeLeaderboardTexture() {
         leaderboard_background.dispose();
         leaderboard_backButton.dispose();
-        leaderboard_title.dispose();
         leaderboard_addButton.dispose();
         level1_Button.dispose();
         level2_Button.dispose();

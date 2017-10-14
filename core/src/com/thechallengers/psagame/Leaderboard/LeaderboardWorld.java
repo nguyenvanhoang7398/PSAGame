@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.net.HttpParametersUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -37,49 +38,52 @@ import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
 
     private final String REST_API_URL = "https://psagame.herokuapp.com/leaderboard";
+    private final int LevelNum = 5;
+    private final float LEADERBOARD_OVERLAY_Y_OFFSET = 210f;
+    private final float WIDTH = 1080f;
+    private final float HEIGHT = 1920f;
 
     private HashMap<Integer, ArrayList<HighscoreEntry>> test_highscore_table;
-    private HashMap<Integer, ArrayList<HighscoreEntry>> highscore_table;
     private Stage stage;
     private TextButton.TextButtonStyle back_button_style;
     private TextButton back_button;
     private LeaderboardBackground leaderboard_background;
     private PSAGame game;
-    private ImageButton leaderboard_title;
-    private ImageButton.ImageButtonStyle leaderboard_title_style;
     private ImageButton add_highscore;
     private ImageButton.ImageButtonStyle add_highscore_style;
     private TextButton.TextButtonStyle highscore_text_style;
     private ImageButton no_button;
     private ImageButton.ImageButtonStyle no_button_style;
-    private TextButton.TextButtonStyle level1_style;
-    private TextButton level1_button;
-    private TextButton.TextButtonStyle level2_style;
-    private TextButton level2_button;
     private LeaderboardWorld self = this;
     private ArrayDeque<Actor> displaying_highscores;
+    private ImageButton.ImageButtonStyle leaderboard_overlay_style;
+    private ImageButton leaderboard_overlay;
+    private TextButton[] level_button = new TextButton[LevelNum];
+    private TextButton.TextButtonStyle[] level_style = new TextButton.TextButtonStyle[LevelNum];
+    private Texture[] levelButton = {AssetLoader.level1_Button, AssetLoader.level2_Button,
+            AssetLoader.level3_Button, AssetLoader.level4_Button,
+            AssetLoader.level5_Button};
+    private int[] x_coord = {200, 450, 700, 325, 575};
+    private int[] y_coord = {1000, 1000, 1000, 600, 600};
+
 
     public LeaderboardWorld(PSAGame game) {
         this.game = game;
         stage = new Stage();
         leaderboard_background = new LeaderboardBackground();
-        highscore_table = new HashMap<Integer, ArrayList<HighscoreEntry>>();
         test_highscore_table = new HashMap<Integer, ArrayList<HighscoreEntry>>();
         displaying_highscores = new ArrayDeque<Actor>();
-        createBackButton();
-        createTitle();
-        createAddHighscore();
-        createLevel1Button();
-        createLevel2Button();
         initTestHighscoreTable();
-        fetchHighscoreTable();
+        createBackButton();
+        createAddHighscore();
+        createLevelButton();
 
         stage.addActor(leaderboard_background);
+        for(int i = 0; i < LevelNum; i ++) {
+            stage.addActor(level_button[i]);
+        }
         stage.addActor(back_button);
-        stage.addActor(leaderboard_title);
         stage.addActor(add_highscore);
-        stage.addActor(level1_button);
-        stage.addActor(level2_button);
     }
 
     private void initTestHighscoreTable() {
@@ -120,14 +124,6 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
         });
     }
 
-    public void createTitle() {
-        leaderboard_title_style = new ImageButton.ImageButtonStyle();
-        leaderboard_title_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_title));
-        leaderboard_title_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_title));
-        leaderboard_title = new ImageButton(leaderboard_title_style);
-        leaderboard_title.setPosition(100, 1400);
-    }
-
     public void createAddHighscore() {
         add_highscore_style = new ImageButton.ImageButtonStyle();
         add_highscore_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_addButton));
@@ -146,61 +142,51 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
         });
     }
 
-    public void createLevel1Button() {
-        level1_style = new TextButton.TextButtonStyle();
-        level1_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.level1_Button));
-        level1_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.level1_Button));
-        level1_style.font = AssetLoader.arial;
-        level1_button = new TextButton("", level1_style);
-        level1_button.setPosition(100, 1000);
-        addListenerToLevel1Button();
-    }
-
-    public void addListenerToLevel1Button() {
-        level1_button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                createLeaderboardTable(1);
-            }
-        });
-    }
-
-    public void createLevel2Button() {
-        level2_style = new TextButton.TextButtonStyle();
-        level2_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.level2_Button));
-        level2_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.level2_Button));
-        level2_style.font = AssetLoader.arial;
-        level2_button = new TextButton("", level2_style);
-        level2_button.setPosition(450, 1000);
-        addListenerToLevel2Button();
-    }
-
-    public void addListenerToLevel2Button() {
-        level2_button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                createLeaderboardTable(2);
-            }
-        });
-    }
-
     public void createLeaderboardTable(int level) {
-        final float MARGIN_Y = 60f;
-        final float FONT_SCALE = 3.5f;
+        System.out.println("Level " + level);
+        final float MARGIN_Y = 75f;
+        final float FONT_SCALE = 4.2f;
         final float OFFSET_X = 540f;
-        final float NO_BUTTON_OFFSET_Y = 100f;
         final float MAX_COUNT = 10;
 
-        float offset_y = 850f;
+        float offset_y = 1100f;
         int i = 0;
-        // ArrayList<HighscoreEntry> highscore_of_this_level = highscore_table.get(level);
-        ArrayList<HighscoreEntry> highscore_of_this_level = queryHighscoreLevelFromDatabase(level);
+        // ArrayList<HighscoreEntry> highscore_of_this_level = test_highscore_table.get(level);
+        ArrayList<HighscoreEntry> highscore_of_this_level = new ArrayList<HighscoreEntry>();
+        boolean result= queryHighscoreLevelFromDatabase(highscore_of_this_level, level);
+
         Collections.sort(highscore_of_this_level);
         highscore_text_style = new TextButton.TextButtonStyle();
         highscore_text_style.font = AssetLoader.consolas_15;
-        highscore_text_style.fontColor = Color.BLACK;
+        highscore_text_style.fontColor = Color.YELLOW;
         highscore_text_style.font.getData().setScale(FONT_SCALE, FONT_SCALE);
 
+        if (!result) {
+            TextButton error_line1 = new TextButton("", highscore_text_style);
+            error_line1.setText("Cannot");
+            error_line1.setPosition(OFFSET_X, offset_y);
+            displaying_highscores.addLast(error_line1);
+
+            TextButton error_line2 = new TextButton("", highscore_text_style);
+            error_line2.setText("receive leaderboard");
+            error_line2.setPosition(OFFSET_X, offset_y - MARGIN_Y);
+            displaying_highscores.addLast(error_line2);
+
+            TextButton error_line3 = new TextButton("", highscore_text_style);
+            error_line3.setText("Please check");
+            error_line3.setPosition(OFFSET_X, offset_y - MARGIN_Y*2);
+            displaying_highscores.addLast(error_line3);
+
+            TextButton error_line4 = new TextButton("", highscore_text_style);
+            error_line4.setText("your connection");
+            error_line4.setPosition(OFFSET_X, offset_y - MARGIN_Y*3);
+            displaying_highscores.addLast(error_line4);
+
+            stage.addActor(error_line1);
+            stage.addActor(error_line2);
+            stage.addActor(error_line3);
+            stage.addActor(error_line4);
+        }
 
         for (HighscoreEntry highscoreEntry : highscore_of_this_level) {
             TextButton highscore_text = new TextButton("", highscore_text_style);
@@ -214,71 +200,54 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
                 break;
             }
         }
-
-        no_button_style = new ImageButton.ImageButtonStyle();
-        no_button_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.no_button));
-        no_button_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.no_button));
-        no_button = new ImageButton(no_button_style);
-        no_button.setPosition(OFFSET_X, NO_BUTTON_OFFSET_Y);
-
-        stage.addActor(no_button);
-        no_button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                while (displaying_highscores.size() > 0) {
-                    Actor actor = displaying_highscores.poll();
-                    actor.remove();
-                }
-                no_button.remove();
-            }
-        });
     }
 
-    public void fetchHighscoreTable() {
-        highscore_table = test_highscore_table;
-    }
-
-    public ArrayList<HighscoreEntry> queryHighscoreLevelFromDatabase(int level) {
+    public boolean queryHighscoreLevelFromDatabase(final ArrayList<HighscoreEntry> high_scores, int level) {
         final String REST_API_URL_LEVEL = REST_API_URL + "/" + Integer.toString(level);
-        final ArrayList<HighscoreEntry> high_scores = new ArrayList<HighscoreEntry>();
+        final ArrayList<Boolean> finished = new ArrayList<Boolean>();
 
         Map<String, String> parameters = new HashMap<String, String>();
         Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
         httpGet.setUrl(REST_API_URL_LEVEL);
         httpGet.setContent(HttpParametersUtils.convertHttpParameters(parameters));
 
-        Gdx.net.sendHttpRequest(httpGet, new Net.HttpResponseListener() {
-            @Override
-            public void handleHttpResponse(Net.HttpResponse httpResponse) {
-                String result = httpResponse.getResultAsString();
-                HashMap<String, Object> parsed_object = JSONParser.parse(result);
-                ArrayList<Object> high_score_list = new ArrayList<Object>((List) parsed_object.get("result"));
-
-                for (Object high_score : high_score_list) {
-                    LinkedTreeMap<String, String> high_score_hm = (LinkedTreeMap<String, String>) high_score;
-                    String name = high_score_hm.get("name");
-                    int level = Integer.parseInt(high_score_hm.get("level"));
-                    float score = Float.parseFloat(high_score_hm.get("score"));
-                    high_scores.add(new HighscoreEntry(name, level, score));
-                }
-            }
-
-            @Override
-            public void failed(Throwable t) {
-                Gdx.app.log("Failed ", t.getMessage());
-            }
-
-            @Override
-            public void cancelled() {
-                Gdx.app.log("Cancelled ", "User cancelled");
-            }
-        });
         try {
-            Thread.sleep(2000);
+            Gdx.net.sendHttpRequest(httpGet, new Net.HttpResponseListener() {
+                @Override
+                public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                    String result = httpResponse.getResultAsString();
+                    HashMap<String, Object> parsed_object = JSONParser.parse(result);
+                    ArrayList<Object> high_score_list = new ArrayList<Object>((List) parsed_object.get("result"));
+
+                    for (Object high_score : high_score_list) {
+                        LinkedTreeMap<String, String> high_score_hm = (LinkedTreeMap<String, String>) high_score;
+                        String name = high_score_hm.get("name");
+                        int level = Integer.parseInt(high_score_hm.get("level"));
+                        float score = Float.parseFloat(high_score_hm.get("score"));
+                        high_scores.add(new HighscoreEntry(name, level, score));
+                    }
+
+                    finished.add(true);
+                }
+
+                @Override
+                public void failed(Throwable t) {
+                    finished.add(false);
+                }
+
+                @Override
+                public void cancelled() {
+                }
+            });
+        } catch (Exception e) {
+            return false;
+        }
+        try {
+            Thread.sleep(2500);
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        return high_scores;
+        return finished.get(0);
     }
 
     public void sendHighscoreToDatabase(String name, String score, String level) {
@@ -308,10 +277,61 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
             }
         });
         try {
-            Thread.sleep(3000);
+            Thread.sleep(2500);
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
+    }
+
+    public void createLevelButton() {
+        for(int i = 0; i < LevelNum; i ++) {
+            level_style[i] = new TextButton.TextButtonStyle();
+            level_style[i].up = new TextureRegionDrawable(new TextureRegion(levelButton[i]));
+            level_style[i].down = new TextureRegionDrawable(new TextureRegion(levelButton[i]));
+            level_style[i].font = AssetLoader.arial;
+
+            level_button[i] = new TextButton("", level_style[i]);
+            level_button[i].setPosition(x_coord[i], y_coord[i]);
+            addListenerToLevelButton(i+1);
+        }
+    }
+
+    public void addListenerToLevelButton(final int i) {
+        level_button[i-1].addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                createLeaderboardOverlay();
+                createLeaderboardTable(i);
+            }
+        });
+    }
+
+    public void createLeaderboardOverlayStyle() {
+        leaderboard_overlay_style = new ImageButton.ImageButtonStyle();
+        leaderboard_overlay_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_overlay));
+        leaderboard_overlay_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_overlay));
+    }
+
+    public void createLeaderboardOverlay() {
+        createLeaderboardOverlayStyle();
+        leaderboard_overlay = new ImageButton(leaderboard_overlay_style);
+        leaderboard_overlay.setPosition(WIDTH/2-leaderboard_overlay.getWidth()/2, LEADERBOARD_OVERLAY_Y_OFFSET);
+        leaderboard_overlay.addAction(fadeIn(0.1f));
+        stage.addActor(leaderboard_overlay);
+        addListenerToLeaderboardOverlay();
+    }
+
+    public void addListenerToLeaderboardOverlay() {
+        leaderboard_overlay.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                while (displaying_highscores.size() > 0) {
+                    Actor actor = displaying_highscores.poll();
+                    actor.remove();
+                }
+                leaderboard_overlay.remove();
+            }
+        });
     }
 
     public Stage getStage() {return stage;}
