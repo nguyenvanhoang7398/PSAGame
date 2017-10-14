@@ -31,4 +31,8 @@ public class HighscoreEntry implements Comparable<HighscoreEntry> {
     public int compareTo(HighscoreEntry other) {
         return Float.valueOf(this.score).compareTo(other.getScore());
     }
+
+    public String toString() {
+        return userName + " " + score + " " + level;
+    }
 }
