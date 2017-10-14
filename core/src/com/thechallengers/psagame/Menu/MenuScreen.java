@@ -23,9 +23,7 @@ public class MenuScreen implements Screen {
         this.game = game;
         menu_world = new MenuWorld(game);
         menu_renderer = new MenuRenderer(menu_world);
-        SoundLoader.loadMenuMusic();
-        SoundLoader.menu_bgm.setVolume(Gdx.app.getPreferences("prefs").getFloat("music volume"));
-        SoundLoader.menu_bgm.play();
+        SoundLoader.musicHashtable.get("menu_bgm.mp3").play();
     }
 
     @Override
@@ -64,8 +62,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        AssetLoader.disposeMenuTexture();
         menu_world.getStage().dispose();
-        SoundLoader.disposeMenuMusic();
+        SoundLoader.musicHashtable.get("menu_bgm.mp3").stop();
     }
 }

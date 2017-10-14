@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntFloatMap;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.thechallengers.psagame.EndGame.EndGameWorld;
 import com.thechallengers.psagame.SinglePlayer.Objects.NextBlock;
@@ -40,10 +42,7 @@ import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
  */
 
 public class SinglePlayerGameWorld implements ScreenWorld {
-    final float TIMER_FONT_SIZE = 7;
-    final float PERCENTAGE_THRESHOLD = 0.01f;
-    private Body crane;
-    float CRANE_SPEED = 8f;
+    final static float PERCENTAGE_THRESHOLD = 0.5f;
     private Stage stage;
     private World world;
     public Array<Body> bodyArray = new Array<Body>();
@@ -54,24 +53,6 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public ArrayList<NextBlock> nextBlockArrayList;
     public ArrayDeque<Block> previousNextBlockQ;
     private int level;
-
-    private Label countdownLabel;
-
-    //touchpad-related variables
-    private Touchpad touchpad;
-    private Touchpad.TouchpadStyle touchpadStyle;
-    private Skin skin; //store the skin for user interface: touchpad and release button
-    private Drawable touchBackground, touchKnob;
-
-    //release button-related variables
-    private TextButton releaseButton;
-    private TextButton.TextButtonStyle releaseStyle;
-    private TextButton destroyButton;
-    private TextButton.TextButtonStyle destroyStyle;
-    private Drawable releaseBG;
-    private Drawable destroyBG;
-
-    //worker-related variables
 
     public Box2DWorld box2DWorld;
 
@@ -91,6 +72,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     @Override
     public void update(float delta) {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
         box2DWorld.update(delta);
         if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
             END_SCREEN_TIME = gameTime;
@@ -122,7 +104,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         // gForce will be close to 1 when there is no movement.
         float gForce = (float)Math.sqrt((xGrav * xGrav) + (yGrav * yGrav) + (zGrav * zGrav));
 
-        if (gForce > 2 && box2DWorld.cooldown <= 0) {
+        if (gForce > 2 && box2DWorld.cooldown <= 0 && hasStarted) {
             box2DWorld.destroyMode = true;
         }
 
@@ -138,20 +120,19 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public void loadNextBlockActors() {
         ArrayDeque<Block> nextBlockQ = box2DWorld.nextBlockQ.clone();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 2; i >=0; i--) {
             NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
             switch (i) {
-                case 0:
+                case 2:
                     nextBlock.setPosition(0, 1920 - 225);
                     break;
                 case 1:
                     nextBlock.setPosition(360, 1920 - 225);
                     break;
-                case 2:
+                case 0:
                     nextBlock.setPosition(720, 1920 - 225);
                     break;
                 default:
-
             }
             stage.addActor(nextBlock);
             nextBlockArrayList.add(nextBlock);

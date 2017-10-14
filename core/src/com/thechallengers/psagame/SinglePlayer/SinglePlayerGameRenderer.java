@@ -16,7 +16,9 @@ import com.thechallengers.psagame.helpers.AssetLoader;
 
 import java.util.ArrayDeque;
 
+import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.SinglePlayer.Box2DWorld.NUM_NEXT_BLOCK_INFORMED;
+import static com.thechallengers.psagame.game.PSAGame.LEVEL;
 
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
@@ -48,11 +50,11 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         batcher.begin();
 
-        world.box2DWorld.debugRender();
-//        batcher.draw(AssetLoader.game_background, 0, 0);
+        //world.box2DWorld.debugRender();
+        batcher.draw(AssetLoader.game_background, 0, 0);
         if (!world.hasStarted) batcher.draw(AssetLoader.start_game, 0, 0);
         if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
-//        batcher.draw(AssetLoader.silhouette_1, 0, 0);
+        batcher.draw(AssetLoader.silhouetteArrayList.get(LEVEL - 1), 0, 0);
 
         //BLOCKS
         for (int i = 0; i < world.box2DWorld.bodyArray.size; i++) {
@@ -72,9 +74,6 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         batcher.draw(AssetLoader.game_background_2, 0, 0);
         if (world.hasStarted) batcher.draw(AssetLoader.arrow_animation.getKeyFrame(runTime, false), 135, 1563);
         else batcher.draw(AssetLoader.arrow_animation.getKeyFrame(0, false), 135, 1563);
-
-
-
 
         if (world.box2DWorld.cooldown <= 0) batcher.draw(AssetLoader.bomb, 915, 1582);
         else {
@@ -97,8 +96,15 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         if (world.hasStarted) batcher.draw(AssetLoader.clock_animation.getKeyFrame(runTime, false), 340, 1582);
         else batcher.draw(AssetLoader.clock_animation.getKeyFrame(0, false), 340, 1582);
-        AssetLoader.consolas_60.draw(batcher, String.format("%d:%d", (int) (world.getWorldTime() / 60),
-                                                (int) (world.getWorldTime() - 60 * (int) (world.getWorldTime() / 60))), 450, 1650);
+        //Time
+        float time = world.getWorldTime();
+        int minute = (int) (time / 60f);
+        int seconds = (int) (time - minute * 60);
+        String secondsString;
+        if (seconds < 10) secondsString = "0" + String.valueOf(seconds);
+        else secondsString = String.valueOf(seconds);
+        String timeString = String.valueOf(minute) + ":" +secondsString;
+        AssetLoader.consolas_60.draw(batcher, timeString, 450, 1650);
         batcher.end();
 
         //INCOMING BLOCK

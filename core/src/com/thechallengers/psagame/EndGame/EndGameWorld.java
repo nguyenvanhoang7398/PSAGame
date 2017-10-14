@@ -41,7 +41,7 @@ public class EndGameWorld implements ScreenWorld {
 
 
     public EndGameWorld(int star, float time) {
-        this.star = 3;
+        this.star = star;
         this.time = time;
 
         stage = new Stage();
@@ -51,13 +51,13 @@ public class EndGameWorld implements ScreenWorld {
         winningBG.getColor().a = 1;
         stage.addActor(winningBG);
 //
-        actual = new ActorWithTexture(AssetLoader.actual_1, 0, 0);
-        actual.addAction(sequence(fadeIn(3f), delay(0.5f)));
+        actual = new ActorWithTexture(AssetLoader.actualArrayList.get(END_SCREEN_LEVEL - 1), 0, 0);
+        actual.addAction(sequence(fadeIn(3f), delay(2f)));
         actual.getColor().a = 0;
         stage.addActor(actual);
 
         background = new ActorWithTexture(AssetLoader.endGameBackground, 0, 0);
-        background.addAction(sequence(delay(3.5f), fadeIn(0.5f), run(new Runnable() {
+        background.addAction(sequence(delay(5f), fadeIn(0.5f), run(new Runnable() {
             @Override
             public void run() {
                 showTheRest();
@@ -98,7 +98,7 @@ public class EndGameWorld implements ScreenWorld {
 
         //TIPS
         tips = new ActorWithTexture(AssetLoader.tips[END_SCREEN_LEVEL - 1], 0, 0);
-        tips.addAction(sequence(delay(2.5f), fadeIn(0.3f)));
+        tips.addAction(sequence(delay(2.5f - (3 - star) * 0.5f), fadeIn(0.3f)));
         stage.addActor(tips);
 
         //NEXT LEVEL
@@ -109,7 +109,7 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton nextLevel = new TextButton("", nextLevelStyle);
         nextLevel.setPosition(750, 50);
-        nextLevel.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
+        nextLevel.addAction(sequence(delay(3.5f - (3 - star) * 0.5f), fadeIn(0.3f)));
         nextLevel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -128,7 +128,7 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton levelSelection = new TextButton("", levelSelectionStyle);
         levelSelection.setPosition(430, 50);
-        levelSelection.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
+        levelSelection.addAction(sequence(delay(3.5f - (3 - star) * 0.5f), fadeIn(0.3f)));
         levelSelection.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -147,7 +147,7 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton mainMenu = new TextButton("", mainMenuStyle);
         mainMenu.setPosition(120, 50);
-        mainMenu.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
+        mainMenu.addAction(sequence(delay(3.5f - (3 - star) * 0.5f, fadeIn(0.3f))));
         mainMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -167,7 +167,7 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton replay = new TextButton("", replayStyle);
         replay.setPosition(430, 320);
-        replay.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
+        replay.addAction(sequence(delay(3.5f - (3 - star) * 0.5f), fadeIn(0.3f)));
         replay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
