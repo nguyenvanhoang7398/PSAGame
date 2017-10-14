@@ -163,15 +163,29 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
 
         if (!result) {
             TextButton error_line1 = new TextButton("", highscore_text_style);
-            error_line1.setText("Cannot receive leaderboard");
+            error_line1.setText("Cannot");
             error_line1.setPosition(OFFSET_X, offset_y);
             displaying_highscores.addLast(error_line1);
+
             TextButton error_line2 = new TextButton("", highscore_text_style);
-            error_line2.setText("Please check your connection");
+            error_line2.setText("receive leaderboard");
             error_line2.setPosition(OFFSET_X, offset_y - MARGIN_Y);
             displaying_highscores.addLast(error_line2);
+
+            TextButton error_line3 = new TextButton("", highscore_text_style);
+            error_line3.setText("Please check");
+            error_line3.setPosition(OFFSET_X, offset_y - MARGIN_Y*2);
+            displaying_highscores.addLast(error_line3);
+
+            TextButton error_line4 = new TextButton("", highscore_text_style);
+            error_line4.setText("your connection");
+            error_line4.setPosition(OFFSET_X, offset_y - MARGIN_Y*3);
+            displaying_highscores.addLast(error_line4);
+
             stage.addActor(error_line1);
             stage.addActor(error_line2);
+            stage.addActor(error_line3);
+            stage.addActor(error_line4);
         }
 
         for (HighscoreEntry highscoreEntry : highscore_of_this_level) {

@@ -377,7 +377,7 @@ public class Box2DWorld {
     public Block createNextBlock() {
         Block _nextBlock = RandomController.randomBlock();
 
-        if (num_width_3_consecutively == 2) {
+        if (num_width_3_consecutively == 1) {
             while (_nextBlock.width == 3) {
                 _nextBlock = RandomController.randomBlock();
             }
