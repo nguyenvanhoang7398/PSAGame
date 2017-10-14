@@ -30,6 +30,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
+import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_PERCENT;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
@@ -89,6 +90,7 @@ public class TutorialWorld implements ScreenWorld {
         if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
             END_SCREEN_TIME = gameTime;
             END_SCREEN_LEVEL = 1;
+            END_SCREEN_PERCENT = box2DWorld.getPercentageOverlap();
             if (box2DWorld.endGameWaitTime >= 0.5f) {
                 AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
                 CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;

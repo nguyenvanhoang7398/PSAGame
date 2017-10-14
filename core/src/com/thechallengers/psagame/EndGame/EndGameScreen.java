@@ -34,6 +34,10 @@ public class EndGameScreen implements Screen {
         if (star > 0) prefs.putInteger("level", prefs.getInteger("level") + 1);
         prefs.flush();
 
+        int previousStar = prefs.getInteger("level" + String.valueOf(END_SCREEN_LEVEL) + "star");
+        if (star > previousStar) prefs.putInteger("level" + String.valueOf(END_SCREEN_LEVEL) + "star", star);
+        prefs.flush();
+
         world = new EndGameWorld(star, END_SCREEN_TIME);
         Gdx.input.setInputProcessor(world.getStage());
     }

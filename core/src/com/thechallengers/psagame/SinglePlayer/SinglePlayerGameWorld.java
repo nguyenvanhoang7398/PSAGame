@@ -72,8 +72,6 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     @Override
     public void update(float delta) {
-        System.out.println(stage.getActors().size);
-        System.out.println(nextBlockArrayList.size());
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
         box2DWorld.update(delta);
         if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {

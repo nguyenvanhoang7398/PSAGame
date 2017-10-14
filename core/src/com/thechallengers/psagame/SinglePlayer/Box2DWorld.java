@@ -339,7 +339,6 @@ public class Box2DWorld {
     }
 
     public void moveCrane(float screenX, float screenY) {
-        System.out.println("called");
         float distance = (14.4f - crane.getPosition().y) + (Math.abs(screenX - crane.getPosition().x))
                             + (14.4f - screenY);
 
