@@ -104,7 +104,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         // gForce will be close to 1 when there is no movement.
         float gForce = (float)Math.sqrt((xGrav * xGrav) + (yGrav * yGrav) + (zGrav * zGrav));
 
-        if (gForce > 2 && box2DWorld.cooldown <= 0) {
+        if (gForce > 2 && box2DWorld.cooldown <= 0 && hasStarted) {
             box2DWorld.destroyMode = true;
         }
 

@@ -101,14 +101,7 @@ public class TutorialInputHandler implements InputProcessor {
                     world.createOnScreenInstructions();
                     break;
                 case DESTROY_INDICATOR_1:
-                    if (screenX > SHORT_EDGE-(30+200) && screenX < SHORT_EDGE-(30) && screenY >1920 - (LONG_EDGE-(15)) && screenY < 1920 - (LONG_EDGE-(15+200))) {
-                        world.clicked();
-                        world.getStateQueue().removeFirst();
-                        world.createOnScreenInstructions();
-                        world.box2DWorld.destroyMode = true;
-                        return false;
-                    }
-                    return false;
+                    break; //this case is handled by tutorialWorld
                 case DESTROY_INDICATOR_2:
                     if (screenX > 455 && screenX < 507 && screenY > 1775 && screenY < 1827) {
                         inputForNormalGame(475, 1800);
@@ -127,6 +120,7 @@ public class TutorialInputHandler implements InputProcessor {
                     multiplexer.addProcessor(world.getStage());
                     multiplexer.addProcessor(this);
                     Gdx.input.setInputProcessor(multiplexer);
+                    world.hasStarted = true;
                     break;
                 default:
             }

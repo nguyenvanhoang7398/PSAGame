@@ -2,8 +2,10 @@ package com.thechallengers.psagame.Leaderboard;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.net.HttpParametersUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.google.gson.internal.LinkedTreeMap;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
@@ -19,6 +22,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
@@ -30,6 +35,8 @@ import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
  */
 
 public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
+
+    private final String REST_API_URL = "https://psagame.herokuapp.com/leaderboard";
 
     private HashMap<Integer, ArrayList<HighscoreEntry>> test_highscore_table;
     private HashMap<Integer, ArrayList<HighscoreEntry>> highscore_table;
@@ -134,7 +141,7 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
         add_highscore.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.input.getTextInput(self, "New highscore", "", "your highscore");
+                Gdx.input.getTextInput(self, "New highscore", "", "<name(String)> <score(float)> <level(integer)>");
             }
         });
     }
@@ -186,7 +193,8 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
 
         float offset_y = 850f;
         int i = 0;
-        ArrayList<HighscoreEntry> highscore_of_this_level = highscore_table.get(level);
+        // ArrayList<HighscoreEntry> highscore_of_this_level = highscore_table.get(level);
+        ArrayList<HighscoreEntry> highscore_of_this_level = queryHighscoreLevelFromDatabase(level);
         Collections.sort(highscore_of_this_level);
         highscore_text_style = new TextButton.TextButtonStyle();
         highscore_text_style.font = AssetLoader.consolas_15;
@@ -230,14 +238,88 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
         highscore_table = test_highscore_table;
     }
 
+    public ArrayList<HighscoreEntry> queryHighscoreLevelFromDatabase(int level) {
+        final String REST_API_URL_LEVEL = REST_API_URL + "/" + Integer.toString(level);
+        final ArrayList<HighscoreEntry> high_scores = new ArrayList<HighscoreEntry>();
+
+        Map<String, String> parameters = new HashMap<String, String>();
+        Net.HttpRequest httpGet = new Net.HttpRequest(Net.HttpMethods.GET);
+        httpGet.setUrl(REST_API_URL_LEVEL);
+        httpGet.setContent(HttpParametersUtils.convertHttpParameters(parameters));
+
+        Gdx.net.sendHttpRequest(httpGet, new Net.HttpResponseListener() {
+            @Override
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                String result = httpResponse.getResultAsString();
+                HashMap<String, Object> parsed_object = JSONParser.parse(result);
+                ArrayList<Object> high_score_list = new ArrayList<Object>((List) parsed_object.get("result"));
+
+                for (Object high_score : high_score_list) {
+                    LinkedTreeMap<String, String> high_score_hm = (LinkedTreeMap<String, String>) high_score;
+                    String name = high_score_hm.get("name");
+                    int level = Integer.parseInt(high_score_hm.get("level"));
+                    float score = Float.parseFloat(high_score_hm.get("score"));
+                    high_scores.add(new HighscoreEntry(name, level, score));
+                }
+            }
+
+            @Override
+            public void failed(Throwable t) {
+                Gdx.app.log("Failed ", t.getMessage());
+            }
+
+            @Override
+            public void cancelled() {
+                Gdx.app.log("Cancelled ", "User cancelled");
+            }
+        });
+        try {
+            Thread.sleep(2000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+        return high_scores;
+    }
+
+    public void sendHighscoreToDatabase(String name, String score, String level) {
+
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("name", name);
+        parameters.put("score", score);
+        parameters.put("level", level);
+        Net.HttpRequest request = new Net.HttpRequest(Net.HttpMethods.POST);
+        request.setHeader("Content-Type", "application/json");
+        request.setContent(JSONParser.toJSON(parameters));
+        request.setUrl(REST_API_URL);
+        System.out.println(request.getContent());
+        Gdx.net.sendHttpRequest(request, new Net.HttpResponseListener() {
+            @Override
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                Gdx.app.log("Status code ", "" + httpResponse.getStatus().getStatusCode());
+                Gdx.app.log("Result ", httpResponse.getResultAsString());
+            }
+            @Override
+            public void failed(Throwable t) {
+                Gdx.app.log("Failed ", t.getMessage());
+            }
+            @Override
+            public void cancelled() {
+                Gdx.app.log("Cancelled ", "User cancelled");
+            }
+        });
+        try {
+            Thread.sleep(3000);
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     public Stage getStage() {return stage;}
 
     @Override
     public void input(String text) {
         String[] tokens = text.split(" ");
-        String name = tokens[0];
-        Float new_highscore = Float.parseFloat(tokens[1]);
-        Integer level = Integer.parseInt(tokens[2]);
+        sendHighscoreToDatabase(tokens[0], tokens[1], tokens[2]);
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.thechallengers.psagame.Menu.Objects.Background;
 import com.thechallengers.psagame.Menu.Objects.Cloud;
 import com.thechallengers.psagame.Menu.Objects.Containers;
 import com.thechallengers.psagame.Menu.Objects.MenuCrane;
+import com.thechallengers.psagame.Menu.Objects.MenuTitle;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
@@ -34,6 +35,17 @@ import static com.thechallengers.psagame.game.PSAGame.SFX_VOLUME;
  */
 
 public class MenuWorld implements ScreenWorld {
+
+    private final float PLAY_TUTORIAL_BUTTON_Y_OFFSET = 250f;
+    private final float SINGLEPLAY_MULTIPLAY_BUTTON_Y_OFFSET = 585f;
+    private final float SINGLEPLAY_MULTIPLAY_BUTTON_Y_MARGIN = 50f;
+    private final float PLAY_MODE_BUBBLE_Y_OFFSET = 450f;
+    private final float SHOP_SETTINGS_LEADERBOARD_ICON_Y_OFFSET = 50f;
+    private final float SHOP_SETTINGS_LEADERBOARD_ICON_X_OFFSET = 100f;
+    private final float SHOP_SETTINGS_LEADERBOARD_ICON_X_MARGIN = 50f;
+    private final float WIDTH = 1080f;
+    private final float HEIGHT = 1920f;
+
     private TextButton tutorial_button, play_button, single_player_button, multi_player_button, overlay_button, setting_button, setting_overlay, setting_box;
     private TextButton.TextButtonStyle play_button_style, tutorial_button_style, single_player_button_style, multi_player_button_style,
             overlay_button_style, setting_button_style, setting_overlay_style, setting_box_style;
@@ -41,6 +53,7 @@ public class MenuWorld implements ScreenWorld {
     private Slider music_slider, sfx_slider;
     private MenuCrane menu_crane;
     private Background background;
+    private MenuTitle menu_title;
     private Containers containers;
     private Stage stage;
     private int zoomTime = 0;
@@ -63,39 +76,33 @@ public class MenuWorld implements ScreenWorld {
     public MenuWorld(PSAGame game) {
         this.game = game;
         stage = new Stage();
-
-        //play button
-        createPlayButton();
-
-        createSinglePlayerButton();
-        createMultiPlayerButton();
-        createOverlayButton();
-
-        //tutorial button
-        createTutorialButton();
-
-        //create setting button
-        createSettingButton();
-
-        //Background
         background = new Background();
-        //add all actors to stage
+        menu_title = new MenuTitle();
 
-        //shop button
+        createPlayButton();
+        createMultiPlayerButton();
+        createSinglePlayerButton();
+        createOverlayButton();
+        createTutorialButton();
         createShopButton();
+        createSettingButton();
         createLeaderboardButton();
+
+        //add all actors to stage
         stage.addActor(background);
+        stage.addActor(menu_title);
         //stage.addActor(menu_crane);
         stage.addActor(play_button);
         stage.addActor(tutorial_button);
+        stage.addActor(shop_button);
         stage.addActor(setting_button);
+        stage.addActor(leaderboard_button);
 
         //clouds and containers
         cloudArray = new Array<Cloud>();
         createClouds();
         createContainers();
-        stage.addActor(shop_button);
-        stage.addActor(leaderboard_button);
+
         //lookAt();
 
     }
@@ -144,7 +151,8 @@ public class MenuWorld implements ScreenWorld {
         createShopButtonStyle();
 
         shop_button = new TextButton("", shop_button_style);
-        shop_button.setPosition(700, 1700);
+        shop_button.setPosition(SHOP_SETTINGS_LEADERBOARD_ICON_X_OFFSET,
+                SHOP_SETTINGS_LEADERBOARD_ICON_Y_OFFSET);
         addListenerToShopButton();
     }
 
@@ -171,7 +179,10 @@ public class MenuWorld implements ScreenWorld {
         createLeaderboardButtonStyle();
 
         leaderboard_button = new TextButton("", leaderboard_button_style);
-        leaderboard_button.setPosition(700, 1500);
+        leaderboard_button.setPosition(SHOP_SETTINGS_LEADERBOARD_ICON_X_OFFSET
+                + (shop_button.getWidth() + SHOP_SETTINGS_LEADERBOARD_ICON_X_MARGIN)
+                + (setting_button.getWidth() + SHOP_SETTINGS_LEADERBOARD_ICON_X_MARGIN),
+                SHOP_SETTINGS_LEADERBOARD_ICON_Y_OFFSET);
         addListenerToLeaderboardButton();
     }
 
@@ -197,7 +208,7 @@ public class MenuWorld implements ScreenWorld {
         createPlayButtonStyle();
 
         play_button = new TextButton("", play_button_style);
-        play_button.setPosition(180, 1920 - 1726);
+        play_button.setPosition(WIDTH/4-play_button.getWidth()/2, PLAY_TUTORIAL_BUTTON_Y_OFFSET);
         addListenerToPlayButton();
 
         //addListenerToPlayButton();
@@ -227,7 +238,21 @@ public class MenuWorld implements ScreenWorld {
         createTutorialButtonStyle();
 
         tutorial_button = new TextButton("", tutorial_button_style);
-        tutorial_button.setPosition(670, 1920 - 1726);
+        tutorial_button.setPosition(WIDTH*0.75f - tutorial_button.getWidth()/2, PLAY_TUTORIAL_BUTTON_Y_OFFSET);
+
+        addListenerToTutorialButton();
+    }
+
+    public void addListenerToTutorialButton() {
+        tutorial_button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                removePlayOptions();
+                CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
+                //move to multi player code here
+                SoundLoader.soundHashtable.get("click.wav").play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
+            }
+        });
     }
 
     //SINGLE PLAYER BUTTON
@@ -242,7 +267,9 @@ public class MenuWorld implements ScreenWorld {
         createSinglePlayerButtonStyle();
 
         single_player_button = new TextButton("", single_player_button_style);
-        single_player_button.setPosition(180, 1920 - 1326);
+        single_player_button.setPosition(WIDTH/2 - single_player_button.getWidth()/2,
+                SINGLEPLAY_MULTIPLAY_BUTTON_Y_OFFSET
+                        + SINGLEPLAY_MULTIPLAY_BUTTON_Y_MARGIN + multi_player_button.getHeight());
         single_player_button.getColor().a = 0;
         single_player_button.addAction(fadeIn(0.1f));
 
@@ -282,7 +309,8 @@ public class MenuWorld implements ScreenWorld {
         createMultiPlayerButtonStyle();
 
         multi_player_button = new TextButton("", multi_player_button_style);
-        multi_player_button.setPosition(670, 1920 - 1326);
+        multi_player_button.setPosition(WIDTH/2 - multi_player_button.getWidth()/2,
+                SINGLEPLAY_MULTIPLAY_BUTTON_Y_OFFSET);
         multi_player_button.getColor().a = 0;
         multi_player_button.addAction(fadeIn(0.1f));
 
@@ -313,7 +341,7 @@ public class MenuWorld implements ScreenWorld {
         createOverlayButtonStyle();
 
         overlay_button = new TextButton("", overlay_button_style);
-        overlay_button.setPosition(0, 0);
+        overlay_button.setPosition(WIDTH/2-overlay_button.getWidth()/2, PLAY_MODE_BUBBLE_Y_OFFSET);
         overlay_button.getColor().a = 0;
         overlay_button.addAction(fadeIn(0.1f));
 
@@ -342,7 +370,9 @@ public class MenuWorld implements ScreenWorld {
         createSettingButtonStyle();
 
         setting_button = new TextButton("", setting_button_style);
-        setting_button.setPosition(1080 - 20 - 100, 1900 - 100);
+        setting_button.setPosition(SHOP_SETTINGS_LEADERBOARD_ICON_X_OFFSET + (shop_button.getWidth()
+                + SHOP_SETTINGS_LEADERBOARD_ICON_X_MARGIN),
+                SHOP_SETTINGS_LEADERBOARD_ICON_Y_OFFSET);
 
         addListenerToSettingButton();
     }
