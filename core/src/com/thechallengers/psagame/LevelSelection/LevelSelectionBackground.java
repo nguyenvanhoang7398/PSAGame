@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 
 public class LevelSelectionBackground extends Actor {
-    Texture texture = new Texture(Gdx.files.internal("textures/level_selection_background.png"));
+    Texture texture = new Texture(Gdx.files.internal("textures/new_levelSelection_background.png"));
     @Override
     public void draw(Batch batch, float alpha){
         batch.draw(texture,0,0);
