@@ -11,9 +11,9 @@ import com.thechallengers.psagame.helpers.AssetLoader;
  */
 
 public class LevelTitle extends Actor {
-    Texture texture = AssetLoader.level_title;
-    @Override
-    public void draw(Batch batch, float alpha){
-        batch.draw(texture,100,1400);
-    }
+//    Texture texture = AssetLoader.level_title;
+//    @Override
+//    public void draw(Batch batch, float alpha){
+//        batch.draw(texture,100,1400);
+//    }
 }

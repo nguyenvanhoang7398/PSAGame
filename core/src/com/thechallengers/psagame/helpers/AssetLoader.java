@@ -43,7 +43,7 @@ public class AssetLoader {
     public static Texture leaderboard_background;
     public static Texture level_selection_background;
     public static Texture level_backButton;
-    public static Texture level1_Button, level2_Button;
+    public static Texture level1_Button, level2_Button, level3_Button, level4_Button, level5_Button;
     public static Texture level_title;
     public static Texture star0, star1, star2, star3 ;
     public static Texture shop_title;
@@ -172,9 +172,13 @@ public class AssetLoader {
     }
 
     public static void loadLevelSelectionTexture() {
-        level_selection_background = new Texture(Gdx.files.internal("textures/level_selection_background.png"));
-        level_backButton = new Texture(Gdx.files.internal("textures/shop_backButton.png"));
-        level1_Button = new Texture(Gdx.files.internal("textures/level1.png"));
+        level_selection_background = new Texture(Gdx.files.internal("textures/new_levelSelection_background.png"));
+        level_backButton = new Texture(Gdx.files.internal("textures/new_shop_backButton.png"));
+        level1_Button = new Texture(Gdx.files.internal("textures/new_stage1_icon.png"));
+        level2_Button = new Texture(Gdx.files.internal("textures/new_stage2_icon.png"));
+        level3_Button = new Texture(Gdx.files.internal("textures/new_stage3_icon.png"));
+        level4_Button = new Texture(Gdx.files.internal("textures/new_stage4_icon.png"));
+        level5_Button = new Texture(Gdx.files.internal("textures/new_stage5_icon.png"));
         level_title = new Texture(Gdx.files.internal("textures/level_title.png"));
         star0 = new Texture(Gdx.files.internal("textures/0_stars.png"));
         star1 = new Texture(Gdx.files.internal("textures/1_stars.png"));
@@ -186,6 +190,10 @@ public class AssetLoader {
         level_selection_background.dispose();
         level_backButton.dispose();
         level1_Button.dispose();
+        level2_Button.dispose();
+        level3_Button.dispose();
+        level4_Button.dispose();
+        level5_Button.dispose();
         level_title.dispose();
         star0.dispose();
         star1.dispose();
