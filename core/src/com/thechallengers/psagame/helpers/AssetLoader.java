@@ -52,7 +52,7 @@ public class AssetLoader {
     public static Texture start_game;
     public static Texture next_block_frame;
     public static TextureRegion[] progress;
-
+    public static Texture sorry_message;
 
     public static Texture silhouette_1;
     public static Texture actual_1;
@@ -162,6 +162,7 @@ public class AssetLoader {
         shop_button = new Texture(Gdx.files.internal("textures/new_Menu_ShopButton.png"));
         leaderboard_button = new Texture(Gdx.files.internal("textures/new_Menu_leaderBoard.png"));
 
+        sorry_message = new Texture(Gdx.files.internal("textures/new_sorry_message.png"));
         background = new TextureRegion(background_texture, 0, 0, 1080, 1920);
         button_up = new TextureRegion(button_texture, 0, 0, 200, 100);
         button_down = new TextureRegion(button_texture, 200, 0, 200, 100);
