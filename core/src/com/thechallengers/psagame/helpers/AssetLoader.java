@@ -127,34 +127,34 @@ public class AssetLoader {
 
     public static void loadMenuTexture() {
 
-        background_texture = new Texture(Gdx.files.internal("textures/menubackground.png"));
+        background_texture = new Texture(Gdx.files.internal("textures/new_Menu_background.png"));
         game_background_2 = new Texture("textures/game_background_2.png");
         button_texture = new Texture(Gdx.files.internal("textures/button.png"));
         menu_crane_texture = new Texture(Gdx.files.internal("textures/menucrane.png"));
         cloud_1 = new Texture(Gdx.files.internal("textures/cloud_1.png"));
         cloud_2 = new Texture(Gdx.files.internal("textures/cloud_2.png"));
         containers = new Texture(Gdx.files.internal("textures/containers.png"));
-        play_button = new Texture(Gdx.files.internal("textures/play_button.png"));
-        play_button_pressed = new Texture(Gdx.files.internal("textures/play_button_pressed.png"));
+        play_button = new Texture(Gdx.files.internal("textures/new_Menu_playButton.png"));
+        play_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_playButton.png"));
         menu_button = new Texture(Gdx.files.internal("textures/menu_button.png"));
         replay_button = new Texture(Gdx.files.internal("textures/replay_button.png"));
         next_button = new Texture(Gdx.files.internal("textures/next_button.png"));
-        tutorial_button = new Texture(Gdx.files.internal("textures/tutorial_button.png"));
-        tutorial_button_pressed = new Texture(Gdx.files.internal("textures/tutorial_button_pressed.png"));
-        single_player_button = new Texture(Gdx.files.internal("textures/single_player_button.png"));
-        single_player_button_pressed = new Texture(Gdx.files.internal("textures/single_player_button_pressed.png"));
-        multi_player_button = new Texture(Gdx.files.internal("textures/multi_player_button.png"));
-        multi_player_button_pressed = new Texture(Gdx.files.internal("textures/multi_player_button_pressed.png"));
-        overlay_button = new Texture(Gdx.files.internal("textures/overlay_button.png"));
-        overlay_button_pressed = new Texture(Gdx.files.internal("textures/overlay_button_pressed.png"));
-        setting_button = new Texture(Gdx.files.internal("textures/setting_button.png"));
-        setting_button_pressed = new Texture(Gdx.files.internal("textures/setting_button_pressed.png"));
+        tutorial_button = new Texture(Gdx.files.internal("textures/new_Menu_tutorialButton.png"));
+        tutorial_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_tutorialButton.png"));
+        single_player_button = new Texture(Gdx.files.internal("textures/new_Menu_Single.png"));
+        single_player_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_Single.png"));
+        multi_player_button = new Texture(Gdx.files.internal("textures/new_Menu_Multi.png"));
+        multi_player_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_Multi.png"));
+        overlay_button = new Texture(Gdx.files.internal("textures/new_Menu_bubble.png"));
+        overlay_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_bubble.png"));
+        setting_button = new Texture(Gdx.files.internal("textures/new_Menu_SettingButton.png"));
+        setting_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_SettingButton.png"));
         setting_overlay = new Texture(Gdx.files.internal("textures/setting_overlay.png"));
         setting_box = new Texture(Gdx.files.internal("textures/setting_box.png"));
         slider_bg = new Texture(Gdx.files.internal("textures/slider_bg.png"));
         slider_knob = new Texture(Gdx.files.internal("textures/slider_knob.png"));
-        shop_button = new Texture(Gdx.files.internal("textures/shop_icon.png"));
-        leaderboard_button = new Texture(Gdx.files.internal("textures/leaderboard_icon.png"));
+        shop_button = new Texture(Gdx.files.internal("textures/new_Menu_ShopButton.png"));
+        leaderboard_button = new Texture(Gdx.files.internal("textures/new_Menu_leaderBoard.png"));
 
         background = new TextureRegion(background_texture, 0, 0, 1080, 1920);
         button_up = new TextureRegion(button_texture, 0, 0, 200, 100);
@@ -255,7 +255,7 @@ public class AssetLoader {
         time_end_screen = new Texture("textures/time_end_screen.png");
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));
-        game_background = new Texture(Gdx.files.internal("textures/game_background.png"));
+        game_background = new Texture(Gdx.files.internal("textures/new_Menu_background.png"));
         unitBlockTexture = new Texture("textures/unitBlock.png");
         silhouette_1 = new Texture(Gdx.files.internal("textures/silhouette_1.png"));
         actual_1 = new Texture(Gdx.files.internal("textures/actual_1.png"));
