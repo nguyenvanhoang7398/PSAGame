@@ -122,17 +122,17 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public void loadNextBlockActors() {
         ArrayDeque<Block> nextBlockQ = box2DWorld.nextBlockQ.clone();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 2; i >=0; i--) {
             NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
             switch (i) {
-                case 0:
-                    nextBlock.setPosition(720, 1920 - 225);
+                case 2:
+                    nextBlock.setPosition(0, 1920 - 225);
                     break;
                 case 1:
                     nextBlock.setPosition(360, 1920 - 225);
                     break;
-                case 2:
-                    nextBlock.setPosition(0, 1920 - 225);
+                case 0:
+                    nextBlock.setPosition(720, 1920 - 225);
                     break;
                 default:
             }

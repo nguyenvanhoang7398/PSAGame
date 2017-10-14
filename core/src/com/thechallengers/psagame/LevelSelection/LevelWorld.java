@@ -171,7 +171,8 @@ class LevelWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 level_button[i].addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
-                CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+                if (i == 0) CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
+                else CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
                 LEVEL = i + 1;
                 SoundLoader.soundHashtable.get("click.wav").play();
             }

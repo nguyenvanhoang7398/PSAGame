@@ -41,7 +41,7 @@ public class EndGameWorld implements ScreenWorld {
 
 
     public EndGameWorld(int star, float time) {
-        this.star = 2;
+        this.star = star;
         this.time = time;
 
         stage = new Stage();

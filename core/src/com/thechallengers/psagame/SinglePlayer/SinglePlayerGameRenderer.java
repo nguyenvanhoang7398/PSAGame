@@ -16,6 +16,7 @@ import com.thechallengers.psagame.helpers.AssetLoader;
 
 import java.util.ArrayDeque;
 
+import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.SinglePlayer.Box2DWorld.NUM_NEXT_BLOCK_INFORMED;
 import static com.thechallengers.psagame.game.PSAGame.LEVEL;
 
@@ -95,8 +96,15 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         if (world.hasStarted) batcher.draw(AssetLoader.clock_animation.getKeyFrame(runTime, false), 340, 1582);
         else batcher.draw(AssetLoader.clock_animation.getKeyFrame(0, false), 340, 1582);
-        AssetLoader.consolas_60.draw(batcher, String.format("%d:%d", (int) (world.getWorldTime() / 60),
-                                                (int) (world.getWorldTime() - 60 * (int) (world.getWorldTime() / 60))), 450, 1650);
+        //Time
+        float time = world.getWorldTime();
+        int minute = (int) (time / 60f);
+        int seconds = (int) (time - minute * 60);
+        String secondsString;
+        if (seconds < 10) secondsString = "0" + String.valueOf(seconds);
+        else secondsString = String.valueOf(seconds);
+        String timeString = String.valueOf(minute) + ":" +secondsString;
+        AssetLoader.consolas_60.draw(batcher, timeString, 450, 1650);
         batcher.end();
 
         //INCOMING BLOCK

@@ -122,6 +122,11 @@ public class Box2DWorld {
 
                 vert_arr.add(pattern_verts);
                 renderPattern(vert_arr, world);
+
+                nextBlockQ = new ArrayDeque<Block>();
+                nextBlockQ.addLast(new Block(1, 1, 1));
+                nextBlockQ.addLast(new Block(4, 3, 2));
+                nextBlockQ.addLast(new Block(5, 2, 1));
                 break;
             case 3:
                 float[] pattern_verts1 = {1.68f, 12.22f, 2.04f, 12.58f, 3.84f, 12.58f, 4.16f, 12.26f, 4.16f, 8.54f, 3.84f, 8.14f, 2.04f, 8.14f, 1.68f, 8.6f};
