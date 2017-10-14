@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 /**
  * Created by Phung Tuan Hoang on 9/9/2017.
@@ -25,7 +26,7 @@ public class SinglePlayerGameScreen implements Screen {
         inputMultiplexer.addProcessor(world.getStage());
         inputMultiplexer.addProcessor(physicsInputHandler);
         Gdx.input.setInputProcessor(inputMultiplexer);
-
+        SoundLoader.musicHashtable.get("ingame_bgm.mp3").play();
         //handling silhouette pattern
         switch (level) {
             case 2:
@@ -68,6 +69,6 @@ public class SinglePlayerGameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        SoundLoader.musicHashtable.get("ingame_bgm.mp3").stop();
     }
 }

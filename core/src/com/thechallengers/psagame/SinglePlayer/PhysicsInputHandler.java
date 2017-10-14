@@ -36,9 +36,11 @@ public class PhysicsInputHandler implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (!world.hasStarted) world.hasStarted = true;
+        if (screenY < 380) return false;
+        else if (screenY < 480) screenY = 480;
         float box2DWorld_x = screenX / 100f;
         float box2DWorld_y = (1920 - screenY * 1920 / Gdx.graphics.getHeight()) / 100f;
-        System.out.printf("%f %f\n", box2DWorld_x, box2DWorld_y);
+
 
         //neu muon input vao box2DWorld dung reference world.box2DWorld
         if (!world.box2DWorld.destroyMode) {

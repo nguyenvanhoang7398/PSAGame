@@ -3,6 +3,8 @@ package com.thechallengers.psagame.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.thechallengers.psagame.EndGame.EndGameScreen;
 import com.thechallengers.psagame.Leaderboard.LeaderboardScreen;
 import com.thechallengers.psagame.LevelSelection.LevelSelectionScreen;
@@ -10,6 +12,7 @@ import com.thechallengers.psagame.Menu.MenuScreen;
 import com.thechallengers.psagame.Shop.ShopScreen;
 import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.Tutorial.TutorialScreen;
+import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.helpers.SoundLoader;
 
 public class PSAGame extends Game {
@@ -20,6 +23,7 @@ public class PSAGame extends Game {
 	}
 	public static Screen CURRENT_SCREEN;
 	public static int LEVEL;
+	public static float SFX_VOLUME = 0;
 
 	@Override
 	public void create() {
@@ -40,18 +44,24 @@ public class PSAGame extends Game {
 
         Gdx.input.setCatchBackKey(true);
 
+		//Load sfx
+		SoundLoader.loadSFX();
+
 		//Open menu
 		CURRENT_SCREEN = Screen.MenuScreen;
 		setScreen(new MenuScreen(this));
-
-		//Load sfx
-		SoundLoader.loadSFX();
 	}
 
 	@Override
 	public void render() {
 		super.render();
 		updateScreen();
+
+		for (Music music : SoundLoader.musicHashtable.values()) {
+			music.setVolume(Gdx.app.getPreferences("prefs").getFloat("music volume"));
+		}
+
+		SFX_VOLUME = Gdx.app.getPreferences("prefs").getFloat("sfx volume");
 	}
 
 	@Override

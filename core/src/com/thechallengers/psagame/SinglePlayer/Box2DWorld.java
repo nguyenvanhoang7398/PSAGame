@@ -30,6 +30,7 @@ import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.RI
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.STOP;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.UP;
 import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.cooldown_animation_runTime;
+import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameWorld.PERCENTAGE_THRESHOLD;
 
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.
@@ -38,7 +39,6 @@ import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.c
 public class Box2DWorld {
     public static final int NUM_NEXT_BLOCK_INFORMED = 3;
     private static final float COOLDOWN_TIME = 4;
-    final float PERCENTAGE_THRESHOLD = 0.9f;
     private World world;
     private OrthographicCamera cam;
     private Box2DDebugRenderer debugRenderer;
@@ -113,56 +113,115 @@ public class Box2DWorld {
         //handling different levels
         switch (level) {
             //TODO: Re-factor this.
-            case 5:
+            case 1:
                 float[] pattern_verts = {1.44f, 13.26f, 9.32f, 13.26f, 9.32f, 8.42f, 1.44f, 8.42f};
+
+                for (int i = 1; i <= pattern_verts.length; i += 2) {
+                    pattern_verts[i] -= 6.5f;
+                }
+
                 vert_arr.add(pattern_verts);
                 renderPattern(vert_arr, world);
                 break;
             case 3:
                 float[] pattern_verts1 = {1.68f, 12.22f, 2.04f, 12.58f, 3.84f, 12.58f, 4.16f, 12.26f, 4.16f, 8.54f, 3.84f, 8.14f, 2.04f, 8.14f, 1.68f, 8.6f};
+                for (int i = 1; i <= pattern_verts1.length; i += 2) {
+                    pattern_verts1[i] -= 3.5f;
+                }
                 vert_arr.add(pattern_verts1);
                 float[] pattern_verts2 = {4.16f, 12.26f, 4.4f, 12.58f, 6.3f, 12.58f, 6.6f, 12.26f, 6.6f, 8.54f, 6.32f, 8.14f, 4.4f, 8.14f, 4.16f, 8.56f};
+                for (int i = 1; i <= pattern_verts2.length; i += 2) {
+                    pattern_verts2[i] -= 3.5f;
+                }
                 vert_arr.add(pattern_verts2);
                 float[] pattern_verts3 = {6.6f, 12.28f, 6.84f, 12.58f, 8.74f, 12.58f, 9.08f, 12.22f, 9.08f, 8.62f, 8.76f, 8.14f, 6.82f, 8.14f, 6.6f, 8.54f};
+                for (int i = 1; i <= pattern_verts3.length; i += 2) {
+                    pattern_verts3[i] -= 3.5f;
+                }
                 vert_arr.add(pattern_verts3);
                 renderPattern(vert_arr, world);
                 break;
             case 4:
                 float[] pattern_verts4 = {3.28f, 15.14f, 7.64f, 15.14f, 7.64f, 10.8f, 3.28f, 10.8f};
+                for (int i = 1; i <= pattern_verts4.length; i += 2) {
+                    pattern_verts4[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts4);
                 float[] pattern_verts5 = {2.22f, 14.12f, 3.28f, 14.12f, 3.28f, 11.6f, 2.22f, 11.6f};
+                for (int i = 1; i <= pattern_verts5.length; i += 2) {
+                    pattern_verts5[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts5);
                 float[] pattern_verts6 = {7.66f, 14.12f, 8.7f, 14.12f, 8.7f, 11.6f, 7.66f, 11.6f};
+                for (int i = 1; i <= pattern_verts6.length; i += 2) {
+                    pattern_verts6[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts6);
                 float[] pattern_verts7 = {4.86f, 10.8f, 6.08f, 10.8f, 6.08f, 8.84f, 4.86f, 8.84f};
+                for (int i = 1; i <= pattern_verts7.length; i += 2) {
+                    pattern_verts7[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts7);
                 float[] pattern_verts8 = {3.28f, 8.84f, 7.64f, 8.84f, 7.64f, 8.02f, 3.28f, 8.02f};
+                for (int i = 1; i <= pattern_verts8.length; i += 2) {
+                    pattern_verts8[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts8);
                 float[] pattern_verts9 = {2.6f, 8.02f, 8.34f, 8.02f, 8.34f, 6.54f, 2.6f, 6.54f};
+                for (int i = 1; i <= pattern_verts9.length; i += 2) {
+                    pattern_verts9[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts9);
                 renderPattern(vert_arr, world);
                 break;
-            case 2:
+            case 5:
                 float[] pattern_verts10 = {1.98f, 16.1f, 2.08f, 16.2f, 5.76f, 16.2f, 5.86f, 16.1f, 5.86f, 11.5f, 2.08f, 11.5f, 1.98f, 11.6f};
+                for (int i = 1; i <= pattern_verts10.length; i += 2) {
+                    pattern_verts10[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts10);
                 float[] pattern_verts11 = {3.62f, 12.52f, 6.72f, 12.52f, 6.82f, 12.42f, 6.82f, 8f, 3.72f, 8f, 3.62f, 8.1f};
+                for (int i = 1; i <= pattern_verts11.length; i += 2) {
+                    pattern_verts11[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts11);
                 float[] pattern_verts12 = {4.7f, 8.92f, 8.74f, 8.92f, 8.84f, 8.82f, 8.84f, 4.9f, 8.74f, 4.82f, 4.8f, 4.82f, 4.7f, 4.9f};
+                for (int i = 1; i <= pattern_verts12.length; i += 2) {
+                    pattern_verts12[i] -= 4f;
+                }
                 vert_arr.add(pattern_verts12);
                 renderPattern(vert_arr, world);
                 break;
-            case 6:
+            case 2:
                 float[] pattern_verts13 = {3.4f, 13.12f, 4.92f, 13.12f, 4.92f, 12.2f, 3.4f, 12.2f};
+                for (int i = 1; i <= pattern_verts13.length; i += 2) {
+                    pattern_verts13[i] -= 2.5f;
+                }
                 vert_arr.add(pattern_verts13);
                 float[] pattern_verts14 = {2.66f, 12.2f, 5.62f, 12.2f, 5.62f, 11.2f, 2.66f, 11.2f};
+                for (int i = 1; i <= pattern_verts14.length; i += 2) {
+                    pattern_verts14[i] -= 2.5f;
+                }
                 vert_arr.add(pattern_verts14);
                 float[] pattern_verts15 = {1.92f, 11.2f, 6.38f, 11.2f, 6.38f, 10.28f, 1.92f, 10.28f};
+                for (int i = 1; i <= pattern_verts15.length; i += 2) {
+                    pattern_verts15[i] -= 2.5f;
+                }
                 vert_arr.add(pattern_verts15);
                 float[] pattern_verts16 = {0.82f, 10.26f, 9.88f, 10.26f, 9.88f, 6.4f, 3.58f, 6.4f};
+                for (int i = 1; i <= pattern_verts16.length; i += 2) {
+                    pattern_verts16[i] -= 2.5f;
+                }
                 vert_arr.add(pattern_verts16);
                 float[] pattern_verts17 = {6.92f, 11.54f, 9.88f, 11.54f, 9.88f, 10.26f, 6.92f, 10.26f};
+                for (int i = 1; i <= pattern_verts17.length; i += 2) {
+                    pattern_verts17[i] -= 2.5f;
+                }
                 vert_arr.add(pattern_verts17);
                 float[] pattern_verts18 = {8.88f, 13.08f, 9.88f, 13.08f, 9.88f, 11.54f, 8.88f, 11.54f};
+                for (int i = 1; i <= pattern_verts18.length; i += 2) {
+                    pattern_verts18[i] -= 2.5f;
+                }
                 vert_arr.add(pattern_verts18);
                 renderPattern(vert_arr, world);
                 break;
@@ -285,7 +344,7 @@ public class Box2DWorld {
 
         craneData.isMoving = true;
 
-        craneData.velocity = velocity;
+        craneData.velocity = 10;
 
         craneData.destination = new Vector2(screenX, screenY);
     }
@@ -370,7 +429,7 @@ public class Box2DWorld {
         }
 
         if (craneData.cranedBody != null) {
-            craneData.cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - 0.1f - ((Block) craneData.cranedBody.getUserData()).height / 2f, 0);
+            craneData.cranedBody.setTransform(crane.getPosition().x, crane.getPosition().y - ((Block) craneData.cranedBody.getUserData()).height / 2f, 0);
         }
     }
 

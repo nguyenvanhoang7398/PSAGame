@@ -146,7 +146,7 @@ class LevelWorld implements ScreenWorld {
             public void clicked(InputEvent event, float x, float y) {
                 level1_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
-                LEVEL = 1;
+                LEVEL = 3;
             }
         });
     }
