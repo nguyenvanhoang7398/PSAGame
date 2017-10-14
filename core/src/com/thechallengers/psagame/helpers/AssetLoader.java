@@ -202,13 +202,13 @@ public class AssetLoader {
     }
 
     public static void loadShopTexture() {
-        shop_background = new Texture(Gdx.files.internal("textures/gamebackground.png"));
-        shop_backButton = new Texture(Gdx.files.internal("textures/shop_backButton.png"));
-        shop_title = new Texture(Gdx.files.internal("textures/shop_title.png"));
+        shop_background = new Texture(Gdx.files.internal("textures/new_shop_background.png"));
+        shop_backButton = new Texture(Gdx.files.internal("textures/new_shop_backButton.png"));
+        //shop_title = new Texture(Gdx.files.internal("textures/shop_title.png"));
         crane_lv1 = new Texture(Gdx.files.internal("textures/crane_lv1.png"));
         crane_lv2 = new Texture(Gdx.files.internal("textures/crane_lv2.png"));
         crane_lv3 = new Texture(Gdx.files.internal("textures/crane_lv3.png"));
-        crane_title = new Texture(Gdx.files.internal("textures/crane_title.png"));
+        //crane_title = new Texture(Gdx.files.internal("textures/crane_title.png"));
         selection_bar = new Texture(Gdx.files.internal("textures/selection_bar.png"));
         purchase_message = new Texture(Gdx.files.internal("textures/purchasing_message.png"));
         purchase_fail_message =  new Texture(Gdx.files.internal("textures/purchasing_fail_message.png"));
@@ -221,11 +221,11 @@ public class AssetLoader {
     public static void disposeShopTexture() {
         shop_background.dispose();
         shop_backButton.dispose();
-        shop_title.dispose();
+        //shop_title.dispose();
         crane_lv1.dispose();
         crane_lv2.dispose();
         crane_lv3.dispose();
-        crane_title.dispose();
+        //crane_title.dispose();
         selection_bar.dispose();
         purchase_message.dispose();
         purchase_fail_message.dispose();
