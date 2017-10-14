@@ -268,7 +268,7 @@ public class AssetLoader {
         time_end_screen = new Texture("textures/time_end_screen.png");
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));
-        game_background = new Texture(Gdx.files.internal("textures/new_Menu_background.png"));
+        game_background = new Texture(Gdx.files.internal("textures/new_SinglePlay_background.png"));
         unitBlockTexture = new Texture("textures/unitBlock.png");
         silhouette_1 = new Texture(Gdx.files.internal("textures/silhouette_1.png"));
         actual_1 = new Texture(Gdx.files.internal("textures/actual_1.png"));
