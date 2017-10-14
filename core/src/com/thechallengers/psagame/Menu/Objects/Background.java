@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
-import java.util.Random;
-
 /**
  * Created by Phung Tuan Hoang on 9/13/2017.
  */
@@ -24,7 +22,7 @@ public class Background extends Actor {
     public Background() {
         super();
 
-        background = new Texture(Gdx.files.internal("textures/menubackground.png"));
+        background = new Texture(Gdx.files.internal("textures/new_Menu_background.png"));
 
         //top_bottom_compensate = (Gdx.graphics.getHeight() - 1440) / 2;
         //upper_bar = new TextureRegion(new Texture(Gdx.files.internal("textures/upper_bar.png")), 0, 0, 1080, top_bottom_compensate);
