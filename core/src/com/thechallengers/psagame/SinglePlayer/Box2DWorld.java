@@ -38,7 +38,7 @@ import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.c
 public class Box2DWorld {
     public static final int NUM_NEXT_BLOCK_INFORMED = 3;
     private static final float COOLDOWN_TIME = 4;
-    final float PERCENTAGE_THRESHOLD = 0.9f;
+    final float PERCENTAGE_THRESHOLD = 0.01f;
     private World world;
     private OrthographicCamera cam;
     private Box2DDebugRenderer debugRenderer;
@@ -113,12 +113,12 @@ public class Box2DWorld {
         //handling different levels
         switch (level) {
             //TODO: Re-factor this.
-            case 5:
+            case 1:
                 float[] pattern_verts = {1.44f, 13.26f, 9.32f, 13.26f, 9.32f, 8.42f, 1.44f, 8.42f};
                 vert_arr.add(pattern_verts);
                 renderPattern(vert_arr, world);
                 break;
-            case 3:
+            case 2:
                 float[] pattern_verts1 = {1.68f, 12.22f, 2.04f, 12.58f, 3.84f, 12.58f, 4.16f, 12.26f, 4.16f, 8.54f, 3.84f, 8.14f, 2.04f, 8.14f, 1.68f, 8.6f};
                 vert_arr.add(pattern_verts1);
                 float[] pattern_verts2 = {4.16f, 12.26f, 4.4f, 12.58f, 6.3f, 12.58f, 6.6f, 12.26f, 6.6f, 8.54f, 6.32f, 8.14f, 4.4f, 8.14f, 4.16f, 8.56f};
@@ -127,7 +127,7 @@ public class Box2DWorld {
                 vert_arr.add(pattern_verts3);
                 renderPattern(vert_arr, world);
                 break;
-            case 4:
+            case 3:
                 float[] pattern_verts4 = {3.28f, 15.14f, 7.64f, 15.14f, 7.64f, 10.8f, 3.28f, 10.8f};
                 vert_arr.add(pattern_verts4);
                 float[] pattern_verts5 = {2.22f, 14.12f, 3.28f, 14.12f, 3.28f, 11.6f, 2.22f, 11.6f};
@@ -142,7 +142,7 @@ public class Box2DWorld {
                 vert_arr.add(pattern_verts9);
                 renderPattern(vert_arr, world);
                 break;
-            case 2:
+            case 4:
                 float[] pattern_verts10 = {1.98f, 16.1f, 2.08f, 16.2f, 5.76f, 16.2f, 5.86f, 16.1f, 5.86f, 11.5f, 2.08f, 11.5f, 1.98f, 11.6f};
                 vert_arr.add(pattern_verts10);
                 float[] pattern_verts11 = {3.62f, 12.52f, 6.72f, 12.52f, 6.82f, 12.42f, 6.82f, 8f, 3.72f, 8f, 3.62f, 8.1f};
@@ -151,7 +151,7 @@ public class Box2DWorld {
                 vert_arr.add(pattern_verts12);
                 renderPattern(vert_arr, world);
                 break;
-            case 6:
+            case 5:
                 float[] pattern_verts13 = {3.4f, 13.12f, 4.92f, 13.12f, 4.92f, 12.2f, 3.4f, 12.2f};
                 vert_arr.add(pattern_verts13);
                 float[] pattern_verts14 = {2.66f, 12.2f, 5.62f, 12.2f, 5.62f, 11.2f, 2.66f, 11.2f};
