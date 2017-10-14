@@ -72,8 +72,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         drawCrane(world.box2DWorld.getCrane());
         batcher.draw(AssetLoader.game_background_2, 0, 0);
-        if (world.hasStarted) batcher.draw(AssetLoader.arrow_animation.getKeyFrame(runTime, false), 135, 1563);
-        else batcher.draw(AssetLoader.arrow_animation.getKeyFrame(0, false), 135, 1563);
+        if (world.hasStarted) batcher.draw(AssetLoader.arrow_animation.getKeyFrame(runTime, false), 135+80, 1563+30);
+        else batcher.draw(AssetLoader.arrow_animation.getKeyFrame(0, false), 135+80, 1563+30);
+        AssetLoader.consolas_60.draw(batcher, "Next", 135-60, 1563+100);
 
         if (world.box2DWorld.cooldown <= 0) batcher.draw(AssetLoader.bomb, 915, 1582);
         else {
@@ -83,15 +84,15 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         float percentage = world.box2DWorld.getPercentageOverlap();
 
-        if (percentage < 0.125f) batcher.draw(AssetLoader.progress[0], 600 ,1582);
-        else if (percentage < 0.25f) batcher.draw(AssetLoader.progress[1], 600 ,1582);
-        else if (percentage < 0.375f) batcher.draw(AssetLoader.progress[2], 600 ,1582);
-        else if (percentage < 0.5f) batcher.draw(AssetLoader.progress[3], 600 ,1582);
-        else if (percentage < 0.625f) batcher.draw(AssetLoader.progress[4], 600 ,1582);
-        else if (percentage < 0.75f) batcher.draw(AssetLoader.progress[5], 600 ,1582);
-        else if (percentage < 0.875f) batcher.draw(AssetLoader.progress[6], 600 ,1582);
-        else if (percentage < 1f) batcher.draw(AssetLoader.progress[7], 600 ,1582);
-        else batcher.draw(AssetLoader.progress[8], 600 ,1582);
+        if (percentage < 0.125f) batcher.draw(AssetLoader.progress[0], 630 ,1582);
+        else if (percentage < 0.25f) batcher.draw(AssetLoader.progress[1], 630 ,1582);
+        else if (percentage < 0.375f) batcher.draw(AssetLoader.progress[2], 630 ,1582);
+        else if (percentage < 0.5f) batcher.draw(AssetLoader.progress[3], 630 ,1582);
+        else if (percentage < 0.625f) batcher.draw(AssetLoader.progress[4], 630 ,1582);
+        else if (percentage < 0.75f) batcher.draw(AssetLoader.progress[5], 630 ,1582);
+        else if (percentage < 0.875f) batcher.draw(AssetLoader.progress[6], 630 ,1582);
+        else if (percentage < 1f) batcher.draw(AssetLoader.progress[7], 630 ,1582);
+        else batcher.draw(AssetLoader.progress[8], 630 ,1582);
         AssetLoader.consolas_60.draw(batcher, String.format("%d%%", (int) (world.box2DWorld.getPercentageOverlap() * 100)), 710, 1650);
 
         if (world.hasStarted) batcher.draw(AssetLoader.clock_animation.getKeyFrame(runTime, false), 340, 1582);
