@@ -38,7 +38,7 @@ public class TutorialRenderer extends ScreenRenderer {
 
         //world.box2DWorld.debugRender();
         batcher.draw(AssetLoader.game_background, 0, 0);
-        if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
+//        if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
         batcher.draw(AssetLoader.silhouetteArrayList.get(0), 0, 0);
 
         //BLOCKS
@@ -84,6 +84,7 @@ public class TutorialRenderer extends ScreenRenderer {
         else batcher.draw(AssetLoader.clock_animation.getKeyFrame(0, false), 340, 1582);
         AssetLoader.consolas_60.draw(batcher, String.format("%d:%d", (int) (world.getWorldTime() / 60),
                 (int) (world.getWorldTime() - 60 * (int) (world.getWorldTime() / 60))), 450, 1650);
+        if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
         batcher.end();
 
         //INCOMING BLOCK

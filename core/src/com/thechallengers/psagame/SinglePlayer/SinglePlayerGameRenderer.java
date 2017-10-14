@@ -52,9 +52,10 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         //world.box2DWorld.debugRender();
         batcher.draw(AssetLoader.game_background, 0, 0);
-        if (!world.hasStarted) batcher.draw(AssetLoader.start_game, 0, 0);
-        if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
+//        if (!world.hasStarted) batcher.draw(AssetLoader.start_game, 0, 0);
+        //if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
         batcher.draw(AssetLoader.silhouetteArrayList.get(LEVEL - 1), 0, 0);
+        if (!world.hasStarted) batcher.draw(AssetLoader.start_game, 0, 0);
 
         //BLOCKS
         for (int i = 0; i < world.box2DWorld.bodyArray.size; i++) {
@@ -106,6 +107,7 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
         else secondsString = String.valueOf(seconds);
         String timeString = String.valueOf(minute) + ":" +secondsString;
         AssetLoader.consolas_60.draw(batcher, timeString, 450, 1650);
+        if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
         batcher.end();
 
         //INCOMING BLOCK
