@@ -422,7 +422,7 @@ public class MenuWorld implements ScreenWorld {
         setting_box_style.font = AssetLoader.arial;
 
         setting_box = new TextButton("", setting_box_style);
-        setting_box.setPosition(165, 510);
+        setting_box.setPosition(165-40, 510);
         setting_box.getColor().a = 0;
         setting_box.addAction(fadeIn(0.1f));
     }
@@ -434,7 +434,7 @@ public class MenuWorld implements ScreenWorld {
         music_slider = new Slider(0f, 1f, 0.01f, false, music_slider_style);
         music_slider.setHeight(88);
         music_slider.setWidth(588);
-        music_slider.setPosition(165 + 78, 1177);
+        music_slider.setPosition(165 + 85, 1177-100-10);
         music_slider.setValue(Gdx.app.getPreferences("prefs").getFloat("music volume"));
         music_slider.getColor().a = 0;
         music_slider.addAction(fadeIn(0.1f));
@@ -453,7 +453,7 @@ public class MenuWorld implements ScreenWorld {
         sfx_slider = new Slider(0f, 1f, 0.01f, false, sfx_slider_style);
         sfx_slider.setHeight(88);
         sfx_slider.setWidth(588);
-        sfx_slider.setPosition(165 + 78, 983);
+        sfx_slider.setPosition(165 + 85, 983-100);
         sfx_slider.setValue(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
         sfx_slider.getColor().a = 0;
         sfx_slider.addAction(fadeIn(0.1f));

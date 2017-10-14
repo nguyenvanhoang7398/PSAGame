@@ -155,9 +155,12 @@ public class AssetLoader {
         setting_button = new Texture(Gdx.files.internal("textures/new_Menu_SettingButton.png"));
         setting_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_SettingButton.png"));
         setting_overlay = new Texture(Gdx.files.internal("textures/setting_overlay.png"));
-        setting_box = new Texture(Gdx.files.internal("textures/setting_box.png"));
-        slider_bg = new Texture(Gdx.files.internal("textures/slider_bg.png"));
-        slider_knob = new Texture(Gdx.files.internal("textures/slider_knob.png"));
+//        setting_box = new Texture(Gdx.files.internal("textures/setting_box.png"));
+        setting_box = new Texture(Gdx.files.internal("textures/new_setting_box.png"));
+//        slider_bg = new Texture(Gdx.files.internal("textures/slider_bg.png"));
+//        slider_knob = new Texture(Gdx.files.internal("textures/slider_knob.png"));
+        slider_bg = new Texture(Gdx.files.internal("textures/new_setting_slider.png"));
+        slider_knob = new Texture(Gdx.files.internal("textures/new_setting_knob.png"));
         shop_button = new Texture(Gdx.files.internal("textures/new_Menu_ShopButton.png"));
         leaderboard_button = new Texture(Gdx.files.internal("textures/new_Menu_leaderBoard.png"));
 
