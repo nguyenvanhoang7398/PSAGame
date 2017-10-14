@@ -221,11 +221,11 @@ public class AssetLoader {
     public static void disposeShopTexture() {
         shop_background.dispose();
         shop_backButton.dispose();
-        shop_title.dispose();
+        //shop_title.dispose();
         crane_lv1.dispose();
         crane_lv2.dispose();
         crane_lv3.dispose();
-        crane_title.dispose();
+        //crane_title.dispose();
         selection_bar.dispose();
         purchase_message.dispose();
         purchase_fail_message.dispose();
