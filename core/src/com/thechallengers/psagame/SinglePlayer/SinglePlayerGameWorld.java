@@ -2,10 +2,13 @@ package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.thechallengers.psagame.SinglePlayer.Objects.NextBlock;
@@ -43,6 +46,16 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     private boolean winningSoundPlayed = false;
 
     public Box2DWorld box2DWorld;
+    //for exit message
+    private ImageButton exit_message;
+    private ImageButton.ImageButtonStyle exit_message_style;
+    private ImageButton yes_button;
+    private ImageButton.ImageButtonStyle yes_button_style;
+    private ImageButton no_button;
+    private ImageButton.ImageButtonStyle no_button_style;
+
+
+    private boolean isShowingExitButton = false;
 
 
     public SinglePlayerGameWorld(int level) {
@@ -56,6 +69,29 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         previousNextBlockQ = box2DWorld.nextBlockQ.clone();
         this.world = box2DWorld.getWorld();
         loadNextBlockActors();
+        createExitMessage();
+    }
+    public void createExitMessage() {
+        exit_message_style = new ImageButton.ImageButtonStyle();
+        exit_message_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.menu_message));
+        exit_message_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.menu_message));
+        exit_message = new ImageButton(exit_message_style);
+        exit_message.setPosition(100, 850);
+//
+        yes_button_style = new ImageButton.ImageButtonStyle();
+        yes_button_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.yes_button));
+        yes_button_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.yes_button));
+        yes_button = new ImageButton(yes_button_style);
+        yes_button.setPosition(230, 850);
+//
+        no_button_style = new ImageButton.ImageButtonStyle();
+        no_button_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.no_button));
+        no_button_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.no_button));
+        no_button = new ImageButton(no_button_style);
+        no_button.setPosition(630, 850);
+
+
+
     }
 
     @Override

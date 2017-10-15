@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.Menu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -76,12 +77,63 @@ public class MenuWorld implements ScreenWorld {
     private ImageButton sorry_message;
     private ImageButton.ImageButtonStyle sorry_message_style;
 
+    //for exit message
+    private ImageButton exit_message;
+    private ImageButton.ImageButtonStyle exit_message_style;
+    private ImageButton yes_button;
+    private ImageButton.ImageButtonStyle yes_button_style;
+    private ImageButton no_button;
+    private ImageButton.ImageButtonStyle no_button_style;
+
+
+    private boolean isShowingExitButton = false;
     private PSAGame game;
 
     //constructor
     public MenuWorld(PSAGame game) {
         this.game = game;
-        stage = new Stage();
+        stage = new Stage() {
+            @Override
+            public boolean keyDown(int keyCode) {
+                if (keyCode == Input.Keys.BACK && isShowingExitButton == false) {
+                    //EXIT THE GAME
+                    isShowingExitButton = true;
+                    createExitMessage();
+                    stage.addActor(exit_message);
+                    stage.addActor(yes_button);
+                    stage.addActor(no_button);
+
+                    yes_button.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            playSound("click.wav");
+                            isShowingExitButton = false;
+                            removeExitOptions();
+                            Gdx.app.exit(); //exit the game
+                        }
+                    });
+
+                    no_button.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            playSound("click.wav");
+                            isShowingExitButton = false;
+                            removeExitOptions();
+                        }
+                    });
+
+                    exit_message.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            playSound("click.wav");
+                            removeExitOptions();
+                        }
+                    });
+                }
+                return super.keyDown(keyCode);
+            }
+        };
+
         background = new Background();
         menu_title = new MenuTitle();
 
@@ -93,6 +145,8 @@ public class MenuWorld implements ScreenWorld {
         createShopButton();
         createSettingButton();
         createLeaderboardButton();
+        createExitMessage();
+
 
         //add all actors to stage
         stage.addActor(background);
@@ -126,6 +180,35 @@ public class MenuWorld implements ScreenWorld {
             zoomIn();
             zoomTime ++;
         }
+
+        checkForExit();
+    }
+
+    public void createExitMessage() {
+        exit_message_style = new ImageButton.ImageButtonStyle();
+        exit_message_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.exit_message));
+        exit_message_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.exit_message));
+        exit_message = new ImageButton(exit_message_style);
+        exit_message.setPosition(100, 850);
+//
+        yes_button_style = new ImageButton.ImageButtonStyle();
+        yes_button_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.yes_button));
+        yes_button_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.yes_button));
+        yes_button = new ImageButton(yes_button_style);
+        yes_button.setPosition(230, 850);
+//
+        no_button_style = new ImageButton.ImageButtonStyle();
+        no_button_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.no_button));
+        no_button_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.no_button));
+        no_button = new ImageButton(no_button_style);
+        no_button.setPosition(630, 850);
+
+
+
+    }
+
+    public void checkForExit() {
+
     }
 
     public Stage getStage() {
@@ -495,6 +578,13 @@ public class MenuWorld implements ScreenWorld {
         music_slider.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
         sfx_slider.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
     }
+
+    public void removeExitOptions() {
+        exit_message.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
+        yes_button.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
+        no_button.addAction(Actions.sequence(fadeOut(0.1f), removeActor()));
+    }
+
 
     //
     public void removePlayOptions() {
