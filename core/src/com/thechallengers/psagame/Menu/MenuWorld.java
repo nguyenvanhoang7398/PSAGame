@@ -86,6 +86,7 @@ public class MenuWorld implements ScreenWorld {
     private ImageButton.ImageButtonStyle no_button_style;
 
     private PSAGame game;
+    private boolean isShowingExitButton = false;
 
     //constructor
     public MenuWorld(PSAGame game) {
@@ -93,9 +94,9 @@ public class MenuWorld implements ScreenWorld {
         stage = new Stage() {
             @Override
             public boolean keyDown(int keyCode) {
-                if (keyCode == Input.Keys.BACK) {
+                if (keyCode == Input.Keys.BACK && isShowingExitButton == false) {
                     //EXIT THE GAME
-                    System.out.println("Catch");
+                    isShowingExitButton = true;
                     createExitMessage();
                     stage.addActor(exit_message);
                     stage.addActor(yes_button);
@@ -105,6 +106,7 @@ public class MenuWorld implements ScreenWorld {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             playSound("click.wav");
+                            isShowingExitButton = false;
                             removeExitOptions();
                             Gdx.app.exit(); //exit the game
                         }
@@ -114,6 +116,7 @@ public class MenuWorld implements ScreenWorld {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             playSound("click.wav");
+                            isShowingExitButton = false;
                             removeExitOptions();
                         }
                     });
