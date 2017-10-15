@@ -18,6 +18,7 @@ import com.thechallengers.psagame.helpers.SoundLoader;
 public class PSAGame extends Game {
 	public static final float LONG_EDGE = 1920;
 	public static final float SHORT_EDGE = 1080;
+	public static float CRANE_VELOCITY;
 	public static enum Screen {
 		MenuScreen, SinglePlayerGameScreen, ShopScreen, TutorialScreen, EndGameScreen, LevelSelectionScreen, LeaderboardScreen
 	}
@@ -40,6 +41,12 @@ public class PSAGame extends Game {
 		if (!prefs.contains("craneLv3_purchased")) prefs.putBoolean("craneLv3_purchased", false);
 		if (!prefs.contains("level")) prefs.putInteger("level", 1);
 
+		if (!prefs.contains("level1star")) prefs.putInteger("level1star", 0);
+		if (!prefs.contains("level2star")) prefs.putInteger("level2star", 0);
+		if (!prefs.contains("level3star")) prefs.putInteger("level3star", 0);
+		if (!prefs.contains("level4star")) prefs.putInteger("level4star", 0);
+		if (!prefs.contains("level5star")) prefs.putInteger("level5star", 0);
+		if (!prefs.contains("crane speed")) prefs.putFloat("crane speed", 10f);
 
 		prefs.flush();
 
@@ -63,6 +70,7 @@ public class PSAGame extends Game {
 		}
 
 		SFX_VOLUME = Gdx.app.getPreferences("prefs").getFloat("sfx volume");
+		CRANE_VELOCITY = Gdx.app.getPreferences("prefs").getFloat("crane speed");
 	}
 
 	@Override
@@ -104,5 +112,9 @@ public class PSAGame extends Game {
                 default:
 			}
 		}
+	}
+
+	public static void playSound(String s) {
+		SoundLoader.soundHashtable.get(s).play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
 	}
 }

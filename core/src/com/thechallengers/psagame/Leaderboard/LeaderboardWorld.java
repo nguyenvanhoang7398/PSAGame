@@ -83,18 +83,18 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
             stage.addActor(level_button[i]);
         }
         stage.addActor(back_button);
-        stage.addActor(add_highscore);
+        // stage.addActor(add_highscore);
     }
 
     private void initTestHighscoreTable() {
         ArrayList<HighscoreEntry> level1_highscore = new ArrayList<HighscoreEntry>();
-        level1_highscore.add(new HighscoreEntry("Hoang", 1, 100f));
-        level1_highscore.add(new HighscoreEntry("Quang", 1, 90f));
+        level1_highscore.add(new HighscoreEntry("Hoang", 1, "3:03"));
+        level1_highscore.add(new HighscoreEntry("Quang", 1, "2:54"));
         Collections.sort(level1_highscore);
 
         ArrayList<HighscoreEntry> level2_highscore = new ArrayList<HighscoreEntry>();
-        level2_highscore.add(new HighscoreEntry("Quang", 2, 100f));
-        level2_highscore.add(new HighscoreEntry("Hoang", 2, 90f));
+        level2_highscore.add(new HighscoreEntry("Quang", 2, "2:21"));
+        level2_highscore.add(new HighscoreEntry("Hoang", 2, "2:42"));
         Collections.sort(level2_highscore);
 
         test_highscore_table.put(1, level1_highscore);
@@ -106,7 +106,7 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
     public void createBackButton() {
         back_button_style = new TextButton.TextButtonStyle();
         back_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_backButton));
-        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_backButton));
+        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_backButton_down));
         back_button_style.font = AssetLoader.arial;
 
         back_button = new TextButton("", back_button_style);
@@ -223,7 +223,7 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
                         LinkedTreeMap<String, String> high_score_hm = (LinkedTreeMap<String, String>) high_score;
                         String name = high_score_hm.get("name");
                         int level = Integer.parseInt(high_score_hm.get("level"));
-                        float score = Float.parseFloat(high_score_hm.get("score"));
+                        String score = high_score_hm.get("score");
                         high_scores.add(new HighscoreEntry(name, level, score));
                     }
 
@@ -243,9 +243,12 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
             return false;
         }
         try {
-            Thread.sleep(2500);
+            Thread.sleep(2000);
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
+        }
+        if (finished.isEmpty()) {
+            return false;
         }
         return finished.get(0);
     }
@@ -277,7 +280,7 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
             }
         });
         try {
-            Thread.sleep(2500);
+            Thread.sleep(3000);
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }

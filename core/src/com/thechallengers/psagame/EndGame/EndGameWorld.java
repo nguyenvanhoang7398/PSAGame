@@ -22,6 +22,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 10/4/2017.
@@ -92,7 +93,12 @@ public class EndGameWorld implements ScreenWorld {
         //stars
         for (int i = 0; i < star; i++) {
             stars.add(new ActorWithTexture(AssetLoader.star.get(i), 0, 0));
-            stars.get(i).addAction(sequence(delay(0.5f + i * 0.5f), fadeIn(0.1f)));
+            stars.get(i).addAction(sequence(delay(0.5f + i * 0.5f), run(new Runnable() {
+                @Override
+                public void run() {
+                    PSAGame.playSound("star_appearance.mp3");
+                }
+            }),fadeIn(0.1f)));
             stage.addActor(stars.get(i));
         }
 
@@ -113,6 +119,7 @@ public class EndGameWorld implements ScreenWorld {
         nextLevel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 PSAGame.LEVEL++;
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
             }
@@ -132,6 +139,7 @@ public class EndGameWorld implements ScreenWorld {
         levelSelection.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.LevelSelectionScreen;
             }
         });
@@ -151,6 +159,7 @@ public class EndGameWorld implements ScreenWorld {
         mainMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
             }
         });
@@ -171,6 +180,7 @@ public class EndGameWorld implements ScreenWorld {
         replay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
             }
         });

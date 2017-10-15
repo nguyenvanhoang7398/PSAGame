@@ -30,6 +30,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 import static com.thechallengers.psagame.game.PSAGame.SFX_VOLUME;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 9/6/2017.
@@ -105,8 +106,8 @@ public class MenuWorld implements ScreenWorld {
 
         //clouds and containers
         cloudArray = new Array<Cloud>();
-        createClouds();
         createContainers();
+        createClouds();
 
         //lookAt();
 
@@ -148,7 +149,7 @@ public class MenuWorld implements ScreenWorld {
     public void createShopButtonStyle() {
         shop_button_style = new TextButton.TextButtonStyle();
         shop_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button));
-        shop_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button));
+        shop_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_button_pressed));
         shop_button_style.font = AssetLoader.arial;
     }
 
@@ -166,7 +167,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 shop_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
-                SoundLoader.soundHashtable.get("click.wav").play(SFX_VOLUME);
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.ShopScreen;
             }
         });
@@ -176,7 +177,7 @@ public class MenuWorld implements ScreenWorld {
     public void createLeaderboardButtonStyle() {
         leaderboard_button_style = new TextButton.TextButtonStyle();
         leaderboard_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_button));
-        leaderboard_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_button));
+        leaderboard_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_button_pressed));
         leaderboard_button_style.font = AssetLoader.arial;
     }
 
@@ -195,6 +196,7 @@ public class MenuWorld implements ScreenWorld {
         leaderboard_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 leaderboard_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 CURRENT_SCREEN = PSAGame.Screen.LeaderboardScreen;
             }
@@ -226,7 +228,7 @@ public class MenuWorld implements ScreenWorld {
                 stage.addActor(overlay_button);
                 stage.addActor(single_player_button);
                 stage.addActor(multi_player_button);
-                SoundLoader.soundHashtable.get("click.wav").play(SFX_VOLUME);
+                playSound("click.wav");
             }
         });
     }
@@ -255,7 +257,7 @@ public class MenuWorld implements ScreenWorld {
                 removePlayOptions();
                 CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
                 //move to multi player code here
-                SoundLoader.soundHashtable.get("click.wav").play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
+                playSound("click.wav");
             }
         });
     }
@@ -295,7 +297,7 @@ public class MenuWorld implements ScreenWorld {
                     cloudArray.get(i).addAction(fadeOut(0.6f));
                 }
 
-                SoundLoader.soundHashtable.get("click.wav").play(SFX_VOLUME);
+                playSound("click.wav");
 
                 isZooming = true;
             }
@@ -330,7 +332,7 @@ public class MenuWorld implements ScreenWorld {
 //                CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
                 createSorryMessage();
                 //move to multi player code here
-                SoundLoader.soundHashtable.get("click.wav").play(SFX_VOLUME);
+                playSound("click.wav");
             }
         });
     }
@@ -361,7 +363,7 @@ public class MenuWorld implements ScreenWorld {
         createOverlayButtonStyle();
 
         overlay_button = new TextButton("", overlay_button_style);
-        overlay_button.setPosition(WIDTH/2-overlay_button.getWidth()/2, PLAY_MODE_BUBBLE_Y_OFFSET);
+        overlay_button.setPosition(0,0);
         overlay_button.getColor().a = 0;
         overlay_button.addAction(fadeIn(0.1f));
 
@@ -373,7 +375,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 removePlayOptions();
-                SoundLoader.soundHashtable.get("click.wav").play(SFX_VOLUME);
+                playSound("click.wav");
             }
         });
     }
@@ -410,7 +412,7 @@ public class MenuWorld implements ScreenWorld {
                 stage.addActor(setting_box);
                 stage.addActor(music_slider);
                 stage.addActor(sfx_slider);
-                SoundLoader.soundHashtable.get("click.wav").play(SFX_VOLUME);
+                playSound("click.wav");
             }
         });
     }
@@ -429,7 +431,7 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 removeSettingOptions();
-                SoundLoader.soundHashtable.get("click.wav").play(SFX_VOLUME);
+                playSound("click.wav");
             }
         });
     }

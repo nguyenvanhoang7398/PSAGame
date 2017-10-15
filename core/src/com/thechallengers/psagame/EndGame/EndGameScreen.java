@@ -3,6 +3,7 @@ package com.thechallengers.psagame.EndGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 /**
  * Created by Phung Tuan Hoang on 10/4/2017.
@@ -18,11 +19,11 @@ public class EndGameScreen implements Screen {
         int star = 3;
 
         if (END_SCREEN_PERCENT == 0f) star = 0;
-        else if (END_SCREEN_PERCENT < 0.2) {
+        else if (END_SCREEN_PERCENT < 0.35f) {
             END_SCREEN_TIME = 300;
             star = 1;
         }
-        else if (END_SCREEN_PERCENT < 0.4) {
+        else if (END_SCREEN_PERCENT < 0.7) {
             END_SCREEN_TIME = 300;
             star = 2;
         }
@@ -31,8 +32,12 @@ public class EndGameScreen implements Screen {
         Preferences prefs = Gdx.app.getPreferences("prefs");
         prefs.putInteger("star", prefs.getInteger("star") + star);
         prefs.flush();
-        if (star > 0) prefs.putInteger("level", prefs.getInteger("level") + 1);
+        if (star > 0 && prefs.getInteger("level") == END_SCREEN_LEVEL) {
+            prefs.putInteger("level", prefs.getInteger("level") + 1);
+        }
         prefs.flush();
+
+        prefs.putInteger("moneyBalance", prefs.getInteger("moneyBalance") + star).flush();
 
         int previousStar = prefs.getInteger("level" + String.valueOf(END_SCREEN_LEVEL) + "star");
         if (star > previousStar) prefs.putInteger("level" + String.valueOf(END_SCREEN_LEVEL) + "star", star);

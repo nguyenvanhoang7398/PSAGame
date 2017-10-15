@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
@@ -17,14 +18,22 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.utils.ArraySelection;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
+import com.thechallengers.psagame.SinglePlayer.Objects.Dust;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.Frame;
 import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
+import com.thechallengers.psagame.game.PSAGame;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.DOWN;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.LEFT;
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.RIGHT;
@@ -32,6 +41,7 @@ import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.ST
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.UP;
 import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.cooldown_animation_runTime;
 import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameWorld.PERCENTAGE_THRESHOLD;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.
@@ -56,6 +66,10 @@ public class Box2DWorld {
     private float percentageOverlap = 0;
     private int num_width_3_consecutively = 0; // number of 3 consecutive block with width = 3
     public float endGameWaitTime = 0;
+    private float impulseRefuseTime = 0;
+    private boolean refusingImpulse = false;
+    public Dust[] dust = null;
+    private boolean timesUp = false;
 
     public Box2DWorld(int level) {
         world = new World(new Vector2(0, -9.8f), true);
@@ -83,7 +97,6 @@ public class Box2DWorld {
             public void postSolve(Contact contact, ContactImpulse impulse) {
                 Body bodyA = contact.getFixtureA().getBody();
                 Body bodyB = contact.getFixtureB().getBody();
-
                 CraneData craneData = (CraneData) crane.getUserData();
 
                 if ((craneData.cranedBody == bodyA && bodyB.getType() == BodyDef.BodyType.DynamicBody) ||
@@ -93,9 +106,40 @@ public class Box2DWorld {
                     craneData.cranedBody.setTransform(craneData.destination, 0);
                     craneData.cranedBody = null;
                 }
+                if ((impulse.getNormalImpulses())[0] > 7) {
+                    if (!refusingImpulse) {
+                        playSound("block_hitting_ground.mp3");
+                        String a = "", b = "";
+                        if (bodyA.getType() == BodyDef.BodyType.DynamicBody) a = ((Block) bodyA.getUserData()).blockType;
+                        if (bodyB.getType() == BodyDef.BodyType.DynamicBody) b = ((Block) bodyB.getUserData()).blockType;
+                        System.out.println(a + " " + b + " " + (impulse.getNormalImpulses())[0]);
+                        refusingImpulse = true;
 
-            }
-        });
+                        if (bodyA.getType() == BodyDef.BodyType.DynamicBody) {
+                            Vector2 a_pos = bodyA.getPosition();
+
+                            if (bodyB.getType() == BodyDef.BodyType.DynamicBody) {
+                                Vector2 b_pos = bodyB.getPosition();
+                                Vector2[] a_lower = getLowerVertices(bodyA);
+                                Vector2[] b_lower = getLowerVertices(bodyB);
+
+                                if (a_lower[0].y > b_lower[0].y) {
+                                    createDust(getDustPoint(a_lower, b_lower));
+                                }
+                                else {
+                                    createDust(getDustPoint(b_lower, a_lower));
+                                }
+                            } else {
+                                Vector2[] a_lower = getLowerVertices(bodyA);
+                                createDust(getDustPoint(a_lower));
+                            }
+                        } else {
+                            Vector2[] b_lower = getLowerVertices(bodyB);
+                            createDust(getDustPoint(b_lower));
+                        }
+                    }
+                }
+            }});
 
         createGroundAndCeiling();
         createCrane();
@@ -235,66 +279,16 @@ public class Box2DWorld {
         }
     }
 
-    public Box2DWorld(String string) {
-        world = new World(new Vector2(0, -9.8f), true);
-        cam = new OrthographicCamera();
-        cam.setToOrtho(false, 10.80f, 19.20f);
-        debugRenderer = new Box2DDebugRenderer();
-
-        world.setContactListener(new ContactListener() {
-            @Override
-            public void beginContact(Contact contact) {
-
-            }
-
-            @Override
-            public void endContact(Contact contact) {
-
-            }
-
-            @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {
-
-            }
-
-            @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {
-                Body bodyA = contact.getFixtureA().getBody();
-                Body bodyB = contact.getFixtureB().getBody();
-
-                CraneData craneData = (CraneData) crane.getUserData();
-
-                if ((craneData.cranedBody == bodyA && bodyB.getType() == BodyDef.BodyType.DynamicBody) ||
-                        (craneData.cranedBody == bodyB && bodyA.getType() == BodyDef.BodyType.DynamicBody) ||
-                        (craneData.cranedBody == bodyA && bodyB.getUserData() == "Ground") ||
-                        (craneData.cranedBody == bodyB && bodyA.getUserData() == "Ground")) {
-                    craneData.cranedBody.setTransform(craneData.destination, 0);
-                    craneData.cranedBody = null;
-                }
-
-            }
-        });
-
-        createGroundAndCeiling();
-        createCrane();
-        nextBlockQ = new ArrayDeque<Block>();
-        // create next blocks and enqueue
-            nextBlockQ.addLast(new Block(1, 1, 1));
-            nextBlockQ.addLast(new Block(4, 3, 2));
-            nextBlockQ.addLast(new Block(5, 2, 1));
-        bodyArray = new Array<Body>();
-        destroyMode = false;
-        cooldown = 0;
-
-        myFrame = new Frame(size);
-        Array<float[]> vert_arr = new Array<float[]> ();
-        float[] pattern_verts = {1.44f, 13.26f, 9.32f, 13.26f, 9.32f, 8.42f, 1.44f, 8.42f};
-        vert_arr.add(pattern_verts);
-        renderPattern(vert_arr, world);
-    }
-
     public void update(float delta) {
-        if (percentageOverlap > PERCENTAGE_THRESHOLD) {
+        if (refusingImpulse) {
+            impulseRefuseTime += delta;
+        }
+        if (impulseRefuseTime > 0.3f && refusingImpulse) {
+            refusingImpulse = false;
+            impulseRefuseTime = 0;
+        }
+        if (percentageOverlap > PERCENTAGE_THRESHOLD || timesUp) {
+            SoundLoader.musicHashtable.get("crane_pulley.mp3").stop();
             endGameWaitTime += delta;
             return;
         }
@@ -363,8 +357,9 @@ public class Box2DWorld {
                 break;
         }
 
-
         craneData.destination = new Vector2(screenX, screenY);
+
+        SoundLoader.musicHashtable.get("crane_pulley.mp3").play();
     }
 
     public void updateCrane() {
@@ -374,6 +369,7 @@ public class Box2DWorld {
             case STOP: {
                 if (!craneData.isMoving) {
                     crane.setTransform(craneData.destination, 0);
+                    SoundLoader.musicHashtable.get("crane_pulley.mp3").stop();
                     break;
                 }
                 else {
@@ -476,7 +472,7 @@ public class Box2DWorld {
         shape.setAsBox(block.width / 2f, block.height / 2f);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
+        fixtureDef.density = 6 / (block.width * block.height);
         fixtureDef.friction = 1f;
         fixtureDef.restitution = 0f;
         body.createFixture(fixtureDef);
@@ -505,6 +501,7 @@ public class Box2DWorld {
         for(int i = 0; i < bodyArray.size; i++) {
             float rotation = bodyArray.get(i).getAngle();
             if (Math.abs(rotation) > 0.2f) {
+                playSound("block_destroyed.mp3");
                 world.destroyBody(bodyArray.get(i));
                 bodyArray.removeIndex(i);
                 i--;
@@ -560,6 +557,14 @@ public class Box2DWorld {
         percentageOverlap = overlapArea / totalArea;
     }
 
+    public void createDust(Vector2 position) {
+        Dust left = new Dust(-1, position.x, position.y);
+        Dust right = new Dust(1, position.x, position.y);
+        left.addAction(sequence(fadeOut(0.5f), removeActor()));
+        right.addAction(sequence(fadeOut(0.5f), removeActor()));
+        dust = new Dust[] {left, right};
+    }
+
     public float calculateArea(float[] vertices, int numPoints) {
         float area = 0;
         int j = numPoints-1;  // The last vertex is the 'previous' one to the first
@@ -601,5 +606,30 @@ public class Box2DWorld {
 
     public float getPercentageOverlap() {
         return percentageOverlap;
+    }
+
+    private Vector2[] getLowerVertices(Body body) {
+        Block block = (Block) body.getUserData();
+        float x = body.getPosition().x;
+        float y = body.getPosition().y;
+
+        Vector2 pnt_1 = new Vector2(x - block.width * 0.5f, y - block.height * 0.5f);
+        Vector2 pnt_2 = new Vector2(x + block.width * 0.5f, y - block.height * 0.5f);
+
+        return new Vector2[] {pnt_1, pnt_2};
+    }
+
+    private Vector2 getDustPoint(Vector2[] upper, Vector2[] lower) {
+        float[] array = {upper[0].x, upper[1].x, lower[0].x, lower[1].x};
+        Arrays.sort(array);
+        return new Vector2((array[1] + array[2]) / 2f * 100f, upper[0].y * 100f);
+    }
+
+    private Vector2 getDustPoint(Vector2[] vector) {
+        return new Vector2((vector[0].x + vector[1].x) / 2f * 100f, vector[0].y * 100f);
+    }
+
+    public void setTimesUp() {
+        timesUp = true;
     }
 }

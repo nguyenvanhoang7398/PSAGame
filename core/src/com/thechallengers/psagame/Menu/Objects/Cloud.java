@@ -3,7 +3,9 @@ package com.thechallengers.psagame.Menu.Objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.thechallengers.psagame.helpers.AssetLoader;
@@ -21,9 +23,10 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
  */
 
 public class Cloud extends Actor {
-    private Texture cloud;
+    private Animation<TextureRegion> cloud;
     private int x_position, y_position;
     private int speed;
+    private float runTime = 0;
 
     public Cloud() {
         Random r = new Random();
@@ -32,8 +35,7 @@ public class Cloud extends Actor {
         if (type == 0) speed = 75;
         else speed = -75;
 
-        if (r.nextInt(2) == 0) cloud = AssetLoader.cloud_1;
-        else cloud = AssetLoader.cloud_2;
+        cloud = AssetLoader.cloud_animation;
 
         if (type == 0) x_position = r.nextInt((int) Gdx.graphics.getWidth() / 6);
         else x_position = r.nextInt((int) Gdx.graphics.getWidth() / 6) + (int) (5 / 6f * Gdx.graphics.getWidth());
@@ -58,7 +60,7 @@ public class Cloud extends Actor {
         batch.getColor().a *= parentAlpha;
 
         // do your drawing
-        batch.draw(cloud, (int) this.getX(), (int) this.getY());
+        batch.draw(cloud.getKeyFrame(runTime, false), (int) this.getX(), (int) this.getY());
 
         batch.setColor(Color.WHITE); // reset the color
 
@@ -67,6 +69,7 @@ public class Cloud extends Actor {
     @Override
     public void act(float delta) {
         super.act(delta);
+        runTime += delta;
 
         this.setPosition(this.getX() + speed * delta, this.getY());
 
@@ -74,14 +77,12 @@ public class Cloud extends Actor {
     }
 
     public void reset() {
+        runTime = 0;
         Random r = new Random();
 
         int type = r.nextInt(2);
         if (type == 0) speed = 75;
         else speed = -75;
-
-        if (r.nextInt(2) == 0) cloud = AssetLoader.cloud_1;
-        else cloud = AssetLoader.cloud_2;
 
         if (type == 0) x_position = r.nextInt((int) Gdx.graphics.getWidth() / 6);
         else x_position = r.nextInt((int) Gdx.graphics.getWidth() / 6) + (int) (5 / 6f * Gdx.graphics.getWidth());
