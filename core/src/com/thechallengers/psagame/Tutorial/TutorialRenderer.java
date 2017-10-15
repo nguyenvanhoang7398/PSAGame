@@ -82,7 +82,7 @@ public class TutorialRenderer extends ScreenRenderer {
         else batcher.draw(AssetLoader.clock_animation.getKeyFrame(0, false), 340, 1582);
 
         //Time
-        float time = world.getWorldTime();
+        float time = 180 - world.getWorldTime();
         int minute = (int) (time / 60f);
         int seconds = (int) (time - minute * 60);
         String secondsString;
@@ -97,9 +97,27 @@ public class TutorialRenderer extends ScreenRenderer {
         world.getStage().draw();
     }
 
+    //CRANE
     public void drawCrane(Body crane) {
-        AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y);
-        AssetLoader.game_crane.draw(batcher);
+        int present_crane = Gdx.app.getPreferences("prefs").getInteger("crane_present");
+
+        switch (present_crane) {
+            case 1: {
+                AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f * crane.getPosition().y);
+                AssetLoader.game_crane.draw(batcher);
+                break;
+            }
+            case 2: {
+                AssetLoader.game_crane_2.setPosition(100f * crane.getPosition().x - 37f, 100f * crane.getPosition().y);
+                AssetLoader.game_crane_2.draw(batcher);
+                break;
+            }
+            case 3: {
+                AssetLoader.game_crane_3.setPosition(100f * crane.getPosition().x - 37f, 100f * crane.getPosition().y);
+                AssetLoader.game_crane_3.draw(batcher);
+                break;
+            }
+        }
     }
 
     public Vector2 translatePosition(float world_x, float world_y, int blockType) {
