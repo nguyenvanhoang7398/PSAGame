@@ -54,7 +54,6 @@ public class ShopWorld implements ScreenWorld{
 
     //constructor
     public ShopWorld(PSAGame game) {
-        //for testing
         this.game = game;
         stage = new Stage();
         shop_background = new ShopBackground();
