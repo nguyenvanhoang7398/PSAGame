@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
@@ -287,6 +288,7 @@ public class Box2DWorld {
             impulseRefuseTime = 0;
         }
         if (percentageOverlap > PERCENTAGE_THRESHOLD || timesUp) {
+            SoundLoader.musicHashtable.get("crane_pulley.mp3").stop();
             endGameWaitTime += delta;
             return;
         }

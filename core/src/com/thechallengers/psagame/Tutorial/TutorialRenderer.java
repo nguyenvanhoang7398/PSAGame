@@ -82,7 +82,7 @@ public class TutorialRenderer extends ScreenRenderer {
         else batcher.draw(AssetLoader.clock_animation.getKeyFrame(0, false), 340, 1582);
 
         //Time
-        float time = world.getWorldTime();
+        float time = 180 - world.getWorldTime();
         int minute = (int) (time / 60f);
         int seconds = (int) (time - minute * 60);
         String secondsString;
