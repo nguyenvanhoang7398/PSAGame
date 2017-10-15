@@ -85,8 +85,9 @@ public class MenuWorld implements ScreenWorld {
     private ImageButton no_button;
     private ImageButton.ImageButtonStyle no_button_style;
 
-    private PSAGame game;
+
     private boolean isShowingExitButton = false;
+    private PSAGame game;
 
     //constructor
     public MenuWorld(PSAGame game) {

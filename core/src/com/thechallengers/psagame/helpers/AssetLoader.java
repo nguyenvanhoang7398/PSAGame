@@ -198,8 +198,7 @@ public class AssetLoader {
         background_texture.dispose();
         button_texture.dispose();
         arial.dispose();
-        exit_message.dispose();
-        menu_message.dispose();
+
     }
 
     public static void loadLevelSelectionTexture() {
