@@ -90,7 +90,46 @@ public class MenuWorld implements ScreenWorld {
     //constructor
     public MenuWorld(PSAGame game) {
         this.game = game;
-        stage = new Stage();
+        stage = new Stage() {
+            @Override
+            public boolean keyDown(int keyCode) {
+                if (keyCode == Input.Keys.BACK) {
+                    //EXIT THE GAME
+                    System.out.println("Catch");
+                    createExitMessage();
+                    stage.addActor(exit_message);
+                    stage.addActor(yes_button);
+                    stage.addActor(no_button);
+
+                    yes_button.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            playSound("click.wav");
+                            removeExitOptions();
+                            Gdx.app.exit(); //exit the game
+                        }
+                    });
+
+                    no_button.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            playSound("click.wav");
+                            removeExitOptions();
+                        }
+                    });
+
+                    exit_message.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            playSound("click.wav");
+                            removeExitOptions();
+                        }
+                    });
+                }
+                return super.keyDown(keyCode);
+            }
+        };
+
         background = new Background();
         menu_title = new MenuTitle();
 
@@ -165,39 +204,7 @@ public class MenuWorld implements ScreenWorld {
     }
 
     public void checkForExit() {
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) {
-            //EXIT THE GAME
-            stage.addActor(exit_message);
-            stage.addActor(yes_button);
-            stage.addActor(no_button);
 
-            yes_button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    playSound("click.wav");
-                    removeExitOptions();
-                    Gdx.app.exit(); //exit the game
-                }
-            });
-
-            no_button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    playSound("click.wav");
-                    removeExitOptions();
-                }
-            });
-
-            exit_message.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    playSound("click.wav");
-                    removeExitOptions();
-                }
-            });
-
-
-        }
     }
 
     public Stage getStage() {
