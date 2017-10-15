@@ -332,6 +332,7 @@ public class AssetLoader {
         level_selection_down = new Texture("textures/level_selection_down.png");
         menu_button_down = new Texture("textures/menu_button_down.png");
         replay_button_down = new Texture("textures/replay_button_down.png");
+        leaderboard_addButton = new Texture(Gdx.files.internal("textures/leaderboard_addButton.png"));
 
         silhouetteArrayList = new ArrayList<Texture>();
         for (int i = 1; i <= 5; i++) {
