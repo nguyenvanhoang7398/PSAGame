@@ -7,9 +7,9 @@ package com.thechallengers.psagame.Leaderboard;
 public class HighscoreEntry implements Comparable<HighscoreEntry> {
     private String userName;
     private int level;
-    private float score;
+    private String score;
 
-    HighscoreEntry(String userName, int level, float score) {
+    HighscoreEntry(String userName, int level, String score) {
         this.userName = userName;
         this.score = score;
         this.level = level;
@@ -23,13 +23,13 @@ public class HighscoreEntry implements Comparable<HighscoreEntry> {
         return level;
     }
 
-    float getScore() {
+    String getScore() {
         return score;
     }
 
     @Override
     public int compareTo(HighscoreEntry other) {
-        return Float.valueOf(this.score).compareTo(other.getScore());
+        return this.score.compareTo(other.getScore());
     }
 
     public String toString() {
