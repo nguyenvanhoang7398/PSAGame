@@ -2,23 +2,29 @@ package com.thechallengers.psagame.EndGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.thechallengers.psagame.EndGame.Objects.ActorWithTexture;
+import com.thechallengers.psagame.Leaderboard.JSONParser;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
@@ -28,7 +34,10 @@ import static com.thechallengers.psagame.game.PSAGame.playSound;
  * Created by Phung Tuan Hoang on 10/4/2017.
  */
 
-public class EndGameWorld implements ScreenWorld {
+public class EndGameWorld implements ScreenWorld, Input.TextInputListener {
+
+    private final String REST_API_URL = "https://psagame.herokuapp.com/leaderboard";
+
     private TextButton mainMenu;
     private TextButton nextLevel;
     private Stage stage;
@@ -37,13 +46,16 @@ public class EndGameWorld implements ScreenWorld {
     private ActorWithTexture tips;
     private ActorWithTexture starBackground;
     private Array<ActorWithTexture> stars = new Array<ActorWithTexture>();
+    private EndGameWorld self = this;
     private int star;
     private float time;
+    private int level;
 
 
-    public EndGameWorld(int star, float time) {
+    public EndGameWorld(int star, float time, int level, boolean newBestTime) {
         this.star = star;
         this.time = time;
+        this.level = level;
 
         stage = new Stage();
 
@@ -66,6 +78,10 @@ public class EndGameWorld implements ScreenWorld {
         })));
         background.getColor().a = 0;
         stage.addActor(background);
+
+        if (newBestTime) {
+            Gdx.input.getTextInput(self, "Congrats on your new best time!", "", "Enter your name");
+        }
     }
 
     public void showTheRest() {
@@ -121,7 +137,11 @@ public class EndGameWorld implements ScreenWorld {
             public void clicked(InputEvent event, float x, float y) {
                 playSound("click.wav");
                 PSAGame.LEVEL++;
-                CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+                if (PSAGame.LEVEL <= PSAGame.AVAILABLE_LEVEL) {
+                    CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+                } else {
+                    CURRENT_SCREEN = PSAGame.Screen.LevelSelectionScreen;
+                }
             }
         });
         nextLevel.getColor().a = 0;
@@ -188,6 +208,34 @@ public class EndGameWorld implements ScreenWorld {
         stage.addActor(replay);
     }
 
+    public void sendHighscoreToDatabase(String name, String score, String level) {
+
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("name", name);
+        parameters.put("score", score);
+        parameters.put("level", level);
+        Net.HttpRequest request = new Net.HttpRequest(Net.HttpMethods.POST);
+        request.setHeader("Content-Type", "application/json");
+        request.setContent(JSONParser.toJSON(parameters));
+        request.setUrl(REST_API_URL);
+        System.out.println(request.getContent());
+        Gdx.net.sendHttpRequest(request, new Net.HttpResponseListener() {
+            @Override
+            public void handleHttpResponse(Net.HttpResponse httpResponse) {
+                Gdx.app.log("Status code ", "" + httpResponse.getStatus().getStatusCode());
+                Gdx.app.log("Result ", httpResponse.getResultAsString());
+            }
+            @Override
+            public void failed(Throwable t) {
+                Gdx.app.log("Failed ", t.getMessage());
+            }
+            @Override
+            public void cancelled() {
+                Gdx.app.log("Cancelled ", "User cancelled");
+            }
+        });
+    }
+
     @Override
     public void update(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -199,5 +247,15 @@ public class EndGameWorld implements ScreenWorld {
     public Stage getStage() {
 
         return stage;
+    }
+
+    @Override
+    public void input(String text) {
+        sendHighscoreToDatabase(text, EndGameScreen.getTimeString(time), Integer.toString(level));
+    }
+
+    @Override
+    public void canceled() {
+
     }
 }
