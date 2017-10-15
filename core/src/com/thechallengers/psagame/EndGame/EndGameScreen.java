@@ -3,7 +3,6 @@ package com.thechallengers.psagame.EndGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
-import com.thechallengers.psagame.helpers.SoundLoader;
 
 /**
  * Created by Phung Tuan Hoang on 10/4/2017.
@@ -43,9 +42,30 @@ public class EndGameScreen implements Screen {
         if (star > previousStar) prefs.putInteger("level" + String.valueOf(END_SCREEN_LEVEL) + "star", star);
         prefs.flush();
 
-        world = new EndGameWorld(star, END_SCREEN_TIME);
+        String previousBestTime = prefs.getString("best_time_level" + END_SCREEN_LEVEL);
+        String updatedBestTime = getTimeString(END_SCREEN_TIME);
+        boolean newBestTime = false;
+
+        if (updatedBestTime.compareTo(previousBestTime) > 0) {
+            prefs.putString("best_time_level" + END_SCREEN_LEVEL, updatedBestTime);
+            newBestTime = true;
+        }
+
+        world = new EndGameWorld(star, END_SCREEN_TIME, END_SCREEN_LEVEL, newBestTime);
         Gdx.input.setInputProcessor(world.getStage());
     }
+
+    public static String getTimeString(float time) {
+        int minute = (int) (time / 60f);
+        int seconds = (int) (time - minute * 60);
+        String secondsString;
+        if (seconds < 10) secondsString = "0" + String.valueOf(seconds);
+        else secondsString = String.valueOf(seconds);
+        String timeString = String.valueOf(minute) + ":" +secondsString;
+
+        return timeString;
+    }
+
     @Override
     public void show() {
 

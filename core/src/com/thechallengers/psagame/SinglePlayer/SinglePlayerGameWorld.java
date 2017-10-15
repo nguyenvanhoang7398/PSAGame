@@ -2,26 +2,12 @@ package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.IntFloatMap;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.thechallengers.psagame.EndGame.EndGameWorld;
-import com.thechallengers.psagame.SinglePlayer.Objects.Dust;
 import com.thechallengers.psagame.SinglePlayer.Objects.NextBlock;
 import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
@@ -33,16 +19,10 @@ import com.thechallengers.psagame.helpers.SoundLoader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_PERCENT;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
-import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
-import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
-import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
@@ -107,7 +87,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             worldTime -= delta;
         }
 
-        if (worldTime < 10) playSound("");
+        // if (worldTime < 10) playSound("");
 
         float xGrav = Gdx.input.getAccelerometerX() / 9.81f;
         float yGrav = Gdx.input.getAccelerometerY() / 9.81f;

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.thechallengers.psagame.EndGame.EndGameScreen;
 import com.thechallengers.psagame.Leaderboard.LeaderboardScreen;
 import com.thechallengers.psagame.LevelSelection.LevelSelectionScreen;
@@ -12,10 +11,10 @@ import com.thechallengers.psagame.Menu.MenuScreen;
 import com.thechallengers.psagame.Shop.ShopScreen;
 import com.thechallengers.psagame.SinglePlayer.SinglePlayerGameScreen;
 import com.thechallengers.psagame.Tutorial.TutorialScreen;
-import com.thechallengers.psagame.helpers.AssetLoader;
 import com.thechallengers.psagame.helpers.SoundLoader;
 
 public class PSAGame extends Game {
+    public static final int AVAILABLE_LEVEL = 5;
 	public static final float LONG_EDGE = 1920;
 	public static final float SHORT_EDGE = 1080;
 	public static float CRANE_VELOCITY;
@@ -46,6 +45,11 @@ public class PSAGame extends Game {
 		if (!prefs.contains("level4star")) prefs.putInteger("level4star", 0);
 		if (!prefs.contains("level5star")) prefs.putInteger("level5star", 0);
 		if (!prefs.contains("crane speed")) prefs.putFloat("crane speed", 10f);
+        if (!prefs.contains("best_time_level1")) prefs.putString("best_time_level1", "0:00");
+        if (!prefs.contains("best_time_level2")) prefs.putString("best_time_level2", "0:00");
+        if (!prefs.contains("best_time_level3")) prefs.putString("best_time_level3", "0:00");
+        if (!prefs.contains("best_time_level4")) prefs.putString("best_time_level4", "0:00");
+        if (!prefs.contains("best_time_level5")) prefs.putString("best_time_level5", "0:00");
 		prefs.flush();
 
         Gdx.input.setCatchBackKey(true);
@@ -113,6 +117,7 @@ public class PSAGame extends Game {
 	}
 
 	public static void playSound(String s) {
+		System.out.println("------>Sound " + s);
 		SoundLoader.soundHashtable.get(s).play(Gdx.app.getPreferences("prefs").getFloat("sfx volume"));
 	}
 }
