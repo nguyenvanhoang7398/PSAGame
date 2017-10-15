@@ -343,7 +343,19 @@ public class Box2DWorld {
 
         craneData.isMoving = true;
 
-        craneData.velocity = PSAGame.CRANE_VELOCITY;
+        //adjust the velocity of crane here
+        int present_crane = Gdx.app.getPreferences("prefs").getInteger("crane_present");
+        switch (present_crane) {
+            case 1:
+                craneData.velocity = 12;
+                break;
+            case 2:
+                craneData.velocity = 14;
+                break;
+            case 3:
+                craneData.velocity = 16;
+                break;
+        }
 
         craneData.destination = new Vector2(screenX, screenY);
 
