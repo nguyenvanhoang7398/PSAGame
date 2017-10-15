@@ -54,11 +54,11 @@ public class ShopWorld implements ScreenWorld{
 
     //constructor
     public ShopWorld(PSAGame game) {
-        //for testing
-        Gdx.app.getPreferences("prefs").putInteger("moneyBalance", 100).flush();
-        Gdx.app.getPreferences("prefs").putBoolean("craneLv2_purchased", false).flush();
-        Gdx.app.getPreferences("prefs").putBoolean("craneLv3_purchased", false).flush();
-        Gdx.app.getPreferences("prefs").putInteger("crane_present", 1).flush();
+//        //for testing
+//        Gdx.app.getPreferences("prefs").putInteger("moneyBalance", 100).flush();
+//        Gdx.app.getPreferences("prefs").putBoolean("craneLv2_purchased", false).flush();
+//        Gdx.app.getPreferences("prefs").putBoolean("craneLv3_purchased", false).flush();
+//        Gdx.app.getPreferences("prefs").putInteger("crane_present", 1).flush();
         this.game = game;
         stage = new Stage();
         shop_background = new ShopBackground();

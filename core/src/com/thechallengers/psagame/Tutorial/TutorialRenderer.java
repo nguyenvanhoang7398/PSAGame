@@ -91,9 +91,27 @@ public class TutorialRenderer extends ScreenRenderer {
         world.getStage().draw();
     }
 
+    //CRANE
     public void drawCrane(Body crane) {
-        AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f* crane.getPosition().y);
-        AssetLoader.game_crane.draw(batcher);
+        int present_crane = Gdx.app.getPreferences("prefs").getInteger("crane_present");
+
+        switch (present_crane) {
+            case 1: {
+                AssetLoader.game_crane.setPosition(100f * crane.getPosition().x - 37f, 100f * crane.getPosition().y);
+                AssetLoader.game_crane.draw(batcher);
+                break;
+            }
+            case 2: {
+                AssetLoader.game_crane_2.setPosition(100f * crane.getPosition().x - 37f, 100f * crane.getPosition().y);
+                AssetLoader.game_crane_2.draw(batcher);
+                break;
+            }
+            case 3: {
+                AssetLoader.game_crane_3.setPosition(100f * crane.getPosition().x - 37f, 100f * crane.getPosition().y);
+                AssetLoader.game_crane_3.draw(batcher);
+                break;
+            }
+        }
     }
 
     public Vector2 translatePosition(float world_x, float world_y, int blockType) {

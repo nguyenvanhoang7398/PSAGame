@@ -40,6 +40,7 @@ public class PSAGame extends Game {
 		if (!prefs.contains("craneLv3_purchased")) prefs.putBoolean("craneLv3_purchased", false);
 		if (!prefs.contains("level")) prefs.putInteger("level", 1);
 
+
 		prefs.flush();
 
         Gdx.input.setCatchBackKey(true);

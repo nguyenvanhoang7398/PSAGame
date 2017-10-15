@@ -21,7 +21,7 @@ public class AssetLoader {
     public static Texture menu_crane_texture;
     public static Texture game_background;
     public static Texture game_background_2;
-    public static Sprite game_crane;
+    public static Sprite game_crane, game_crane_2, game_crane_3;
     public static Sprite destroy_X;
     public static Texture cloud_1, cloud_2;
     public static Texture containers;
@@ -53,6 +53,7 @@ public class AssetLoader {
     public static Texture next_block_frame;
     public static TextureRegion[] progress;
     public static Texture sorry_message;
+
 
     public static Texture silhouette_1;
     public static Texture actual_1;
@@ -170,6 +171,9 @@ public class AssetLoader {
         arial = new BitmapFont(Gdx.files.internal("font/arial.fnt"));
         consolas_15 = new BitmapFont(Gdx.files.internal("font/consolas_15.fnt"));
         consolas_60 = new BitmapFont(Gdx.files.internal("font/consolas_60.fnt"));
+
+
+
     }
 
     public static void disposeMenuTexture() {
@@ -271,6 +275,8 @@ public class AssetLoader {
     public static void loadGameTexture() {
         time_end_screen = new Texture("textures/time_end_screen.png");
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
+        game_crane_2 = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane_2.png")));
+        game_crane_3 = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane_3.png")));
         destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));
         game_background = new Texture(Gdx.files.internal("textures/new_SinglePlay_background.png"));
         unitBlockTexture = new Texture("textures/unitBlock.png");
