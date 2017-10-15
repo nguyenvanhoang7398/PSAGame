@@ -7,6 +7,8 @@ import com.thechallengers.psagame.helpers.AssetLoader;
 
 import java.util.ArrayList;
 
+import static com.thechallengers.psagame.game.PSAGame.playSound;
+
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.
  */
@@ -35,10 +37,19 @@ public class PhysicsInputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (!world.hasStarted) world.hasStarted = true;
+        //HANDLE RESOLUTION DIFFERENCE
+        screenX = (int) ((screenX / (float) Gdx.graphics.getWidth()) * 1080);
+        screenY = (int) ((screenY / (float) Gdx.graphics.getHeight()) * 1920);
+
+        if (!world.hasStarted) {
+            world.hasStarted = true;
+            playSound("start_game.mp3");
+        }
+        if (screenY < 380) return false;
+        else if (screenY < 480) screenY = 480;
         float box2DWorld_x = screenX / 100f;
         float box2DWorld_y = (1920 - screenY * 1920 / Gdx.graphics.getHeight()) / 100f;
-        System.out.printf("%f %f\n", box2DWorld_x, box2DWorld_y);
+
 
         //neu muon input vao box2DWorld dung reference world.box2DWorld
         if (!world.box2DWorld.destroyMode) {
@@ -46,6 +57,7 @@ public class PhysicsInputHandler implements InputProcessor {
                 world.box2DWorld.moveCrane(box2DWorld_x, box2DWorld_y);
             }
         } else if (world.box2DWorld.cooldown <= 0) {
+            playSound("block_destroyed.mp3");
             world.box2DWorld.destroyBlock(box2DWorld_x, box2DWorld_y);
             world.box2DWorld.destroyMode = false;
         }

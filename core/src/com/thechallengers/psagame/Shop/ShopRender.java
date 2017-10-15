@@ -25,8 +25,9 @@ public class ShopRender extends ScreenRenderer {
         stage.setViewport(viewport);
         Gdx.input.setInputProcessor(stage);
         batch = new SpriteBatch();
-        moneyBalanceFont = AssetLoader.consolas_15;
-        moneyBalanceFont.getData().setScale(3.5f, 3.5f);
+        batch.setProjectionMatrix(cam.combined);
+        moneyBalanceFont = AssetLoader.consolas_60;
+        //moneyBalanceFont.getData().setScale(3.5f, 3.5f);
         moneyBalanceFont.setColor(1.0f,1.0f,1.0f,1.0f);
         moneyBalance = "";
     }
@@ -34,23 +35,23 @@ public class ShopRender extends ScreenRenderer {
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
-        moneyBalance = "Balance: " + Gdx.app.getPreferences("prefs").getInteger("moneyBalance");
+        moneyBalance = "" + Gdx.app.getPreferences("prefs").getInteger("moneyBalance");
         batch.begin();
         moneyBalanceFont.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        moneyBalanceFont.draw(batch, moneyBalance, 600, 1700);
+        moneyBalanceFont.draw(batch, moneyBalance, 750, 1700+120);
         if (world.showPrice) {
-            moneyBalanceFont.draw(batch, "Owned", 100, 850);
+            moneyBalanceFont.draw(batch, "Owned", 100+100+400, 950-60+20+50);
             boolean crane2_purchased = Gdx.app.getPreferences("prefs").getBoolean("craneLv2_purchased");
             boolean crane3_purchased = Gdx.app.getPreferences("prefs").getBoolean("craneLv3_purchased");
             if (!crane2_purchased) {
-                moneyBalanceFont.draw(batch, "Price: 10", 450, 850);
+                moneyBalanceFont.draw(batch, "10", 100+100+400, 950-270+40+50);
             } else {
-                moneyBalanceFont.draw(batch, "Owned", 450, 850);
+                moneyBalanceFont.draw(batch, "Owned", 100+100+400, 950-270+40+50);
             }
             if (!crane3_purchased) {
-                moneyBalanceFont.draw(batch, "Price: 20", 800, 850);
+                moneyBalanceFont.draw(batch, "20", 100+100+400, 950-480+50+50);
             } else {
-                moneyBalanceFont.draw(batch, "Owned", 800, 850);
+                moneyBalanceFont.draw(batch, "Owned", 100+100+400, 950-480+50+50);
             }
         }
 

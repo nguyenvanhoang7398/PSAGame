@@ -1,9 +1,11 @@
 package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,34 +18,38 @@ import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntFloatMap;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.thechallengers.psagame.EndGame.EndGameWorld;
+import com.thechallengers.psagame.SinglePlayer.Objects.Dust;
 import com.thechallengers.psagame.SinglePlayer.Objects.NextBlock;
 import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.base_classes_and_interfaces.ScreenWorld;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_PERCENT;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
 import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
  */
 
 public class SinglePlayerGameWorld implements ScreenWorld {
-    final float TIMER_FONT_SIZE = 7;
-    final float PERCENTAGE_THRESHOLD = 0.01f;
-    private Body crane;
-    float CRANE_SPEED = 8f;
+    final static float PERCENTAGE_THRESHOLD = 0.7f;
     private Stage stage;
     private World world;
     public Array<Body> bodyArray = new Array<Body>();
@@ -54,30 +60,13 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public ArrayList<NextBlock> nextBlockArrayList;
     public ArrayDeque<Block> previousNextBlockQ;
     private int level;
-
-    private Label countdownLabel;
-
-    //touchpad-related variables
-    private Touchpad touchpad;
-    private Touchpad.TouchpadStyle touchpadStyle;
-    private Skin skin; //store the skin for user interface: touchpad and release button
-    private Drawable touchBackground, touchKnob;
-
-    //release button-related variables
-    private TextButton releaseButton;
-    private TextButton.TextButtonStyle releaseStyle;
-    private TextButton destroyButton;
-    private TextButton.TextButtonStyle destroyStyle;
-    private Drawable releaseBG;
-    private Drawable destroyBG;
-
-    //worker-related variables
+    private boolean winningSoundPlayed = false;
 
     public Box2DWorld box2DWorld;
 
 
     public SinglePlayerGameWorld(int level) {
-        worldTime = 300;
+        worldTime = 120;
         gameTime = 0;
         this.level = level;
         worker = new Worker();
@@ -91,10 +80,19 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
     @Override
     public void update(float delta) {
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)) CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
         box2DWorld.update(delta);
-        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
+        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD || worldTime < 0) {
+            SoundLoader.musicHashtable.get("ingame_bgm.mp3").stop();
+            box2DWorld.setTimesUp();
+            if (!winningSoundPlayed && worldTime > 0) {
+                SoundLoader.musicHashtable.get("win_sound.mp3").play();
+                winningSoundPlayed = true;
+            }
+
             END_SCREEN_TIME = gameTime;
             END_SCREEN_LEVEL = level;
+            END_SCREEN_PERCENT = box2DWorld.getPercentageOverlap();
             if (box2DWorld.endGameWaitTime >= 0.5f) {
                 AssetLoader.winningBG = ScreenUtils.getFrameBufferTexture();
                 CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
@@ -109,11 +107,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             worldTime -= delta;
         }
 
-        if (worldTime < 0) {
-            AssetLoader.losingBG = ScreenUtils.getFrameBufferTexture();
-            CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
-            return;
-        }
+        if (worldTime < 10) playSound("");
 
         float xGrav = Gdx.input.getAccelerometerX() / 9.81f;
         float yGrav = Gdx.input.getAccelerometerY() / 9.81f;
@@ -122,23 +116,25 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         // gForce will be close to 1 when there is no movement.
         float gForce = (float)Math.sqrt((xGrav * xGrav) + (yGrav * yGrav) + (zGrav * zGrav));
 
-        if (gForce > 2 && box2DWorld.cooldown <= 0) {
+        if (gForce > 2 && box2DWorld.cooldown <= 0 && hasStarted) {
             box2DWorld.destroyMode = true;
         }
 
         if (checkIfDropped()) {
-            nextBlockArrayList.get(0).remove();
-            nextBlockArrayList.remove(0);
+            nextBlockArrayList.get(2).remove();
+            nextBlockArrayList.remove(2);
             updateActorQ();
         }
 
         previousNextBlockQ = box2DWorld.nextBlockQ.clone();
+
+        addDust();
     }
 
     public void loadNextBlockActors() {
         ArrayDeque<Block> nextBlockQ = box2DWorld.nextBlockQ.clone();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 2; i >= 0; i--) {
             NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
             switch (i) {
                 case 0:
@@ -151,7 +147,6 @@ public class SinglePlayerGameWorld implements ScreenWorld {
                     nextBlock.setPosition(720, 1920 - 225);
                     break;
                 default:
-
             }
             stage.addActor(nextBlock);
             nextBlockArrayList.add(nextBlock);
@@ -164,7 +159,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
             nextBlock.setPosition(1080, 1920 - 225);
             stage.addActor(nextBlock);
-            nextBlockArrayList.add(nextBlock);
+            nextBlockArrayList.add(0, nextBlock);
 
             for (int i = 0; i < nextBlockArrayList.size(); i++) {
                 NextBlock thisBlock = nextBlockArrayList.get(i);
@@ -185,6 +180,13 @@ public class SinglePlayerGameWorld implements ScreenWorld {
         else return true;
     }
 
+    public void addDust() {
+        if (box2DWorld.dust != null) {
+            stage.addActor(box2DWorld.dust[0]);
+            stage.addActor(box2DWorld.dust[1]);
+            box2DWorld.dust = null;
+        }
+    }
 
     public Stage getStage() {
         return stage;

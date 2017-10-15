@@ -16,7 +16,9 @@ import com.thechallengers.psagame.helpers.AssetLoader;
 
 import java.util.ArrayDeque;
 
+import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.SinglePlayer.Box2DWorld.NUM_NEXT_BLOCK_INFORMED;
+import static com.thechallengers.psagame.game.PSAGame.LEVEL;
 
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
@@ -45,14 +47,15 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        world.getStage().setViewport(viewport);
         batcher.begin();
 
-        world.box2DWorld.debugRender();
-//        batcher.draw(AssetLoader.game_background, 0, 0);
+        //world.box2DWorld.debugRender();
+        batcher.draw(AssetLoader.game_background, 0, 0);
+//        if (!world.hasStarted) batcher.draw(AssetLoader.start_game, 0, 0);
+        //if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
+        batcher.draw(AssetLoader.silhouetteArrayList.get(LEVEL - 1), 0, 0);
         if (!world.hasStarted) batcher.draw(AssetLoader.start_game, 0, 0);
-        if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
-//        batcher.draw(AssetLoader.silhouette_1, 0, 0);
 
         //BLOCKS
         for (int i = 0; i < world.box2DWorld.bodyArray.size; i++) {
@@ -70,11 +73,9 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         drawCrane(world.box2DWorld.getCrane());
         batcher.draw(AssetLoader.game_background_2, 0, 0);
-        if (world.hasStarted) batcher.draw(AssetLoader.arrow_animation.getKeyFrame(runTime, false), 135, 1563);
-        else batcher.draw(AssetLoader.arrow_animation.getKeyFrame(0, false), 135, 1563);
-
-
-
+        if (world.hasStarted) batcher.draw(AssetLoader.arrow_animation.getKeyFrame(runTime, false), 135+80, 1563+30);
+        else batcher.draw(AssetLoader.arrow_animation.getKeyFrame(0, false), 135+80, 1563+30);
+        AssetLoader.consolas_60.draw(batcher, "Next", 135-60, 1563+100);
 
         if (world.box2DWorld.cooldown <= 0) batcher.draw(AssetLoader.bomb, 915, 1582);
         else {
@@ -84,21 +85,29 @@ public class SinglePlayerGameRenderer extends ScreenRenderer {
 
         float percentage = world.box2DWorld.getPercentageOverlap();
 
-        if (percentage < 0.125f) batcher.draw(AssetLoader.progress[0], 600 ,1582);
-        else if (percentage < 0.25f) batcher.draw(AssetLoader.progress[1], 600 ,1582);
-        else if (percentage < 0.375f) batcher.draw(AssetLoader.progress[2], 600 ,1582);
-        else if (percentage < 0.5f) batcher.draw(AssetLoader.progress[3], 600 ,1582);
-        else if (percentage < 0.625f) batcher.draw(AssetLoader.progress[4], 600 ,1582);
-        else if (percentage < 0.75f) batcher.draw(AssetLoader.progress[5], 600 ,1582);
-        else if (percentage < 0.875f) batcher.draw(AssetLoader.progress[6], 600 ,1582);
-        else if (percentage < 1f) batcher.draw(AssetLoader.progress[7], 600 ,1582);
-        else batcher.draw(AssetLoader.progress[8], 600 ,1582);
+        if (percentage < 0.125f) batcher.draw(AssetLoader.progress[0], 630 ,1582);
+        else if (percentage < 0.25f) batcher.draw(AssetLoader.progress[1], 630 ,1582);
+        else if (percentage < 0.375f) batcher.draw(AssetLoader.progress[2], 630 ,1582);
+        else if (percentage < 0.5f) batcher.draw(AssetLoader.progress[3], 630 ,1582);
+        else if (percentage < 0.625f) batcher.draw(AssetLoader.progress[4], 630 ,1582);
+        else if (percentage < 0.75f) batcher.draw(AssetLoader.progress[5], 630 ,1582);
+        else if (percentage < 0.875f) batcher.draw(AssetLoader.progress[6], 630 ,1582);
+        else if (percentage < 1f) batcher.draw(AssetLoader.progress[7], 630 ,1582);
+        else batcher.draw(AssetLoader.progress[8], 630 ,1582);
         AssetLoader.consolas_60.draw(batcher, String.format("%d%%", (int) (world.box2DWorld.getPercentageOverlap() * 100)), 710, 1650);
 
         if (world.hasStarted) batcher.draw(AssetLoader.clock_animation.getKeyFrame(runTime, false), 340, 1582);
         else batcher.draw(AssetLoader.clock_animation.getKeyFrame(0, false), 340, 1582);
-        AssetLoader.consolas_60.draw(batcher, String.format("%d:%d", (int) (world.getWorldTime() / 60),
-                                                (int) (world.getWorldTime() - 60 * (int) (world.getWorldTime() / 60))), 450, 1650);
+        //Time
+        float time = world.getWorldTime();
+        int minute = (int) (time / 60f);
+        int seconds = (int) (time - minute * 60);
+        String secondsString;
+        if (seconds < 10) secondsString = "0" + String.valueOf(seconds);
+        else secondsString = String.valueOf(seconds);
+        String timeString = String.valueOf(minute) + ":" +secondsString;
+        AssetLoader.consolas_60.draw(batcher, timeString, 450, 1650);
+        if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
         batcher.end();
 
         //INCOMING BLOCK

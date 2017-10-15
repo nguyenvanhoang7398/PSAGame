@@ -22,6 +22,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 10/4/2017.
@@ -41,7 +42,7 @@ public class EndGameWorld implements ScreenWorld {
 
 
     public EndGameWorld(int star, float time) {
-        this.star = 3;
+        this.star = star;
         this.time = time;
 
         stage = new Stage();
@@ -51,13 +52,13 @@ public class EndGameWorld implements ScreenWorld {
         winningBG.getColor().a = 1;
         stage.addActor(winningBG);
 //
-        actual = new ActorWithTexture(AssetLoader.actual_1, 0, 0);
-        actual.addAction(sequence(fadeIn(3f), delay(0.5f)));
+        actual = new ActorWithTexture(AssetLoader.actualArrayList.get(END_SCREEN_LEVEL - 1), 0, 0);
+        actual.addAction(sequence(fadeIn(3f), delay(2f)));
         actual.getColor().a = 0;
         stage.addActor(actual);
 
         background = new ActorWithTexture(AssetLoader.endGameBackground, 0, 0);
-        background.addAction(sequence(delay(3.5f), fadeIn(0.5f), run(new Runnable() {
+        background.addAction(sequence(delay(5f), fadeIn(0.5f), run(new Runnable() {
             @Override
             public void run() {
                 showTheRest();
@@ -92,13 +93,18 @@ public class EndGameWorld implements ScreenWorld {
         //stars
         for (int i = 0; i < star; i++) {
             stars.add(new ActorWithTexture(AssetLoader.star.get(i), 0, 0));
-            stars.get(i).addAction(sequence(delay(0.5f + i * 0.5f), fadeIn(0.1f)));
+            stars.get(i).addAction(sequence(delay(0.5f + i * 0.5f), run(new Runnable() {
+                @Override
+                public void run() {
+                    PSAGame.playSound("star_appearance.mp3");
+                }
+            }),fadeIn(0.1f)));
             stage.addActor(stars.get(i));
         }
 
         //TIPS
         tips = new ActorWithTexture(AssetLoader.tips[END_SCREEN_LEVEL - 1], 0, 0);
-        tips.addAction(sequence(delay(2.5f), fadeIn(0.3f)));
+        tips.addAction(sequence(delay(2.5f - (3 - star) * 0.5f), fadeIn(0.3f)));
         stage.addActor(tips);
 
         //NEXT LEVEL
@@ -109,10 +115,11 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton nextLevel = new TextButton("", nextLevelStyle);
         nextLevel.setPosition(750, 50);
-        nextLevel.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
+        nextLevel.addAction(sequence(delay(3.5f - (3 - star) * 0.5f), fadeIn(0.3f)));
         nextLevel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 PSAGame.LEVEL++;
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
             }
@@ -128,10 +135,11 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton levelSelection = new TextButton("", levelSelectionStyle);
         levelSelection.setPosition(430, 50);
-        levelSelection.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
+        levelSelection.addAction(sequence(delay(3.5f - (3 - star) * 0.5f), fadeIn(0.3f)));
         levelSelection.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.LevelSelectionScreen;
             }
         });
@@ -147,10 +155,11 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton mainMenu = new TextButton("", mainMenuStyle);
         mainMenu.setPosition(120, 50);
-        mainMenu.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
+        mainMenu.addAction(sequence(delay(3.5f - (3 - star) * 0.5f, fadeIn(0.3f))));
         mainMenu.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
             }
         });
@@ -167,10 +176,11 @@ public class EndGameWorld implements ScreenWorld {
 
         TextButton replay = new TextButton("", replayStyle);
         replay.setPosition(430, 320);
-        replay.addAction(sequence(delay(3.5f), fadeIn(0.3f)));
+        replay.addAction(sequence(delay(3.5f - (3 - star) * 0.5f), fadeIn(0.3f)));
         replay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
             }
         });
