@@ -26,7 +26,7 @@ public class SoundLoader {
                     Gdx.audio.newSound(Gdx.files.internal("sfx/" + sfx_name[i])));
         }
 
-        String[] music_name = {"ingame_bgm.mp3", "shop_bgm.mp3", "menu_bgm.mp3", "win_sound.mp3"};
+        String[] music_name = {"ingame_bgm.mp3", "shop_bgm.mp3", "menu_bgm.mp3", "win_sound.mp3", "crane_pulley.mp3"};
 
         musicHashtable = new Hashtable<String, Music>();
 

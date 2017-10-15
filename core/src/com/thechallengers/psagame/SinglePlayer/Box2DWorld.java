@@ -1,6 +1,7 @@
 package com.thechallengers.psagame.SinglePlayer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
@@ -25,6 +26,7 @@ import com.thechallengers.psagame.SinglePlayer.Physics.Block;
 import com.thechallengers.psagame.SinglePlayer.Physics.Frame;
 import com.thechallengers.psagame.SinglePlayer.Physics.RandomController;
 import com.thechallengers.psagame.game.PSAGame;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -286,6 +288,7 @@ public class Box2DWorld {
             impulseRefuseTime = 0;
         }
         if (percentageOverlap > PERCENTAGE_THRESHOLD || timesUp) {
+            SoundLoader.musicHashtable.get("crane_pulley.mp3").stop();
             endGameWaitTime += delta;
             return;
         }
@@ -343,6 +346,8 @@ public class Box2DWorld {
         craneData.velocity = PSAGame.CRANE_VELOCITY;
 
         craneData.destination = new Vector2(screenX, screenY);
+
+        SoundLoader.musicHashtable.get("crane_pulley.mp3").play();
     }
 
     public void updateCrane() {
@@ -352,6 +357,7 @@ public class Box2DWorld {
             case STOP: {
                 if (!craneData.isMoving) {
                     crane.setTransform(craneData.destination, 0);
+                    SoundLoader.musicHashtable.get("crane_pulley.mp3").stop();
                     break;
                 }
                 else {
