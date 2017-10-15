@@ -17,7 +17,7 @@ public class SoundLoader {
     public static void loadSFX() {
         String[] sfx_name = {"activate_destroymode.mp3", "block_destroyed.mp3", "click.wav", "crane_pulley.mp3",
                             "item_purchased.mp3", "last_few_seconds.mp3", "star_appearance.mp3", "start_game.mp3",
-                            "win_sound_1.mp3", "win_sound_2.mp3", "win_sound.mp3"};
+                            "win_sound_1.mp3", "win_sound_2.mp3", "win_sound.mp3", "block_hitting_ground.mp3"};
 
         soundHashtable = new Hashtable<String, Sound>();
 

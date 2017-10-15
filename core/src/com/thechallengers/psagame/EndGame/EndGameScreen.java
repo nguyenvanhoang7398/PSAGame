@@ -19,11 +19,11 @@ public class EndGameScreen implements Screen {
         int star = 3;
 
         if (END_SCREEN_PERCENT == 0f) star = 0;
-        else if (END_SCREEN_PERCENT < 0.2) {
+        else if (END_SCREEN_PERCENT < 0.35f) {
             END_SCREEN_TIME = 300;
             star = 1;
         }
-        else if (END_SCREEN_PERCENT < 0.4) {
+        else if (END_SCREEN_PERCENT < 0.7) {
             END_SCREEN_TIME = 300;
             star = 2;
         }

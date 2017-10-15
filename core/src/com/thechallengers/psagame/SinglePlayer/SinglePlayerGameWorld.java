@@ -42,13 +42,14 @@ import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
 import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
 import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 9/11/2017.
  */
 
 public class SinglePlayerGameWorld implements ScreenWorld {
-    final static float PERCENTAGE_THRESHOLD = 0.5f;
+    final static float PERCENTAGE_THRESHOLD = 0.7f;
     private Stage stage;
     private World world;
     public Array<Body> bodyArray = new Array<Body>();
@@ -65,7 +66,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
 
 
     public SinglePlayerGameWorld(int level) {
-        worldTime = 300;
+        worldTime = 120;
         gameTime = 0;
         this.level = level;
         worker = new Worker();
@@ -81,9 +82,10 @@ public class SinglePlayerGameWorld implements ScreenWorld {
     public void update(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
         box2DWorld.update(delta);
-        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
-            if (winningSoundPlayed == false) {
-                SoundLoader.musicHashtable.get("ingame_bgm.mp3").stop();
+        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD || worldTime < 0) {
+            SoundLoader.musicHashtable.get("ingame_bgm.mp3").stop();
+            box2DWorld.setTimesUp();
+            if (!winningSoundPlayed && worldTime > 0) {
                 SoundLoader.musicHashtable.get("win_sound.mp3").play();
                 winningSoundPlayed = true;
             }
@@ -105,11 +107,7 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             worldTime -= delta;
         }
 
-        if (worldTime < 0) {
-            AssetLoader.losingBG = ScreenUtils.getFrameBufferTexture();
-            CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
-            return;
-        }
+        if (worldTime < 10) playSound("");
 
         float xGrav = Gdx.input.getAccelerometerX() / 9.81f;
         float yGrav = Gdx.input.getAccelerometerY() / 9.81f;

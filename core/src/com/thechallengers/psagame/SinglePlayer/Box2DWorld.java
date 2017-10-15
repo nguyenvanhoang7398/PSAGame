@@ -39,6 +39,7 @@ import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.ST
 import static com.thechallengers.psagame.SinglePlayer.Objects.CraneData.STATE.UP;
 import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameRenderer.cooldown_animation_runTime;
 import static com.thechallengers.psagame.SinglePlayer.SinglePlayerGameWorld.PERCENTAGE_THRESHOLD;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.
@@ -66,6 +67,7 @@ public class Box2DWorld {
     private float impulseRefuseTime = 0;
     private boolean refusingImpulse = false;
     public Dust[] dust = null;
+    private boolean timesUp = false;
 
     public Box2DWorld(int level) {
         world = new World(new Vector2(0, -9.8f), true);
@@ -102,8 +104,9 @@ public class Box2DWorld {
                     craneData.cranedBody.setTransform(craneData.destination, 0);
                     craneData.cranedBody = null;
                 }
-                if ((impulse.getNormalImpulses())[0] > 3) {
+                if ((impulse.getNormalImpulses())[0] > 7) {
                     if (!refusingImpulse) {
+                        playSound("block_hitting_ground.mp3");
                         String a = "", b = "";
                         if (bodyA.getType() == BodyDef.BodyType.DynamicBody) a = ((Block) bodyA.getUserData()).blockType;
                         if (bodyB.getType() == BodyDef.BodyType.DynamicBody) b = ((Block) bodyB.getUserData()).blockType;
@@ -282,7 +285,7 @@ public class Box2DWorld {
             refusingImpulse = false;
             impulseRefuseTime = 0;
         }
-        if (percentageOverlap > PERCENTAGE_THRESHOLD) {
+        if (percentageOverlap > PERCENTAGE_THRESHOLD || timesUp) {
             endGameWaitTime += delta;
             return;
         }
@@ -451,7 +454,7 @@ public class Box2DWorld {
         shape.setAsBox(block.width / 2f, block.height / 2f);
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
+        fixtureDef.density = 6 / (block.width * block.height);
         fixtureDef.friction = 1f;
         fixtureDef.restitution = 0f;
         body.createFixture(fixtureDef);
@@ -480,6 +483,7 @@ public class Box2DWorld {
         for(int i = 0; i < bodyArray.size; i++) {
             float rotation = bodyArray.get(i).getAngle();
             if (Math.abs(rotation) > 0.2f) {
+                playSound("block_destroyed.mp3");
                 world.destroyBody(bodyArray.get(i));
                 bodyArray.removeIndex(i);
                 i--;
@@ -605,5 +609,9 @@ public class Box2DWorld {
 
     private Vector2 getDustPoint(Vector2[] vector) {
         return new Vector2((vector[0].x + vector[1].x) / 2f * 100f, vector[0].y * 100f);
+    }
+
+    public void setTimesUp() {
+        timesUp = true;
     }
 }

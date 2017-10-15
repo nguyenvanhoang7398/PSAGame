@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -70,6 +71,10 @@ public class MenuWorld implements ScreenWorld {
     //for leaderboard
     private TextButton leaderboard_button;
     private TextButton.TextButtonStyle leaderboard_button_style;
+
+    //for sorry message
+    private ImageButton sorry_message;
+    private ImageButton.ImageButtonStyle sorry_message_style;
 
     private PSAGame game;
 
@@ -324,13 +329,28 @@ public class MenuWorld implements ScreenWorld {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 removePlayOptions();
-                CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
+//                CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
+                createSorryMessage();
                 //move to multi player code here
                 playSound("click.wav");
             }
         });
     }
 
+    public void createSorryMessage(){
+        sorry_message_style = new ImageButton.ImageButtonStyle();
+        sorry_message_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.sorry_message));
+        sorry_message_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.sorry_message));
+        sorry_message = new ImageButton(sorry_message_style);
+        sorry_message.setPosition(100+40, 650);
+        stage.addActor(sorry_message);
+        sorry_message.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                sorry_message.remove();
+            }
+        });
+    }
     //OVERLAY (BACKGROUND FOR SP AND MP)
     public void createOverlayButtonStyle() {
         overlay_button_style = new TextButton.TextButtonStyle();

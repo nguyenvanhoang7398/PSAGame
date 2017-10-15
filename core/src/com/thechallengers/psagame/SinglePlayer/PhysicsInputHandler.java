@@ -7,6 +7,8 @@ import com.thechallengers.psagame.helpers.AssetLoader;
 
 import java.util.ArrayList;
 
+import static com.thechallengers.psagame.game.PSAGame.playSound;
+
 /**
  * Created by Phung Tuan Hoang on 9/28/2017.
  */
@@ -39,7 +41,10 @@ public class PhysicsInputHandler implements InputProcessor {
         screenX = (int) ((screenX / (float) Gdx.graphics.getWidth()) * 1080);
         screenY = (int) ((screenY / (float) Gdx.graphics.getHeight()) * 1920);
 
-        if (!world.hasStarted) world.hasStarted = true;
+        if (!world.hasStarted) {
+            world.hasStarted = true;
+            playSound("start_game.mp3");
+        }
         if (screenY < 380) return false;
         else if (screenY < 480) screenY = 480;
         float box2DWorld_x = screenX / 100f;
@@ -52,6 +57,7 @@ public class PhysicsInputHandler implements InputProcessor {
                 world.box2DWorld.moveCrane(box2DWorld_x, box2DWorld_y);
             }
         } else if (world.box2DWorld.cooldown <= 0) {
+            playSound("block_destroyed.mp3");
             world.box2DWorld.destroyBlock(box2DWorld_x, box2DWorld_y);
             world.box2DWorld.destroyMode = false;
         }

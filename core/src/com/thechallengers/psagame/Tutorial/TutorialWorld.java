@@ -53,7 +53,7 @@ public class TutorialWorld implements ScreenWorld {
     public boolean hasStarted = false;
     public ArrayList<NextBlock> nextBlockArrayList;
     public ArrayDeque<Block> previousNextBlockQ;
-    final static float PERCENTAGE_THRESHOLD = 0.5f;
+    final static float PERCENTAGE_THRESHOLD = 0.7f;
     private World world;
     private Stage stage;
     private Array<Body> bodyArray;
@@ -82,7 +82,7 @@ public class TutorialWorld implements ScreenWorld {
         createOnScreenInstructions();
         createUI();
 
-        worldTime = 300;
+        worldTime = 180;
         gameTime = 0;
         nextBlockArrayList = new ArrayList<NextBlock>();
         previousNextBlockQ = box2DWorld.nextBlockQ.clone();
@@ -93,9 +93,10 @@ public class TutorialWorld implements ScreenWorld {
     public void update(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
         box2DWorld.update(delta);
-        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
-            if (!winningSoundPlayed) {
-                SoundLoader.musicHashtable.get("ingame_bgm.mp3").stop();
+        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD || worldTime < 0) {
+            SoundLoader.musicHashtable.get("ingame_bgm.mp3").stop();
+            if (!winningSoundPlayed && worldTime > 0) {
+                box2DWorld.setTimesUp();
                 SoundLoader.musicHashtable.get("win_sound.mp3").play();
                 winningSoundPlayed = true;
             }
@@ -115,12 +116,6 @@ public class TutorialWorld implements ScreenWorld {
         if (hasStarted) {
             gameTime += delta;
             worldTime -= delta;
-        }
-
-        if (worldTime < 0) {
-            AssetLoader.losingBG = ScreenUtils.getFrameBufferTexture();
-            CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
-            return;
         }
 
         float xGrav = Gdx.input.getAccelerometerX() / 9.81f;

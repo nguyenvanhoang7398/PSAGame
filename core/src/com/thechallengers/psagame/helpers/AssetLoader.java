@@ -55,6 +55,7 @@ public class AssetLoader {
     public static Texture dust_left, dust_right;
     public static Texture leaderboard_backButton_down;
 
+    public static Texture sorry_message;
 
     public static Texture silhouette_1;
     public static Texture actual_1;
@@ -167,6 +168,7 @@ public class AssetLoader {
         leaderboard_button = new Texture(Gdx.files.internal("textures/new_Menu_leaderBoard.png"));
         leaderboard_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_leaderBoard_down.png"));
 
+        sorry_message = new Texture(Gdx.files.internal("textures/new_sorry_message.png"));
         background = new TextureRegion(background_texture, 0, 0, 1080, 1920);
         button_up = new TextureRegion(button_texture, 0, 0, 200, 100);
         button_down = new TextureRegion(button_texture, 200, 0, 200, 100);

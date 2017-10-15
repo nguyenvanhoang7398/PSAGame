@@ -7,6 +7,7 @@ import com.thechallengers.psagame.SinglePlayer.Objects.CraneData;
 
 import static com.thechallengers.psagame.game.PSAGame.LONG_EDGE;
 import static com.thechallengers.psagame.game.PSAGame.SHORT_EDGE;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by Phung Tuan Hoang on 10/1/2017.
@@ -46,16 +47,19 @@ public class TutorialInputHandler implements InputProcessor {
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
+                    playSound("click.wav");
                     break;
                 case AIM:
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
+                    playSound("click.wav");
                     break;
                 case DROP:
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
+                    playSound("click.wav");
                     break;
                 case DROP_INDICATOR:
                     if (screenX > 455 && screenX < 507 && screenY > 1775 && screenY < 1827) {
@@ -63,6 +67,7 @@ public class TutorialInputHandler implements InputProcessor {
                         world.clicked();
                         world.getStateQueue().removeFirst();
                         world.createOnScreenInstructions();
+                        playSound("click.wav");
                         break;
                     }
                     else return false;
@@ -70,6 +75,7 @@ public class TutorialInputHandler implements InputProcessor {
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
+                    playSound("click.wav");
                     break;
                 case TILTED_INDICATOR:
                     if (screenX > 515 && screenX < 568 && screenY > 1713 && screenY < 1766) {
@@ -77,6 +83,7 @@ public class TutorialInputHandler implements InputProcessor {
                         world.clicked();
                         world.getStateQueue().removeFirst();
                         world.createOnScreenInstructions();
+                        playSound("click.wav");
                         break;
                     }
                     else return false;
@@ -84,6 +91,7 @@ public class TutorialInputHandler implements InputProcessor {
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
+                    playSound("click.wav");
                     break;
                 case AFTER_TILTED_INDICATOR:
                     if (screenX > 455 && screenX < 507 && screenY > 1675 && screenY < 1727) {
@@ -91,6 +99,7 @@ public class TutorialInputHandler implements InputProcessor {
                         world.clicked();
                         world.getStateQueue().removeFirst();
                         world.createOnScreenInstructions();
+                        playSound("click.wav");
                         break;
                     }
                     else return false;
@@ -98,11 +107,13 @@ public class TutorialInputHandler implements InputProcessor {
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
+                    playSound("click.wav");
                     break;
                 case DESTROY:
                     world.clicked();
                     world.getStateQueue().removeFirst();
                     world.createOnScreenInstructions();
+                    playSound("click.wav");
                     break;
                 case DESTROY_INDICATOR_1:
                     break; //this case is handled by tutorialWorld
@@ -112,6 +123,7 @@ public class TutorialInputHandler implements InputProcessor {
                         world.clicked();
                         world.getStateQueue().removeFirst();
                         world.createOnScreenInstructions();
+                        playSound("click.wav");
                         break;
                     }
                     else return false;
@@ -124,6 +136,7 @@ public class TutorialInputHandler implements InputProcessor {
                     multiplexer.addProcessor(world.getStage());
                     multiplexer.addProcessor(this);
                     Gdx.input.setInputProcessor(multiplexer);
+                    playSound("click.wav");
                     world.hasStarted = true;
                     break;
                 default:
@@ -168,6 +181,7 @@ public class TutorialInputHandler implements InputProcessor {
         } else if (world.box2DWorld.cooldown <= 0) {
             world.box2DWorld.destroyBlock(box2DWorld_x, box2DWorld_y);
             world.box2DWorld.destroyMode = false;
+            playSound("block_destroyed.mp3");
         }
     }
 }
