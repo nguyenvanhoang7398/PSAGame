@@ -18,11 +18,13 @@ public class NextBlock extends Actor {
     private Texture nextBlockFrame;
     private Texture nextBlock;
     private Vector2 relativePosition;
+    public String type;
 
     public NextBlock(Block block) {
         nextBlock = (AssetLoader.spriteHashtable.get(block.blockType)).getTexture();
         nextBlockFrame = AssetLoader.next_block_frame;
         relativePosition = getRelativePosition(block);
+        type = block.blockType;
     }
 
     @Override

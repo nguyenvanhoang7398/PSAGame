@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Queue;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.thechallengers.psagame.SinglePlayer.Box2DWorld;
+import com.thechallengers.psagame.SinglePlayer.Objects.Dust;
 import com.thechallengers.psagame.SinglePlayer.Objects.NextBlock;
 import com.thechallengers.psagame.SinglePlayer.Objects.Worker;
 import com.thechallengers.psagame.SinglePlayer.Physics.Block;
@@ -25,10 +27,14 @@ import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
 
 import com.thechallengers.psagame.Tutorial.Objects.FadeInFadeOutActor;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.removeActor;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_LEVEL;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_PERCENT;
 import static com.thechallengers.psagame.EndGame.EndGameScreen.END_SCREEN_TIME;
@@ -47,7 +53,7 @@ public class TutorialWorld implements ScreenWorld {
     public boolean hasStarted = false;
     public ArrayList<NextBlock> nextBlockArrayList;
     public ArrayDeque<Block> previousNextBlockQ;
-    final static float PERCENTAGE_THRESHOLD = 0.5f;
+    final static float PERCENTAGE_THRESHOLD = 0.7f;
     private World world;
     private Stage stage;
     private Array<Body> bodyArray;
@@ -61,7 +67,7 @@ public class TutorialWorld implements ScreenWorld {
         WELCOME, AIM, DROP, DROP_INDICATOR, TILTED, TILTED_INDICATOR, AFTER_TILTED, AFTER_TILTED_INDICATOR,
         PROGRESS, DESTROY, DESTROY_INDICATOR_1, DESTROY_INDICATOR_2, GOODLUCK
     }
-
+    private boolean winningSoundPlayed = false;
     private Queue<TutorialState> stateQueue;
 
     public TutorialWorld() {
@@ -76,7 +82,7 @@ public class TutorialWorld implements ScreenWorld {
         createOnScreenInstructions();
         createUI();
 
-        worldTime = 300;
+        worldTime = 180;
         gameTime = 0;
         nextBlockArrayList = new ArrayList<NextBlock>();
         previousNextBlockQ = box2DWorld.nextBlockQ.clone();
@@ -87,7 +93,14 @@ public class TutorialWorld implements ScreenWorld {
     public void update(float delta) {
         if (Gdx.input.isKeyPressed(Input.Keys.BACK)) CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
         box2DWorld.update(delta);
-        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD) {
+        if (box2DWorld.getPercentageOverlap() > PERCENTAGE_THRESHOLD || worldTime < 0) {
+            SoundLoader.musicHashtable.get("ingame_bgm.mp3").stop();
+            if (!winningSoundPlayed && worldTime > 0) {
+                box2DWorld.setTimesUp();
+                SoundLoader.musicHashtable.get("win_sound.mp3").play();
+                winningSoundPlayed = true;
+            }
+
             END_SCREEN_TIME = gameTime;
             END_SCREEN_LEVEL = 1;
             END_SCREEN_PERCENT = box2DWorld.getPercentageOverlap();
@@ -105,12 +118,6 @@ public class TutorialWorld implements ScreenWorld {
             worldTime -= delta;
         }
 
-        if (worldTime < 0) {
-            AssetLoader.losingBG = ScreenUtils.getFrameBufferTexture();
-            CURRENT_SCREEN = PSAGame.Screen.EndGameScreen;
-            return;
-        }
-
         float xGrav = Gdx.input.getAccelerometerX() / 9.81f;
         float yGrav = Gdx.input.getAccelerometerY() / 9.81f;
         float zGrav = Gdx.input.getAccelerometerZ() / 9.81f;
@@ -123,8 +130,8 @@ public class TutorialWorld implements ScreenWorld {
         }
 
         if (checkIfDropped()) {
-            nextBlockArrayList.get(0).remove();
-            nextBlockArrayList.remove(0);
+            nextBlockArrayList.get(2).remove();
+            nextBlockArrayList.remove(2);
             updateActorQ();
         }
 
@@ -138,7 +145,7 @@ public class TutorialWorld implements ScreenWorld {
             box2DWorld.destroyMode = true;
         }
 
-        if (stateQueue.size != 0) System.out.printf("%s %s\n", stateQueue.first() ,box2DWorld.destroyMode);
+        addDust();
     }
 
     private void initialiseStateQueue() {
@@ -201,7 +208,7 @@ public class TutorialWorld implements ScreenWorld {
     public void loadNextBlockActors() {
         ArrayDeque<Block> nextBlockQ = box2DWorld.nextBlockQ.clone();
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 2; i >= 0; i--) {
             NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
             switch (i) {
                 case 0:
@@ -214,7 +221,6 @@ public class TutorialWorld implements ScreenWorld {
                     nextBlock.setPosition(720, 1920 - 225);
                     break;
                 default:
-
             }
             stage.addActor(nextBlock);
             nextBlockArrayList.add(nextBlock);
@@ -227,7 +233,7 @@ public class TutorialWorld implements ScreenWorld {
             NextBlock nextBlock = new NextBlock(nextBlockQ.removeLast());
             nextBlock.setPosition(1080, 1920 - 225);
             stage.addActor(nextBlock);
-            nextBlockArrayList.add(nextBlock);
+            nextBlockArrayList.add(0, nextBlock);
 
             for (int i = 0; i < nextBlockArrayList.size(); i++) {
                 NextBlock thisBlock = nextBlockArrayList.get(i);
@@ -417,6 +423,14 @@ public class TutorialWorld implements ScreenWorld {
                 }
             }
         });
+    }
+
+    public void addDust() {
+        if (box2DWorld.dust != null) {
+            stage.addActor(box2DWorld.dust[0]);
+            stage.addActor(box2DWorld.dust[1]);
+            box2DWorld.dust = null;
+        }
     }
 
     public World getWorld() {

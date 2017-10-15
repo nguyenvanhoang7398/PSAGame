@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 /**
  * Created by Phung Tuan Hoang on 10/1/2017.
@@ -30,6 +31,7 @@ public class TutorialScreen implements Screen{
         inputMultiplexer.addProcessor(tutorialInputHandler);
         inputMultiplexer.addProcessor(world.getStage());
         Gdx.input.setInputProcessor(inputMultiplexer);
+        SoundLoader.musicHashtable.get("ingame_bgm.mp3").play();
     }
 
     @Override

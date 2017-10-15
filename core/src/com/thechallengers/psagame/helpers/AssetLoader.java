@@ -37,21 +37,24 @@ public class AssetLoader {
     public static Texture setting_box;
     public static Texture slider_bg, slider_knob;
     public static Texture unitBlockTexture;
-    public static Texture shop_button, shop_backButton;
+    public static Texture shop_button, shop_backButton_down, shop_backButton, shop_button_pressed;
     public static Texture shop_background;
-    public static Texture leaderboard_button, leaderboard_backButton, leaderboard_addButton;
+    public static Texture leaderboard_button, leaderboard_button_pressed, leaderboard_backButton, leaderboard_addButton;
     public static Texture leaderboard_background, leaderboard_overlay;
     public static Texture level_selection_background;
-    public static Texture level_backButton;
+    public static Texture level_backButton_down, level_backButton;
     public static Texture level1_Button, level2_Button, level3_Button, level4_Button, level5_Button;
     public static Texture level_title;
-    public static Texture star0, star1, star2, star3 ;
+    public static Texture star0, star1, star2, star3;
     public static Texture shop_title;
     public static Texture crane_lv1, crane_lv2, crane_lv3, crane_title, selection_bar;
     public static Texture purchase_message, purchase_success_message, purchase_fail_message, yes_button, no_button;
     public static Texture start_game;
     public static Texture next_block_frame;
     public static TextureRegion[] progress;
+    public static Texture dust_left, dust_right;
+    public static Texture leaderboard_backButton_down;
+
     public static Texture sorry_message;
 
     public static Texture silhouette_1;
@@ -119,6 +122,7 @@ public class AssetLoader {
     public static Animation<TextureRegion> cooldown_animation;
     public static Animation<TextureRegion> clock_animation;
     public static Animation<TextureRegion> arrow_animation;
+    public static Animation<TextureRegion> cloud_animation;
 
     //end game
     public static Texture[] tips = new Texture[5];
@@ -138,20 +142,20 @@ public class AssetLoader {
         cloud_2 = new Texture(Gdx.files.internal("textures/cloud_2.png"));
         containers = new Texture(Gdx.files.internal("textures/containers.png"));
         play_button = new Texture(Gdx.files.internal("textures/new_Menu_playButton.png"));
-        play_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_playButton.png"));
+        play_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_playButton_down.png"));
         menu_button = new Texture(Gdx.files.internal("textures/menu_button.png"));
         replay_button = new Texture(Gdx.files.internal("textures/replay_button.png"));
         next_button = new Texture(Gdx.files.internal("textures/next_button.png"));
         tutorial_button = new Texture(Gdx.files.internal("textures/new_Menu_tutorialButton.png"));
-        tutorial_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_tutorialButton.png"));
+        tutorial_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_tutorialButton_down.png"));
         single_player_button = new Texture(Gdx.files.internal("textures/new_Menu_Single.png"));
-        single_player_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_Single.png"));
+        single_player_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_Single_down.png"));
         multi_player_button = new Texture(Gdx.files.internal("textures/new_Menu_Multi.png"));
-        multi_player_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_Multi.png"));
+        multi_player_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_Multi_down.png"));
         overlay_button = new Texture(Gdx.files.internal("textures/new_Menu_bubble.png"));
         overlay_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_bubble.png"));
         setting_button = new Texture(Gdx.files.internal("textures/new_Menu_SettingButton.png"));
-        setting_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_SettingButton.png"));
+        setting_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_SettingButton_down.png"));
         setting_overlay = new Texture(Gdx.files.internal("textures/setting_overlay.png"));
 //        setting_box = new Texture(Gdx.files.internal("textures/setting_box.png"));
         setting_box = new Texture(Gdx.files.internal("textures/new_setting_box.png"));
@@ -160,12 +164,16 @@ public class AssetLoader {
         slider_bg = new Texture(Gdx.files.internal("textures/new_setting_slider.png"));
         slider_knob = new Texture(Gdx.files.internal("textures/new_setting_knob.png"));
         shop_button = new Texture(Gdx.files.internal("textures/new_Menu_ShopButton.png"));
+        shop_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_ShopButton_down.png"));
         leaderboard_button = new Texture(Gdx.files.internal("textures/new_Menu_leaderBoard.png"));
+        leaderboard_button_pressed = new Texture(Gdx.files.internal("textures/new_Menu_leaderBoard_down.png"));
 
         sorry_message = new Texture(Gdx.files.internal("textures/new_sorry_message.png"));
         background = new TextureRegion(background_texture, 0, 0, 1080, 1920);
         button_up = new TextureRegion(button_texture, 0, 0, 200, 100);
         button_down = new TextureRegion(button_texture, 200, 0, 200, 100);
+
+        cloud_animation = createAnimation(new Texture("textures/cloud_animation.png"), 1, 3, 0.33f);
 
         arial = new BitmapFont(Gdx.files.internal("font/arial.fnt"));
         consolas_15 = new BitmapFont(Gdx.files.internal("font/consolas_15.fnt"));
@@ -180,6 +188,7 @@ public class AssetLoader {
 
     public static void loadLevelSelectionTexture() {
         level_selection_background = new Texture(Gdx.files.internal("textures/new_levelSelection_background.png"));
+        level_backButton_down = new Texture(Gdx.files.internal("textures/new_shop_backButton_down.png"));
         level_backButton = new Texture(Gdx.files.internal("textures/new_shop_backButton.png"));
         level1_Button = new Texture(Gdx.files.internal("textures/new_stage1_icon.png"));
         level2_Button = new Texture(Gdx.files.internal("textures/new_stage2_icon.png"));
@@ -210,6 +219,7 @@ public class AssetLoader {
 
     public static void loadShopTexture() {
         shop_background = new Texture(Gdx.files.internal("textures/new_shop_background.png"));
+        shop_backButton_down = new Texture(Gdx.files.internal("textures/new_shop_backButton_down.png"));
         shop_backButton = new Texture(Gdx.files.internal("textures/new_shop_backButton.png"));
         //shop_title = new Texture(Gdx.files.internal("textures/shop_title.png"));
         crane_lv1 = new Texture(Gdx.files.internal("textures/crane_lv1.png"));
@@ -244,7 +254,8 @@ public class AssetLoader {
 
     public static void loadLeaderboardTexture() {
         leaderboard_background = new Texture(Gdx.files.internal("textures/new_leaderBoard_background.png"));
-        leaderboard_backButton = new Texture(Gdx.files.internal("textures/new_leaderBoard_backButton.png"));
+        leaderboard_backButton = new Texture(Gdx.files.internal("textures/new_shop_backButton.png"));
+        leaderboard_backButton_down = new Texture(Gdx.files.internal("textures/new_shop_backButton_down.png"));
         leaderboard_addButton = new Texture(Gdx.files.internal("textures/leaderboard_addButton.png"));
         level1_Button = new Texture(Gdx.files.internal("textures/new_stage1_icon.png"));
         level2_Button = new Texture(Gdx.files.internal("textures/new_stage2_icon.png"));
@@ -269,6 +280,8 @@ public class AssetLoader {
     }
 
     public static void loadGameTexture() {
+        dust_left = new Texture("textures/dust_left.png");
+        dust_right = new Texture("textures/dust_right.png");
         time_end_screen = new Texture("textures/time_end_screen.png");
         game_crane = new Sprite(new Texture(Gdx.files.internal("textures/gamecrane.png")));
         destroy_X = new Sprite(new Texture(Gdx.files.internal("textures/destroy_X.png")));

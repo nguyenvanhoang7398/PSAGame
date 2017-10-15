@@ -27,13 +27,11 @@ public class TutorialRenderer extends ScreenRenderer {
     public TutorialRenderer(TutorialWorld world) {
         super();
         this.world = world;
-
-        cam.setToOrtho(false, 10.80f, 19.20f);
     }
 
     public void render(float runTime) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        world.getStage().setViewport(viewport);
         batcher.begin();
 
         //world.box2DWorld.debugRender();
@@ -82,8 +80,16 @@ public class TutorialRenderer extends ScreenRenderer {
 
         if (world.hasStarted) batcher.draw(AssetLoader.clock_animation.getKeyFrame(runTime, false), 340, 1582);
         else batcher.draw(AssetLoader.clock_animation.getKeyFrame(0, false), 340, 1582);
-        AssetLoader.consolas_60.draw(batcher, String.format("%d:%d", (int) (world.getWorldTime() / 60),
-                (int) (world.getWorldTime() - 60 * (int) (world.getWorldTime() / 60))), 450, 1650);
+
+        //Time
+        float time = world.getWorldTime();
+        int minute = (int) (time / 60f);
+        int seconds = (int) (time - minute * 60);
+        String secondsString;
+        if (seconds < 10) secondsString = "0" + String.valueOf(seconds);
+        else secondsString = String.valueOf(seconds);
+        String timeString = String.valueOf(minute) + ":" +secondsString;
+        AssetLoader.consolas_60.draw(batcher, timeString, 450, 1650);
         if (world.box2DWorld.destroyMode) batcher.draw(AssetLoader.destroy_mode, 1080 / 2 - 500 / 2, 1920 / 2 - 100 / 2);
         batcher.end();
 
