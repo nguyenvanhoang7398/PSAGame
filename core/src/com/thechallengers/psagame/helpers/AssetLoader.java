@@ -130,6 +130,9 @@ public class AssetLoader {
     public static Texture star_background;
     public static ArrayList<Texture> star;
 
+    //for back buttons
+    public static Texture exit_message, menu_message;
+
     public static void loadMenuTexture() {
         levelButton_down = new Texture[5];
         for (int i = 1; i <= 5; i++) {
@@ -180,6 +183,13 @@ public class AssetLoader {
         consolas_15 = new BitmapFont(Gdx.files.internal("font/consolas_15.fnt"));
         consolas_60 = new BitmapFont(Gdx.files.internal("font/consolas_60.fnt"));
 
+        exit_message = new Texture(Gdx.files.internal("textures/exit_message.png"));
+        menu_message = new Texture(Gdx.files.internal("textures/mainMenu_message.png"));
+        yes_button = new Texture(Gdx.files.internal("textures/yes_button.png"));
+        no_button = new Texture(Gdx.files.internal("textures/no_button.png"));
+
+
+
 
 
     }
@@ -188,6 +198,8 @@ public class AssetLoader {
         background_texture.dispose();
         button_texture.dispose();
         arial.dispose();
+        exit_message.dispose();
+        menu_message.dispose();
     }
 
     public static void loadLevelSelectionTexture() {
