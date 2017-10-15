@@ -106,7 +106,7 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
     public void createBackButton() {
         back_button_style = new TextButton.TextButtonStyle();
         back_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_backButton));
-        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_backButton));
+        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.leaderboard_backButton_down));
         back_button_style.font = AssetLoader.arial;
 
         back_button = new TextButton("", back_button_style);
@@ -157,9 +157,9 @@ public class LeaderboardWorld implements ScreenWorld, Input.TextInputListener {
 
         Collections.sort(highscore_of_this_level);
         highscore_text_style = new TextButton.TextButtonStyle();
-        highscore_text_style.font = AssetLoader.consolas_15;
+        highscore_text_style.font = AssetLoader.consolas_60;
         highscore_text_style.fontColor = Color.YELLOW;
-        highscore_text_style.font.getData().setScale(FONT_SCALE, FONT_SCALE);
+        //highscore_text_style.font.getData().setScale(FONT_SCALE, FONT_SCALE);
 
         if (!result) {
             TextButton error_line1 = new TextButton("", highscore_text_style);

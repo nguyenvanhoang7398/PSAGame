@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.thechallengers.psagame.game.PSAGame;
 import com.thechallengers.psagame.helpers.AssetLoader;
+import com.thechallengers.psagame.helpers.SoundLoader;
 
 
 /**
@@ -21,6 +22,7 @@ public class ShopScreen implements Screen {
         this.game = game;
         shop_world = new ShopWorld(game);
         shop_renderer = new ShopRender(shop_world);
+        SoundLoader.musicHashtable.get("shop_bgm.mp3").play();
     }
     @Override
     public void show() {
@@ -57,6 +59,6 @@ public class ShopScreen implements Screen {
     public void dispose() {
         AssetLoader.disposeShopTexture();
         shop_world.getStage().dispose();
-
+        SoundLoader.musicHashtable.get("shop_bgm.mp3").stop();
     }
 }

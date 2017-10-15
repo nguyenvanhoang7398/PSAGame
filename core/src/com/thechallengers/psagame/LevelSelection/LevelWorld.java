@@ -27,6 +27,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.game.PSAGame.LEVEL;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by name on 3/10/2017.
@@ -46,8 +47,9 @@ class LevelWorld implements ScreenWorld {
     private Texture[] levelButton = {AssetLoader.level1_Button, AssetLoader.level2_Button,
                                     AssetLoader.level3_Button, AssetLoader.level4_Button,
                                     AssetLoader.level5_Button};
-    private int[] x_coord = {200, 450, 700, 325, 575};
-    private int[] y_coord = {1000, 1000, 1000, 600, 600};
+    private Texture[] levelButton_down = AssetLoader.levelButton_down;
+    private int[] x_coord = {225, 475, 725, 350, 600};
+    private int[] y_coord = {1000, 1000, 1000, 650, 650};
     private int playerLevel = Gdx.app.getPreferences("prefs").getInteger("level");
 
     //constructor
@@ -76,7 +78,7 @@ class LevelWorld implements ScreenWorld {
     public void createBackButton() {
         back_button_style = new TextButton.TextButtonStyle();
         back_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.level_backButton));
-        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.level_backButton));
+        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.level_backButton_down));
         back_button_style.font = AssetLoader.arial;
 
         back_button = new TextButton("", back_button_style);
@@ -88,6 +90,7 @@ class LevelWorld implements ScreenWorld {
         back_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 back_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
             }
@@ -98,13 +101,13 @@ class LevelWorld implements ScreenWorld {
         for(int i = 0; i < LevelNum; i ++) {
             level_style[i] = new TextButton.TextButtonStyle();
             level_style[i].up = new TextureRegionDrawable(new TextureRegion(levelButton[i]));
-            level_style[i].down = new TextureRegionDrawable(new TextureRegion(levelButton[i]));
+            level_style[i].down = new TextureRegionDrawable(new TextureRegion(levelButton_down[i]));
             level_style[i].font = AssetLoader.arial;
 
             level_button[i] = new TextButton("", level_style[i]);
             level_button[i].setPosition(x_coord[i], y_coord[i]);
             level_star_style[i] = new ImageButton.ImageButtonStyle();
-            int star_Level = Gdx.app.getPreferences("prefs").getInteger("level" + Integer.toString(i+1)+"_starLevel");
+            int star_Level = Gdx.app.getPreferences("prefs").getInteger("level" + Integer.toString(i+1)+"star");
             Drawable style;
             switch (star_Level) {
                 case 0:
@@ -123,13 +126,14 @@ class LevelWorld implements ScreenWorld {
                     style = new TextureRegionDrawable(new TextureRegion(AssetLoader.star0));
                     break;
             }
+
             level_star_style[i].imageUp = style;
             level_star_style[i].imageDown = style;
+
             level_star[i] = new ImageButton(level_star_style[i]);
-            level_star[i].setPosition(x_coord[i], y_coord[i] - 100);
+            level_star[i].setPosition(x_coord[i] - 20, y_coord[i] - 110);
             if((i + 1) <= playerLevel) {
                 addListenerToLevelButton(i);
-                addListenerToLevelStar(i);
             } else {
                 level_button[i].getColor().a = 0.5f;
             }
@@ -169,10 +173,12 @@ class LevelWorld implements ScreenWorld {
         level_button[i].addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 level_button[i].addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
-                CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
+                if (i == 0) CURRENT_SCREEN = PSAGame.Screen.TutorialScreen;
+                else CURRENT_SCREEN = PSAGame.Screen.SinglePlayerGameScreen;
                 LEVEL = i + 1;
-                SoundLoader.click.play();
+                SoundLoader.soundHashtable.get("click.wav").play();
             }
         });
     }

@@ -18,6 +18,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeOut;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static com.thechallengers.psagame.game.PSAGame.CURRENT_SCREEN;
+import static com.thechallengers.psagame.game.PSAGame.playSound;
 
 /**
  * Created by name on 3/10/2017.
@@ -29,16 +30,16 @@ public class ShopWorld implements ScreenWorld{
     private TextButton back_button;
     private ShopBackground shop_background;
     private PSAGame game;
-    private ImageButton shop_title;
-    private ImageButton.ImageButtonStyle shop_title_style;
+    //private ImageButton shop_title;
+    //private ImageButton.ImageButtonStyle shop_title_style;
     private ImageButton crane_lv1;
     private ImageButton.ImageButtonStyle crane_lv1_style;
     private ImageButton crane_lv2;
     private ImageButton.ImageButtonStyle crane_lv2_style;
     private ImageButton crane_lv3;
     private ImageButton.ImageButtonStyle crane_lv3_style;
-    private ImageButton crane_title;
-    private ImageButton.ImageButtonStyle crane_title_style;
+//    private ImageButton crane_title;
+//    private ImageButton.ImageButtonStyle crane_title_style;
     private ImageButton selection_bar;
     private ImageButton.ImageButtonStyle selection_bar_style;
     private ImageButton purchase_message;
@@ -51,26 +52,20 @@ public class ShopWorld implements ScreenWorld{
     private ImageButton.ImageButtonStyle purchase_response_style;
     public boolean showPrice = true;
 
-
     //constructor
     public ShopWorld(PSAGame game) {
         //for testing
-        Gdx.app.getPreferences("prefs").putInteger("moneyBalance", 100).flush();
-        Gdx.app.getPreferences("prefs").putBoolean("craneLv2_purchased", false).flush();
-        Gdx.app.getPreferences("prefs").putBoolean("craneLv3_purchased", false).flush();
-        Gdx.app.getPreferences("prefs").putInteger("crane_present", 1).flush();
         this.game = game;
         stage = new Stage();
         shop_background = new ShopBackground();
         createBackButton();
-        createTitle();
+        //createTitle();
         createCraneSelection();
-
 
         stage.addActor(shop_background);
         stage.addActor(back_button);
-        stage.addActor(shop_title);
-        stage.addActor(crane_title);
+        //stage.addActor(shop_title);
+        //stage.addActor(crane_title);
         stage.addActor(crane_lv1);
         stage.addActor(crane_lv2);
         stage.addActor(crane_lv3);
@@ -82,7 +77,7 @@ public class ShopWorld implements ScreenWorld{
     public void createBackButton() {
         back_button_style = new TextButton.TextButtonStyle();
         back_button_style.up = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_backButton));
-        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_backButton));
+        back_button_style.down = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_backButton_down));
         back_button_style.font = AssetLoader.arial;
 
         back_button = new TextButton("", back_button_style);
@@ -90,13 +85,7 @@ public class ShopWorld implements ScreenWorld{
         addListenerToBackButton();
     }
 
-    public void createTitle() {
-        shop_title_style = new ImageButton.ImageButtonStyle();
-        shop_title_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_title));
-        shop_title_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.shop_title));
-        shop_title = new ImageButton(shop_title_style);
-        shop_title.setPosition(100, 1400);
-    }
+
 
     public void addListenerToBackButton() {
         back_button.addListener(new ClickListener() {
@@ -104,34 +93,35 @@ public class ShopWorld implements ScreenWorld{
             public void clicked(InputEvent event, float x, float y) {
                 back_button.addAction(sequence(fadeOut(0.6f), fadeIn(0.6f)));
                 CURRENT_SCREEN = PSAGame.Screen.MenuScreen;
+                playSound("click.wav");
             }
         });
     }
 
     public void createCraneSelection() {
-        crane_title_style = new ImageButton.ImageButtonStyle();
-        crane_title_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_title));
-        crane_title_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_title));
-        crane_title = new ImageButton(crane_title_style);
-        crane_title.setPosition(100, 1200);
+//        crane_title_style = new ImageButton.ImageButtonStyle();
+//        crane_title_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_title));
+//        crane_title_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_title));
+//        crane_title = new ImageButton(crane_title_style);
+//        crane_title.setPosition(100, 1200);
 
         crane_lv1_style = new ImageButton.ImageButtonStyle();
         crane_lv1_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_lv1));
         crane_lv1_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_lv1));
         crane_lv1 = new ImageButton(crane_lv1_style);
-        crane_lv1.setPosition(100, 950);
+        crane_lv1.setPosition(100+100, 950-60);
 
         crane_lv2_style = new ImageButton.ImageButtonStyle();
         crane_lv2_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_lv2));
         crane_lv2_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_lv2));
         crane_lv2 = new ImageButton(crane_lv2_style);
-        crane_lv2.setPosition(450, 950);
+        crane_lv2.setPosition(100+100, 950-270);
 
         crane_lv3_style = new ImageButton.ImageButtonStyle();
         crane_lv3_style.imageUp = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_lv3));
         crane_lv3_style.imageDown = new TextureRegionDrawable(new TextureRegion(AssetLoader.crane_lv3));
         crane_lv3 = new ImageButton(crane_lv3_style);
-        crane_lv3.setPosition(800, 950);
+        crane_lv3.setPosition(100+100, 950-480);
 
         addListenerToCrane1();
         addListenerToCrane2();
@@ -145,11 +135,11 @@ public class ShopWorld implements ScreenWorld{
 
         int crane_present = Gdx.app.getPreferences("prefs").getInteger("crane_present");
         switch (crane_present) {
-            case 1: selection_bar.setPosition(100, 950);
+            case 1: selection_bar.setPosition(100+100, 950-60);
                 break;
-            case 2: selection_bar.setPosition(450, 950);
+            case 2: selection_bar.setPosition(100+100, 950-270);
                 break;
-            case 3: selection_bar.setPosition(800, 950);
+            case 3: selection_bar.setPosition(100+100, 950-480);
                 break;
             default: break;
         }
@@ -160,9 +150,10 @@ public class ShopWorld implements ScreenWorld{
         crane_lv1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 Gdx.app.getPreferences("prefs").putInteger("crane_present", 1).flush();
-                selection_bar.setPosition(100, 950);
-
+                Gdx.app.getPreferences("prefs").putFloat("crane speed", 10f).flush();
+                selection_bar.setPosition(100+100, 950-60);
             }
         });
     }
@@ -172,12 +163,14 @@ public class ShopWorld implements ScreenWorld{
         crane_lv2.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 boolean isBought =  Gdx.app.getPreferences("prefs").getBoolean("craneLv2_purchased");
                 if (!isBought) {
                     createPurchaseMessage(2);
                 } else {
                     Gdx.app.getPreferences("prefs").putInteger("crane_present", 2).flush();
-                    selection_bar.setPosition(450, 950);
+                    Gdx.app.getPreferences("prefs").putFloat("crane speed", 15f).flush();
+                    selection_bar.setPosition(100+100, 950-270);
                 }
             }
         });
@@ -187,12 +180,14 @@ public class ShopWorld implements ScreenWorld{
         crane_lv3.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 boolean isBought =  Gdx.app.getPreferences("prefs").getBoolean("craneLv3_purchased");
                 if (!isBought) {
                     createPurchaseMessage(3);
                 } else {
                     Gdx.app.getPreferences("prefs").putInteger("crane_present", 3).flush();
-                    selection_bar.setPosition(800, 950);
+                    Gdx.app.getPreferences("prefs").putFloat("crane speed", 20f).flush();
+                    selection_bar.setPosition(100+100, 950-480);
                 }
             }
         });
@@ -273,15 +268,18 @@ public class ShopWorld implements ScreenWorld{
                     case 2: {
                         int curr_money = Gdx.app.getPreferences("prefs").getInteger("moneyBalance");
                         if (curr_money >= 10) {
+                            playSound("item_purchased.mp3");
                             Gdx.app.getPreferences("prefs").putInteger("moneyBalance", curr_money - 10).flush();
-                            selection_bar.setPosition(450, 950);
+                            selection_bar.setPosition(100+100, 950-270);
                             Gdx.app.getPreferences("prefs").putInteger("crane_present", 2).flush();
                             Gdx.app.getPreferences("prefs").putBoolean("craneLv2_purchased", true).flush();
+                            Gdx.app.getPreferences("prefs").putFloat("crane speed", 15f).flush();
                             purchase_message.remove();
                             yes_button.remove();
                             no_button.remove();
                             createPurchaseFeedback(1);
                         } else {
+                            playSound("click.wav");
                             purchase_message.remove();
                             yes_button.remove();
                             no_button.remove();
@@ -293,15 +291,18 @@ public class ShopWorld implements ScreenWorld{
                     case 3: {
                         int curr_money = Gdx.app.getPreferences("prefs").getInteger("moneyBalance");
                         if (curr_money >= 20) {
+                            playSound("item_purchased.mp3");
                             Gdx.app.getPreferences("prefs").putInteger("moneyBalance", curr_money - 20).flush();
-                            selection_bar.setPosition(800, 950);
+                            selection_bar.setPosition(100+100, 950-480);
                             Gdx.app.getPreferences("prefs").putInteger("crane_present", 3).flush();
                             Gdx.app.getPreferences("prefs").putBoolean("craneLv3_purchased", true).flush();
+                            Gdx.app.getPreferences("prefs").putFloat("crane speed", 20f).flush();
                             purchase_message.remove();
                             yes_button.remove();
                             no_button.remove();
                             createPurchaseFeedback(1);
                         } else {
+                            playSound("click.wav");
                             purchase_message.remove();
                             yes_button.remove();
                             no_button.remove();
@@ -317,6 +318,7 @@ public class ShopWorld implements ScreenWorld{
         no_button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                playSound("click.wav");
                 purchase_message.remove();
                 yes_button.remove();
                 no_button.remove();
@@ -325,9 +327,6 @@ public class ShopWorld implements ScreenWorld{
         });
 
     }
-
-
-
 
     public Stage getStage() {return stage;}
 
