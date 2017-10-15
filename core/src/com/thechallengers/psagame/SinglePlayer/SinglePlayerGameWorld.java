@@ -86,12 +86,9 @@ public class SinglePlayerGameWorld implements ScreenWorld {
             gameTime += delta;
             worldTime -= delta;
         }
-
-<<<<<<< HEAD
+        
         // if (worldTime < 10) playSound("");
 
-=======
->>>>>>> ddcf83ed043ff8661709b89bbd62bfa48c5634b7
         float xGrav = Gdx.input.getAccelerometerX() / 9.81f;
         float yGrav = Gdx.input.getAccelerometerY() / 9.81f;
         float zGrav = Gdx.input.getAccelerometerZ() / 9.81f;

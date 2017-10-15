@@ -47,7 +47,7 @@ public class EndGameScreen implements Screen {
         boolean newBestTime = false;
 
         if (updatedBestTime.compareTo(previousBestTime) > 0) {
-            prefs.putString("best_time_level" + END_SCREEN_LEVEL, updatedBestTime);
+            prefs.putString("best_time_level" + END_SCREEN_LEVEL, updatedBestTime).flush();
             newBestTime = true;
         }
 
